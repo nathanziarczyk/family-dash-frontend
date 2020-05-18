@@ -4,14 +4,21 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import { PersistGate } from "redux-persist/es/integration/react";
+import { store, persistor } from "./data/index";
+import { CircularProgress } from "@material-ui/core";
 
-import store from "./data/";
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+      <PersistGate
+        loading={<CircularProgress color="secondary" size="1.8em" />}
+        persistor={persistor}
+      >
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </PersistGate>
     </Provider>
   </BrowserRouter>,
   document.getElementById("root")

@@ -35,16 +35,18 @@ export const USER_START_REGISTER = "USER_START_REGISTER";
 export const USER_SUCCESS_REGISTER = "USER_SUCCESS_REGISTER";
 export const USER_ERROR_REGISTER = "USER_SUCCESS_REGISTER";
 
+export const USER_LOGOUT = "USER_LOGOUT";
+
 /* ACTION CREATORS */
 export const loginUser = (username, password) => (dispatch) => {
   dispatch(startLogin());
   axios
-    .post(`${process.env.REACT_APP_API}login`, {
+    .post(`${process.env.REACT_APP_API}/login`, {
       username: username,
       password: password,
     })
     .then((response) => dispatch(successLogin(response.data.token)))
-    .catch((error) => dispatch(errorLogin(error.response.data.message)));
+    .catch((error) => console.log(error));
 };
 
 export const startLogin = () => ({

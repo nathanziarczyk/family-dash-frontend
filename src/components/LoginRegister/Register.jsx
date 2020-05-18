@@ -10,7 +10,6 @@ import {
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import * as EmailValidator from "email-validator";
-import { Redirect } from "react-router-dom";
 
 import { registerUser } from "./../../data/user";
 

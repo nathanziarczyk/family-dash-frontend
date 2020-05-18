@@ -5,20 +5,26 @@ import { Route, Redirect } from "react-router-dom";
 
 import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Overview from "./components/Overview/Overview";
+import Layout from "./components/Layout/Layout";
 
 function App() {
   const themeData = useSelector((state) => state.theme);
   const user = useSelector((state) => state.user.loggedIn);
   const theme = createMuiTheme(themeData);
-  // localStorage.removeItem("loggedIn");
-  const loggedIn = localStorage.getItem("loggedIn") === "true" || user;
+  const loggedIn = user;
   return (
     <ThemeProvider theme={theme}>
       <Route exact path="/">
         {loggedIn ? <Redirect to="/overview" /> : <LoginRegister />}
       </Route>
       <Route path="/overview">
-        {!loggedIn ? <Redirect to="/" /> : <Overview />}
+        {!loggedIn ? (
+          <Redirect to="/" />
+        ) : (
+          <Layout>
+            <Overview />
+          </Layout>
+        )}
       </Route>
     </ThemeProvider>
   );
