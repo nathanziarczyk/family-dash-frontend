@@ -8,6 +8,8 @@ import { PersistGate } from "redux-persist/es/integration/react";
 import { store, persistor } from "./data/index";
 import { CircularProgress } from "@material-ui/core";
 
+console.log(window.localStorage.getItem("persist:user"));
+
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>

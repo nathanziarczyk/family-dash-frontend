@@ -12,6 +12,7 @@ function App() {
   const user = useSelector((state) => state.user.loggedIn);
   const theme = createMuiTheme(themeData);
   const loggedIn = user;
+
   return (
     <ThemeProvider theme={theme}>
       <Route exact path="/">

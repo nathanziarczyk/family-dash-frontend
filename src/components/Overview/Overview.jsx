@@ -6,11 +6,14 @@ import {
   makeStyles,
   Typography,
   CircularProgress,
+  ListItem,
+  ListItemText,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getGroups } from "./../../data/groups";
 import GroupListItem from "./GroupListItem";
+import InvitationListItem from "./InvitationListItem";
 
 const useStyles = makeStyles((theme) => ({
   flexContainer: {
@@ -51,7 +54,9 @@ export default function Overview() {
   const dispatch = useDispatch();
   const [showGroups, setShowGroups] = useState(true);
   const [showInvitations, setShowInvitations] = useState(false);
-  const { loading, error, groups } = useSelector((state) => state.groups);
+  const { loading, error, groups, invitations } = useSelector(
+    (state) => state.groups
+  );
   const classes = useStyles();
   useEffect(() => {
     dispatch(getGroups());
@@ -95,6 +100,33 @@ export default function Overview() {
                     />
                   );
                 })}
+              {!loading && groups.length === 0 && (
+                <ListItem>
+                  <ListItemText primary="You have no groups" />
+                </ListItem>
+              )}
+              {loading && <CircularProgress color="secondary" size="1.8em" />}
+            </List>
+          )}
+          {showInvitations && (
+            <List dense>
+              {!loading &&
+                invitations.length > 0 &&
+                invitations.map((group) => {
+                  return (
+                    <InvitationListItem
+                      key={group.id}
+                      groupName={group.name}
+                      groupId={group.id}
+                      groupMembers={group.groupMembers}
+                    />
+                  );
+                })}
+              {!loading && invitations.length === 0 && (
+                <ListItem>
+                  <ListItemText primary="You have no invitations" />
+                </ListItem>
+              )}
               {loading && <CircularProgress color="secondary" size="1.8em" />}
             </List>
           )}

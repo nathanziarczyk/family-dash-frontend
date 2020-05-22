@@ -3,6 +3,7 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import Cookies from "js-cookie";
 
 import themeReducer from "./theme";
 import userReducer from "./user";
@@ -15,12 +16,23 @@ const persistedGroups = persistReducer(
   groupsReducer
 );
 
+const appReducer = combineReducers({
+  theme: persistedTheme,
+  user: persistedUser,
+  groups: persistedGroups,
+});
+
+const rootReducer = (state, action) => {
+  if (action.type === "USER_LOGOUT") {
+    state = undefined;
+    window.localStorage.clear();
+    Cookies.remove("jwt");
+  }
+  return appReducer(state, action);
+};
+
 export const store = createStore(
-  combineReducers({
-    theme: persistedTheme,
-    user: persistedUser,
-    groups: persistedGroups,
-  }),
+  rootReducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
 export const persistor = persistStore(store);

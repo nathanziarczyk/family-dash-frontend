@@ -49,6 +49,10 @@ export const loginUser = (username, password) => (dispatch) => {
     .catch((error) => console.log(error));
 };
 
+export const logoutUser = () => ({
+  type: USER_LOGOUT,
+});
+
 export const startLogin = () => ({
   type: USER_START_LOGIN,
 });
