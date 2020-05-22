@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Paper, makeStyles, Typography } from "@material-ui/core";
+import {
+  Grid,
+  Paper,
+  makeStyles,
+  Typography,
+  CircularProgress,
+} from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import { getGroups } from "../../data/groups";
@@ -40,6 +46,13 @@ const useStyles = makeStyles((theme) => ({
     borderTopLeftRadius: "5px",
     borderTopRightRadius: "5px",
     cursor: "pointer",
+  },
+  center: {
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 }));
 
@@ -95,8 +108,19 @@ export default function Overview() {
           </Typography>
         </div>
         <Paper elevation={3} className={classes.paper}>
+          {loading && (
+            <div className={classes.center}>
+              <CircularProgress />
+            </div>
+          )}
+          {error.bool && (
+            <div className={classes.center}>
+              <Typography variant="subtitle2">{error.message}</Typography>
+            </div>
+          )}
+
           {error.bool ? (
-            <Typography variant="h5">{error.message}</Typography>
+            ""
           ) : (
             <>
               {showGroups && (

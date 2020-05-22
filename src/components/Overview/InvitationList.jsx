@@ -1,16 +1,10 @@
 import React from "react";
-import {
-  List,
-  ListItemText,
-  ListItem,
-  CircularProgress,
-} from "@material-ui/core";
+import { List, ListItemText, ListItem } from "@material-ui/core";
 import InvitationListItem from "./InvitationListItem";
 
 export default function InvitationList({ invitations, error, loading }) {
   return (
     <>
-      {loading && <CircularProgress color="secondary" />}
       <List dense>
         {loading ? (
           ""

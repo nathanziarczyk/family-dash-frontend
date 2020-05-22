@@ -1,17 +1,11 @@
 import React from "react";
-import {
-  ListItem,
-  ListItemText,
-  List,
-  CircularProgress,
-} from "@material-ui/core";
+import { ListItem, ListItemText, List } from "@material-ui/core";
 
 import GroupListItem from "./GroupListItem";
 
 export default function GroupList({ error, loading, groups }) {
   return (
     <>
-      {loading && <CircularProgress />}
       <List dense>
         {loading ? (
           ""
