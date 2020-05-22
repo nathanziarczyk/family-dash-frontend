@@ -23,7 +23,7 @@ export const NEW_GROUP_ERROR = "NEW_GROUP_ERROR";
 
 /* ACTION CREATORS */
 export const getGroups = () => (dispatch) => {
-  startSearch();
+  dispatch(startSearch());
   axios
     .get(`${process.env.REACT_APP_API}/groups`, {
       headers: {
