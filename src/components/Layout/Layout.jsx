@@ -19,7 +19,7 @@ export default function Layout({ children }) {
   return (
     <>
       <Header />
-      <Grid container className={classes.childrenContainer}>
+      <Grid container alignItems="center" className={classes.childrenContainer}>
         {children}
       </Grid>
       {width > 600 && <Footer />}
