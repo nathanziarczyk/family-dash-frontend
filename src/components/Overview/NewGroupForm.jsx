@@ -15,9 +15,10 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { newGroup } from "../../data/groups";
+import SuccessMessage from "../Messages/SuccessMessage";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -44,13 +45,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NewGroupForm() {
+export default function NewGroupForm({ loading, error, newGroupMessage }) {
   const [users, setUsers] = useState([]);
   const [groupNameInput, setGroupNameInput] = useState("");
   const [usersInput, setUsersInput] = useState("");
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.groups);
 
   const handleAddUserClick = (e) => {
     if (usersInput === "") return null;
@@ -62,6 +62,9 @@ export default function NewGroupForm() {
     e.preventDefault();
     if (groupNameInput === "") return null;
     dispatch(newGroup(groupNameInput));
+    setGroupNameInput("");
+    setUsersInput("");
+    setUsers("");
   };
 
   return (
@@ -114,6 +117,9 @@ export default function NewGroupForm() {
         <Button type="submit" variant="outlined">
           {loading ? <CircularProgress color="primary" size="1.8em" /> : "GO"}
         </Button>
+        {newGroupMessage.length > 0 && (
+          <SuccessMessage message={newGroupMessage} />
+        )}
       </form>
     </div>
   );

@@ -10,6 +10,7 @@ export const initialState = {
     bool: false,
     message: "",
   },
+  newGroupMessage: "",
 };
 
 /* ACTION TYPES */
@@ -69,6 +70,7 @@ export const newGroup = (groupName) => (dispatch) => {
     )
     .then((response) => {
       dispatch(getGroups());
+      dispatch(successNewGroup(`Group ${groupName} created`));
     })
     .catch((error) => console.log(error.response));
 };
@@ -76,11 +78,13 @@ export const newGroup = (groupName) => (dispatch) => {
 export const startNewGroup = () => ({
   type: NEW_GROUP_START,
 });
-export const errorNewGroup = () => ({
-  type: NEW_GROUP_ERROR,
-});
-export const successNewGroup = () => ({
+export const successNewGroup = (message) => ({
   type: NEW_GROUP_SUCCESS,
+  payload: message,
+});
+export const errorNewGroup = (message) => ({
+  type: NEW_GROUP_ERROR,
+  payload: message,
 });
 
 /* REDUCER */
@@ -118,6 +122,13 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         loading: true,
+      };
+
+    case NEW_GROUP_SUCCESS:
+      return {
+        ...state,
+        newGroupMessage: payload,
+        loading: false,
       };
 
     default:

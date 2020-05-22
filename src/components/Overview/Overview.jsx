@@ -49,7 +49,7 @@ export default function Overview() {
   const [showGroups, setShowGroups] = useState(true);
   const [showInvitations, setShowInvitations] = useState(false);
   const [showNewGroup, setShowNewGroup] = useState(false);
-  const { loading, error, groups, invitations } = useSelector(
+  const { loading, error, groups, invitations, newGroupMessage } = useSelector(
     (state) => state.groups
   );
   const classes = useStyles();
@@ -109,7 +109,13 @@ export default function Overview() {
                   error={error}
                 />
               )}
-              {showNewGroup && <NewGroupForm />}
+              {showNewGroup && (
+                <NewGroupForm
+                  loading={loading}
+                  error={error}
+                  newGroupMessage={newGroupMessage}
+                />
+              )}
             </>
           )}
         </Paper>

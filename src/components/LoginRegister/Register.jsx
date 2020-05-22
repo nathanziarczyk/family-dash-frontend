@@ -38,10 +38,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Register() {
   const classes = useStyles();
-  const [firstName, setFirstName] = useState("a");
-  const [lastName, setLastName] = useState("a");
-  const [email, setEmail] = useState("admin");
-  const [password, setPassword] = useState("admin");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const registerError = useSelector((state) => state.user.register.error);

@@ -46,7 +46,7 @@ export const loginUser = (username, password) => (dispatch) => {
       password: password,
     })
     .then((response) => dispatch(successLogin(response.data.token)))
-    .catch((error) => console.log(error));
+    .catch((error) => dispatch(errorLogin(error.response.data)));
 };
 
 export const logoutUser = () => ({
