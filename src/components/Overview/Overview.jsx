@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  Grid,
-  List,
-  Paper,
-  makeStyles,
-  Typography,
-  CircularProgress,
-  ListItem,
-  ListItemText,
-} from "@material-ui/core";
+import { Grid, Paper, makeStyles, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getGroups } from "./../../data/groups";
-import GroupListItem from "./GroupListItem";
-import InvitationListItem from "./InvitationListItem";
+import { getGroups } from "../../data/groups";
+import NewGroupForm from "./NewGroupForm";
+import InvitationList from "./InvitationList";
+import GroupList from "./GroupList";
 
 const useStyles = makeStyles((theme) => ({
   flexContainer: {
@@ -23,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     width: "100%",
-    minHeight: "30em",
+    height: "30em",
+    overflow: "auto",
   },
   notActive: {
     display: "inline",
@@ -51,16 +44,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Overview() {
+  /* HOOKS */
   const dispatch = useDispatch();
   const [showGroups, setShowGroups] = useState(true);
   const [showInvitations, setShowInvitations] = useState(false);
+  const [showNewGroup, setShowNewGroup] = useState(false);
   const { loading, error, groups, invitations } = useSelector(
     (state) => state.groups
   );
   const classes = useStyles();
   useEffect(() => {
     dispatch(getGroups());
-  }, []);
+  }, [dispatch]);
+  /* ---- */
+
   return (
     <>
       <Grid item xs={false} sm={3} />
@@ -70,6 +67,7 @@ export default function Overview() {
             onClick={() => {
               setShowGroups(true);
               setShowInvitations(false);
+              setShowNewGroup(false);
             }}
             className={showGroups ? classes.active : classes.notActive}
           >
@@ -77,58 +75,42 @@ export default function Overview() {
           </Typography>
           <Typography
             onClick={() => {
-              setShowGroups(false);
               setShowInvitations(true);
+              setShowGroups(false);
+              setShowNewGroup(false);
             }}
             className={showInvitations ? classes.active : classes.notActive}
           >
             Your Invitations
           </Typography>
+          <Typography
+            onClick={() => {
+              setShowNewGroup(true);
+              setShowInvitations(false);
+              setShowGroups(false);
+            }}
+            className={showNewGroup ? classes.active : classes.notActive}
+          >
+            +
+          </Typography>
         </div>
         <Paper elevation={3} className={classes.paper}>
-          {showGroups && (
-            <List dense>
-              {!loading &&
-                groups.length > 0 &&
-                groups.map((group) => {
-                  return (
-                    <GroupListItem
-                      key={group.id}
-                      groupName={group.name}
-                      groupId={group.id}
-                      groupMembers={group.groupMembers}
-                    />
-                  );
-                })}
-              {!loading && groups.length === 0 && (
-                <ListItem>
-                  <ListItemText primary="You have no groups" />
-                </ListItem>
+          {error.bool ? (
+            <Typography variant="h5">{error.message}</Typography>
+          ) : (
+            <>
+              {showGroups && (
+                <GroupList groups={groups} loading={loading} error={error} />
               )}
-              {loading && <CircularProgress color="secondary" size="1.8em" />}
-            </List>
-          )}
-          {showInvitations && (
-            <List dense>
-              {!loading &&
-                invitations.length > 0 &&
-                invitations.map((group) => {
-                  return (
-                    <InvitationListItem
-                      key={group.id}
-                      groupName={group.name}
-                      groupId={group.id}
-                      groupMembers={group.groupMembers}
-                    />
-                  );
-                })}
-              {!loading && invitations.length === 0 && (
-                <ListItem>
-                  <ListItemText primary="You have no invitations" />
-                </ListItem>
+              {showInvitations && (
+                <InvitationList
+                  invitations={invitations}
+                  loading={loading}
+                  error={error}
+                />
               )}
-              {loading && <CircularProgress color="secondary" size="1.8em" />}
-            </List>
+              {showNewGroup && <NewGroupForm />}
+            </>
           )}
         </Paper>
       </Grid>

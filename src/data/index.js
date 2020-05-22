@@ -1,7 +1,11 @@
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { persistStore, persistReducer } from "redux-persist";
+import {
+  persistStore,
+  persistReducer,
+  persistCombineReducers,
+} from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import Cookies from "js-cookie";
 
@@ -9,17 +13,16 @@ import themeReducer from "./theme";
 import userReducer from "./user";
 import groupsReducer from "./groups";
 
-const persistedTheme = persistReducer({ key: "theme", storage }, themeReducer);
-const persistedUser = persistReducer({ key: "user", storage }, userReducer);
-const persistedGroups = persistReducer(
-  { key: "groups", storage },
-  groupsReducer
-);
+const persistConfig = {
+  key: "root",
+  whitelist: ["user"],
+  storage,
+};
 
-const appReducer = combineReducers({
-  theme: persistedTheme,
-  user: persistedUser,
-  groups: persistedGroups,
+const appReducer = persistCombineReducers(persistConfig, {
+  user: userReducer,
+  theme: themeReducer,
+  groups: groupsReducer,
 });
 
 const rootReducer = (state, action) => {
