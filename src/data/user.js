@@ -1,6 +1,7 @@
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
+
 /* INITIAL STATE */
 export const initialState = {
   user: {
@@ -33,7 +34,7 @@ export const USER_ERROR_LOGIN = "USER_ERROR_LOGIN";
 
 export const USER_START_REGISTER = "USER_START_REGISTER";
 export const USER_SUCCESS_REGISTER = "USER_SUCCESS_REGISTER";
-export const USER_ERROR_REGISTER = "USER_SUCCESS_REGISTER";
+export const USER_ERROR_REGISTER = "USER_ERROR_REGISTER";
 
 export const USER_LOGOUT = "USER_LOGOUT";
 
@@ -46,7 +47,9 @@ export const loginUser = (username, password) => (dispatch) => {
       password: password,
     })
     .then((response) => dispatch(successLogin(response.data.token)))
-    .catch((error) => dispatch(errorLogin(error.response.data)));
+    .catch((error) => {
+      dispatch(errorLogin(error.response.data));
+    });
 };
 
 export const logoutUser = () => ({
@@ -73,11 +76,15 @@ export const registerUser = (fn, ln, email, password) => (dispatch) => {
     .post(`${process.env.REACT_APP_API}/register`, {
       _username: email,
       _password: password,
-      firstName: fn,
-      lastName: ln,
+      first_name: fn,
+      last_name: ln,
     })
-    .then((response) => dispatch(succesRegister(response.data)))
-    .catch((error) => dispatch(errorRegister("FIX THIS ERROR")));
+    .then((response) => {
+      dispatch(succesRegister(response.data));
+    })
+    .catch((error) => {
+      dispatch(errorRegister(error.response.data.error));
+    });
 };
 
 export const startRegister = () => ({

@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginRegister() {
   const classes = useStyles();
+  window.localStorage.removeItem("persist:root");
   return (
     <Grid container spacing={0}>
       <Grid item xs={false} sm={12} md={6}>

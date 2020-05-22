@@ -15,18 +15,25 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Route exact path="/">
-        {loggedIn ? <Redirect to="/overview" /> : <LoginRegister />}
-      </Route>
-      <Route path="/overview">
-        {!loggedIn ? (
-          <Redirect to="/" />
-        ) : (
-          <Layout>
-            <Overview />
-          </Layout>
-        )}
-      </Route>
+      <Route
+        exact
+        path="/"
+        render={() => {
+          return loggedIn ? <Redirect to="/overview" /> : <LoginRegister />;
+        }}
+      />
+      <Route
+        path="/overview"
+        render={() => {
+          return !loggedIn ? (
+            <Redirect to="/" />
+          ) : (
+            <Layout>
+              <Overview />
+            </Layout>
+          );
+        }}
+      />
     </ThemeProvider>
   );
 }
