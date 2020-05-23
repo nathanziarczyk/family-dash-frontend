@@ -45,7 +45,6 @@ export default function Register() {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const registerError = useSelector((state) => state.user.register.error);
-  console.log(registerError);
   const loading = useSelector((state) => state.user.register.loading);
   const submitHandler = (e) => {
     e.preventDefault();

@@ -2,3 +2,15 @@ a {
   color: inherit;
   text-decoration: inherit;
 }
+
+.Carousel-root-223 {
+  height: 95%;
+}
+
+.CarouselItem {
+  height: 100%;
+}
+
+.CarouselItem > div {
+  height: 90%;
+}

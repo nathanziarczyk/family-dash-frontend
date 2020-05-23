@@ -1,13 +1,21 @@
 import React, { useEffect } from "react";
-import { Grid, makeStyles, CircularProgress } from "@material-ui/core";
+import {
+  Grid,
+  makeStyles,
+  CircularProgress,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 
 import { loadGroup } from "../../data/group";
 import GroupWeb from "./GroupWeb";
+import GroupMobile from "./GroupMobile";
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
     height: "100%",
+    maxWidth: "100vw",
   },
   loadingDiv: {
     width: "100%",
@@ -19,6 +27,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Group({ props }) {
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
   const { name, loading, error, events } = useSelector((state) => state.group);
   const dispatch = useDispatch();
@@ -37,7 +47,8 @@ export default function Group({ props }) {
           </div>
         ) : (
           <>
-            <GroupWeb events={events} />
+            {!mobile && <GroupWeb events={events} />}
+            {mobile && <GroupMobile events={events} />}
           </>
         )}
       </Grid>
