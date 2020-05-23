@@ -1,16 +1,22 @@
 import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { makeStyles, Grid } from "@material-ui/core";
+import { makeStyles, Grid, useMediaQuery, useTheme } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   childrenContainer: {
     height: "calc(100vh - 128px)",
     margin: 0,
   },
+  childrenContainerMobile: {
+    height: "calc(100vh - 64px)",
+    margin: 0,
+  },
 }));
 
 export default function Layout({ children }) {
+  const theme = useTheme();
+  const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
   const [width, setWidth] = useState(window.innerWidth);
   window.addEventListener("resize", (e) => {
@@ -19,7 +25,15 @@ export default function Layout({ children }) {
   return (
     <>
       <Header />
-      <Grid container alignItems="center" className={classes.childrenContainer}>
+      <Grid
+        container
+        alignItems="center"
+        className={
+          matchesSM
+            ? classes.childrenContainerMobile
+            : classes.childrenContainer
+        }
+      >
         {children}
       </Grid>
       {width > 600 && <Footer />}

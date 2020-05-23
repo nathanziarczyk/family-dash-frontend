@@ -18,10 +18,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
+    height: "100%",
   },
   paper: {
     width: "100%",
-    height: "30em",
+    height: "90%",
     overflow: "auto",
   },
   notActive: {
