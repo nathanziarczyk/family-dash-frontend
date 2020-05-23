@@ -1,46 +1,46 @@
-import React from "react";
-import { Grid, makeStyles, Paper } from "@material-ui/core";
+import React, { useEffect } from "react";
+import { Grid, makeStyles, CircularProgress } from "@material-ui/core";
+import { useSelector, useDispatch } from "react-redux";
 
-import EventsSummary from "./EventsSummary";
-import NotesSummary from "./NotesSummary";
+import { loadGroup } from "../../data/group";
+import GroupWeb from "./GroupWeb";
 
 const useStyles = makeStyles((theme) => ({
-  bigPaper: {
-    height: "95%",
-    width: "95%",
-  },
-  smallPaper: {
-    height: "90%",
-    width: "95%",
-  },
   gridContainer: {
     height: "100%",
   },
+  loadingDiv: {
+    width: "100%",
+    heigth: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 }));
 
-export default function Group() {
+export default function Group({ props }) {
   const classes = useStyles();
+  const { name, loading, error, events } = useSelector((state) => state.group);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadGroup(groupId));
+  }, []);
+
+  const groupId = props.match.params.id;
+
   return (
-    <Grid container className={classes.gridContainer}>
-      <Grid item xs={1} />
-      <Grid item container xs={12} sm={5}>
-        <Grid item container alignItems="center" xs={12}>
-          <Paper className={classes.bigPaper} elevation={3}>
-            <EventsSummary />
-          </Paper>
-        </Grid>
+    <>
+      <Grid container className={classes.gridContainer}>
+        {loading ? (
+          <div className={classes.loadingDiv}>
+            <CircularProgress color="primary" />
+          </div>
+        ) : (
+          <>
+            <GroupWeb events={events} />
+          </>
+        )}
       </Grid>
-      <Grid item container xs={12} sm={5}>
-        <Grid item container alignItems="center" xs={12}>
-          <Paper className={classes.smallPaper} elevation={3}>
-            <NotesSummary />
-          </Paper>
-        </Grid>
-        <Grid item container alignItems="center" xs={12}>
-          <Paper className={classes.smallPaper} elevation={3}></Paper>
-        </Grid>
-      </Grid>
-      <Grid item xs={1} />
-    </Grid>
+    </>
   );
 }

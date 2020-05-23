@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import themeReducer from "./theme";
 import userReducer from "./user";
 import groupsReducer from "./groups";
+import groupReducer from "./group";
 
 const persistConfig = {
   key: "root",
@@ -19,6 +20,7 @@ const appReducer = persistCombineReducers(persistConfig, {
   user: userReducer,
   theme: themeReducer,
   groups: groupsReducer,
+  group: groupReducer,
 });
 
 const rootReducer = (state, action) => {

@@ -37,12 +37,12 @@ function App() {
       />
       <Route
         path="/group/:id"
-        render={() => {
+        render={(props) => {
           return !loggedIn ? (
             <Redirect to="/" />
           ) : (
             <Layout>
-              <Group />
+              <Group props={props} />
             </Layout>
           );
         }}

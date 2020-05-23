@@ -1,7 +1,8 @@
 import React from "react";
 import { List, ListItem, ListItemText, Typography } from "@material-ui/core";
+import moment from "moment";
 
-export default function EventsSummary() {
+export default function EventsSummary({ events }) {
   return (
     <List>
       <ListItem>
@@ -9,21 +10,17 @@ export default function EventsSummary() {
           <Typography variant="h5">Upcoming events</Typography>
         </ListItemText>
       </ListItem>
-      <ListItem button>
-        <ListItemText primary="Event" secondary="12 mei 2020" />
-      </ListItem>
-      <ListItem button>
-        <ListItemText primary="Event" secondary="12 mei 2020" />
-      </ListItem>
-      <ListItem button>
-        <ListItemText primary="Event" secondary="12 mei 2020" />
-      </ListItem>
-      <ListItem button>
-        <ListItemText primary="Event" secondary="12 mei 2020" />
-      </ListItem>
-      <ListItem button>
-        <ListItemText primary="Event" secondary="12 mei 2020" />
-      </ListItem>
+      {events.map((event, index) => {
+        if (index > 5) return null;
+        return (
+          <ListItem button>
+            <ListItemText
+              primary={event.title}
+              secondary={moment(event.start).format("LLL")}
+            />
+          </ListItem>
+        );
+      })}
     </List>
   );
 }

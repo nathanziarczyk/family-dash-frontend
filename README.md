@@ -14,5 +14,5 @@ Deze app is opgezet met Create React App
 
 ## Bekijk de app
 
-[Web App](https://familydash.surge.sh)
+[Web App](https://familydash.surge.sh)<br/>
 [Backend Github Repo](https://github.com/nathanziarczyk/family-dash)
