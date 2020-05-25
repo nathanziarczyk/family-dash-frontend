@@ -16,9 +16,12 @@ import {
 } from "@material-ui/core";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
 import { useDispatch } from "react-redux";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 import { newGroup } from "../../data/groups";
 import SuccessMessage from "../Messages/SuccessMessage";
+import ErrorMessage from "../Messages/ErrorMessage";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -45,26 +48,60 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NewGroupForm({ loading, error, newGroupMessage }) {
-  const [users, setUsers] = useState([]);
-  const [groupNameInput, setGroupNameInput] = useState("");
-  const [usersInput, setUsersInput] = useState("");
+export default function NewGroupForm({ loading, newGroupMessage }) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  // STATE LIJST MET TOEGEVOEGDE USERS AAN GROEP
+  const [users, setUsers] = useState([]);
+
+  // INPUTFIELD STATE
+  const [groupNameInput, setGroupNameInput] = useState("");
+  const [usersInput, setUsersInput] = useState("");
+
+  // INPUTFIELD ERROR STATE
+  const [error, setError] = useState("");
+
+  // USER TOEVOEGEN AAN GROEP HANDLER
   const handleAddUserClick = (e) => {
-    if (usersInput === "") return null;
-    setUsers([...users, usersInput]);
-    setUsersInput("");
+    if (usersInput === "") {
+      setError("Please add an email for the user you want to add.");
+      return null;
+    }
+    axios
+      .get(`${process.env.REACT_APP_API}/users?email=${usersInput}`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("jwt")}`,
+        },
+      })
+      .then((response) => {
+        if (response.data["hydra:totalItems"] === 1) {
+          const user = response.data["hydra:member"][0];
+          setUsers([...users, user]);
+        } else {
+          setError("Can't find a registered user with this email.");
+        }
+      })
+      .catch((error) => setError);
   };
 
+  // VERANDERING IN ADD USER INPUT HANDLER
+  const handleAddUserFieldChange = (e) => {
+    setUsersInput(e.target.value);
+    setError("");
+  };
+
+  // FORM SUBMIT HANDLER
   const handleNewGroupFormSubmit = (e) => {
     e.preventDefault();
-    if (groupNameInput === "") return null;
+    if (groupNameInput === "" || usersInput === "") {
+      setError("Please choose a group name.");
+      return null;
+    }
     dispatch(newGroup(groupNameInput));
     setGroupNameInput("");
     setUsersInput("");
-    setUsers("");
+    setUsers([]);
   };
 
   return (
@@ -88,8 +125,8 @@ export default function NewGroupForm({ loading, error, newGroupMessage }) {
           </InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
+            onChange={handleAddUserFieldChange}
             value={usersInput}
-            onChange={(e) => setUsersInput(e.target.value)}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -108,8 +145,8 @@ export default function NewGroupForm({ loading, error, newGroupMessage }) {
         {users.length > 0 && (
           <List dense>
             {users.map((user) => (
-              <ListItem>
-                <ListItemText>{user}</ListItemText>
+              <ListItem key={user.id} data-id={user.id}>
+                <ListItemText>{user.email}</ListItemText>
               </ListItem>
             ))}
           </List>
@@ -119,6 +156,9 @@ export default function NewGroupForm({ loading, error, newGroupMessage }) {
         </Button>
         {newGroupMessage.length > 0 && (
           <SuccessMessage message={newGroupMessage} />
+        )}
+        {error.length > 0 && (
+          <ErrorMessage message={error} clearError={setError} />
         )}
       </form>
     </div>

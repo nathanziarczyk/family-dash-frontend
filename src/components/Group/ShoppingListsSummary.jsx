@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ShoppingListsSummary({ alignCenter }) {
   const classes = useStyles();
+  //TODO: De shopping lists binnenhalen uit de api
   return (
     <>
       <List>

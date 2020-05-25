@@ -58,19 +58,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Overview() {
-  /* HOOKS */
   const dispatch = useDispatch();
+  const classes = useStyles();
+
+  // STATE VOOR TABS
   const [showGroups, setShowGroups] = useState(true);
   const [showInvitations, setShowInvitations] = useState(false);
   const [showNewGroup, setShowNewGroup] = useState(false);
+
+  // GROUP DATA UIT REDUX STORE HALEN
   const { loading, error, groups, invitations, newGroupMessage } = useSelector(
     (state) => state.groups
   );
-  const classes = useStyles();
+
+  // ELKE KEER GERENDERD WORDT 1 KEER UITVOEREN
+  // OM GROUPDATA OP TE HALEN OBV USER (JWT)
   useEffect(() => {
     dispatch(getGroups());
   }, [dispatch]);
-  /* ---- */
 
   return (
     <>

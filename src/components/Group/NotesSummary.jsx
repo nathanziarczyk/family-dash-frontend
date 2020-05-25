@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NotesSummary({ alignCenter }) {
   const classes = useStyles();
-
   return (
     <>
       <List>

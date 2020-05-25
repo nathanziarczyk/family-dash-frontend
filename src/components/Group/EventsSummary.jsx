@@ -7,6 +7,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   centerText: { textAlign: "center" },
@@ -33,7 +34,10 @@ export default function EventsSummary({ events, alignCenter }) {
       </ListItem>
       {events.length === 0 && (
         <div className={classes.centerContainer}>
-          <Typography variant="subtitle2">Nothing to see here</Typography>
+          <Typography variant="subtitle2">
+            You have no events yet! {/* TODO: juiste link*/}
+            <Link to="/">Create event</Link>
+          </Typography>
         </div>
       )}
       {events.length > 0 &&

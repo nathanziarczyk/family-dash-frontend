@@ -37,7 +37,6 @@ export const getGroups = () => (dispatch) => {
       dispatch(successSearch(groups, invitations));
     })
     .catch((error) => {
-      console.log("error");
       dispatch(errorSearch("Oops... Something went wrong, try again later"));
     });
 };

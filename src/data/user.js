@@ -36,6 +36,8 @@ export const USER_START_REGISTER = "USER_START_REGISTER";
 export const USER_SUCCESS_REGISTER = "USER_SUCCESS_REGISTER";
 export const USER_ERROR_REGISTER = "USER_ERROR_REGISTER";
 
+export const USER_REFRESH_TOKEN = "USER_REFRESH_TOKEN";
+
 export const USER_LOGOUT = "USER_LOGOUT";
 
 /* ACTION CREATORS */
@@ -46,7 +48,14 @@ export const loginUser = (username, password) => (dispatch) => {
       username: username,
       password: password,
     })
-    .then((response) => dispatch(successLogin(response.data.token)))
+    .then((response) =>
+      dispatch(
+        successLogin({
+          jwt: response.data.token,
+          refresh: response.data.refresh_token,
+        })
+      )
+    )
     .catch((error) => {
       dispatch(errorLogin(error.response.data));
     });
@@ -87,6 +96,17 @@ export const registerUser = (fn, ln, email, password) => (dispatch) => {
     });
 };
 
+export const refreshToken = (dispatch) => () => {
+  axios
+    .post(`${process.env.REACT_APP_API}/token/refresh`, {
+      token: Cookies.get("refresh"),
+      headers: {
+        Authorization: `Bearer ${Cookies.get("jwt")}`,
+      },
+    })
+    .then(console.log);
+};
+
 export const startRegister = () => ({
   type: USER_START_REGISTER,
 });
@@ -101,6 +121,11 @@ export const errorRegister = (message) => ({
   payload: message,
 });
 
+export const tokenRefreshed = (token) => ({
+  type: USER_REFRESH_TOKEN,
+  payload: token,
+});
+
 /* REDUCER */
 export default (state = initialState, { type, payload }) => {
   switch (type) {
@@ -113,8 +138,9 @@ export default (state = initialState, { type, payload }) => {
         },
       };
     case USER_SUCCESS_LOGIN:
-      const user = jwt_decode(payload);
-      Cookies.set("jwt", payload);
+      const user = jwt_decode(payload.jwt);
+      Cookies.set("jwt", payload.jwt);
+      Cookies.set("refresh", payload.refresh);
       return {
         ...state,
         user: {

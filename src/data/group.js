@@ -32,7 +32,6 @@ export const loadGroup = (id) => (dispatch) => {
       dispatch(groupSuccessLoad(response.data));
     })
     .catch((error) => {
-      console.log(error.response.data);
       dispatch(groupErrorLoad("errrrror"));
     });
 };
@@ -62,7 +61,6 @@ export default (state = initialState, { type, payload }) => {
       };
 
     case GROUP_SUCCESS_LOAD:
-      console.log(payload);
       const { id, name, groupMembers, events } = payload;
       return {
         ...state,

@@ -6,13 +6,30 @@ function Alert(props) {
   return <MuiAlert elevation={10} variant="filled" {...props} />;
 }
 
-export default function ErrorMessage({ message }) {
+export default function ErrorMessage({ message, clearError, position }) {
+  const pos = position;
+
+  let vertical = "";
+  let horizontal = "";
+
+  switch (pos) {
+    case "bottomLeft":
+      vertical = "bottom";
+      horizontal = "left";
+      break;
+    case "bottomRight":
+      vertical = "bottom";
+      horizontal = "right";
+      break;
+    default:
+      vertical = "bottom";
+      horizontal = "center";
+      break;
+  }
   const [open, setOpen] = useState(true);
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
+  const handleClose = () => {
     setOpen(false);
+    if (clearError) clearError("");
   };
   return (
     <Snackbar
@@ -20,6 +37,8 @@ export default function ErrorMessage({ message }) {
       open={open}
       autoHideDuration={6000}
       onClose={handleClose}
+      anchorOrigin={{ vertical, horizontal }}
+      key={`${vertical},${horizontal}`}
     >
       <Alert onClose={handleClose} severity="error">
         {message}

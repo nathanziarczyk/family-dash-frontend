@@ -18,6 +18,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GroupWeb(props) {
   const classes = useStyles();
+
+  // EVENTS DATA UIT PROPS HALEN
   const { events } = props;
 
   return (

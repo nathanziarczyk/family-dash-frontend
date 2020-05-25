@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as EmailValidator from "email-validator";
 
 import { registerUser } from "./../../data/user";
+import ErrorMessage from "../Messages/ErrorMessage";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -38,14 +39,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Register() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  // INPUTFIELDS STATE
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const dispatch = useDispatch();
-  const registerError = useSelector((state) => state.user.register.error);
+
+  // ERROR STATE
+  const [inputError, setInputError] = useState("");
+
+  // LOADING EN ERROR AXIOS
+  const error = useSelector((state) => state.user.register.error);
   const loading = useSelector((state) => state.user.register.loading);
+
+  // FORM SUBMIT HANDLER
   const submitHandler = (e) => {
     e.preventDefault();
     if (
@@ -54,14 +63,16 @@ export default function Register() {
       email === "" ||
       password === ""
     ) {
-      setError("All fields are required");
+      setInputError("All register fields are required");
+      return null;
     }
     if (!EmailValidator.validate(email)) {
-      setError("Email is not valid");
-    } else {
-      dispatch(registerUser(firstName, lastName, email, password));
+      setInputError("Email is not valid");
+      return null;
     }
+    dispatch(registerUser(firstName, lastName, email, password));
   };
+
   return (
     <Grid container direction="column" className={classes.container}>
       <Grid item container xs={12} sm={10} direction="column">
@@ -75,10 +86,6 @@ export default function Register() {
             className={classes.loginForm}
           >
             <div>
-              {registerError.bool && (
-                <Typography color="error">{registerError.msg}</Typography>
-              )}
-              {error !== "" && <Typography color="error">{error}</Typography>}
               <form onSubmit={submitHandler}>
                 <TextField
                   className={classes.inputField}
@@ -91,12 +98,11 @@ export default function Register() {
                   color="primary"
                   variant="outlined"
                   margin="normal"
-                  required
                   fullWidth
                   label="First Name"
                   value={firstName}
                   onChange={(e) => {
-                    setError("");
+                    setInputError("");
                     setFirstName(e.target.value);
                   }}
                 />
@@ -110,14 +116,13 @@ export default function Register() {
                   color="primary"
                   variant="outlined"
                   margin="normal"
-                  required
                   fullWidth
                   label="Last Name"
                   name="email"
                   autoComplete="email"
                   value={lastName}
                   onChange={(e) => {
-                    setError("");
+                    setInputError("");
                     setLastName(e.target.value);
                   }}
                 />
@@ -131,13 +136,12 @@ export default function Register() {
                   color="primary"
                   variant="outlined"
                   margin="normal"
-                  required
                   fullWidth
                   id="email"
                   label="Email Address"
                   value={email}
                   onChange={(e) => {
-                    setError("");
+                    setInputError("");
                     setEmail(e.target.value);
                   }}
                 />
@@ -151,7 +155,6 @@ export default function Register() {
                   color="primary"
                   variant="outlined"
                   margin="normal"
-                  required
                   fullWidth
                   name="password"
                   label="Password"
@@ -160,7 +163,7 @@ export default function Register() {
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => {
-                    setError("");
+                    setInputError("");
                     setPassword(e.target.value);
                   }}
                 />
@@ -178,6 +181,14 @@ export default function Register() {
           </Container>
         </Grid>
       </Grid>
+      {error.bool && <ErrorMessage message={error.msg} />}
+      {inputError !== "" && (
+        <ErrorMessage
+          message={inputError}
+          clearError={setInputError}
+          position={"bottomRight"}
+        />
+      )}
     </Grid>
   );
 }

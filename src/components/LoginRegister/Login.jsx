@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 
 import { loginUser } from "./../../data/user";
+import ErrorMessage from "../Messages/ErrorMessage";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -52,19 +53,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  // INPUTFIELDS STATE
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const dispatch = useDispatch();
-  const loginError = useSelector((state) => state.user.login.error);
-  const loading = useSelector((state) => state.user.login.loading);
+
+  // ERROR STATE
+  const [inputError, setInputError] = useState("");
+
+  // ERROR EN LOADING AXIOS CALL
+  const { error, loading } = useSelector((state) => state.user.login);
+
+  // LOGIN FORM SUBMIT HANDLER
   const submitHandler = (e) => {
     e.preventDefault();
     if (email === "" || password === "") {
-      setError("All fields are required");
-    } else {
-      dispatch(loginUser(email, password));
+      setInputError("All login fields are required");
+      return null;
     }
+    dispatch(loginUser(email, password));
   };
 
   return (
@@ -89,10 +97,6 @@ export default function Login() {
             </Typography>
             <Container component="main" maxWidth="xs">
               <div>
-                {loginError.bool && (
-                  <Typography color="error">{loginError.msg}</Typography>
-                )}
-                {error !== "" && <Typography color="error">{error}</Typography>}
                 <form onSubmit={submitHandler}>
                   <TextField
                     InputProps={{
@@ -104,7 +108,6 @@ export default function Login() {
                     color="secondary"
                     variant="outlined"
                     margin="normal"
-                    required
                     fullWidth
                     id="email"
                     label="Email Address"
@@ -112,7 +115,7 @@ export default function Login() {
                     autoComplete="email"
                     value={email}
                     onChange={(e) => {
-                      setError("");
+                      setInputError("");
                       setEmail(e.target.value);
                     }}
                   />
@@ -126,7 +129,6 @@ export default function Login() {
                     color="secondary"
                     variant="outlined"
                     margin="normal"
-                    required
                     fullWidth
                     name="password"
                     label="Password"
@@ -135,7 +137,7 @@ export default function Login() {
                     autoComplete="current-password"
                     value={password}
                     onChange={(e) => {
-                      setError("");
+                      setInputError("");
                       setPassword(e.target.value);
                     }}
                   />
@@ -156,6 +158,14 @@ export default function Login() {
           </Grid>
         </Grid>
       </Grid>
+      {error.bool && <ErrorMessage message={error.msg} />}
+      {inputError !== "" && (
+        <ErrorMessage
+          message={inputError}
+          clearError={setInputError}
+          position={"bottomLeft"}
+        />
+      )}
     </>
   );
 }

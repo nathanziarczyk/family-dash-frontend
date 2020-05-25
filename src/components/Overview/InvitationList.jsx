@@ -2,7 +2,7 @@ import React from "react";
 import { List, ListItemText, ListItem } from "@material-ui/core";
 import InvitationListItem from "./InvitationListItem";
 
-export default function InvitationList({ invitations, error, loading }) {
+export default function InvitationList({ invitations, loading }) {
   return (
     <>
       <List dense>

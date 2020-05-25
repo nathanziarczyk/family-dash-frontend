@@ -27,16 +27,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Group({ props }) {
+  const dispatch = useDispatch();
+
+  // DATA OM TE BEPALEN OF SCREENSIZE MOBILE IS OF NIET
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
-  const { name, loading, error, events } = useSelector((state) => state.group);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(loadGroup(groupId));
-  }, []);
 
-  const groupId = props.match.params.id;
+  // GROUP EN EVENT DATA UIT REDUX STORE HALEN
+  const { name, loading, error, events } = useSelector((state) => state.group);
+
+  useEffect(() => {
+    dispatch(loadGroup(props.match.params.id));
+  }, [dispatch, props.match.params.id]);
 
   return (
     <>
