@@ -7,6 +7,7 @@ import {
   useTheme,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
+import { Helmet } from "react-helmet";
 
 import { loadGroup } from "../../data/group";
 import GroupWeb from "./GroupWeb";
@@ -43,6 +44,9 @@ export default function Group({ props }) {
 
   return (
     <>
+      <Helmet>
+        <title>FamilyDash — {name}</title>
+      </Helmet>
       <Grid container className={classes.gridContainer}>
         {loading ? (
           <div className={classes.loadingDiv}>

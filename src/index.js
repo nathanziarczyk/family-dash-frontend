@@ -7,7 +7,9 @@ import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { store, persistor } from "./data/index";
 import { CircularProgress } from "@material-ui/core";
+
 import "./styles.css";
+
 
 ReactDOM.render(
   <BrowserRouter>

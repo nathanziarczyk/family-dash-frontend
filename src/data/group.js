@@ -1,6 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
+import { refreshToken } from "./user";
+
 /* INITIAL STATE */
 export const initialState = {
   id: 0,
@@ -32,6 +34,7 @@ export const loadGroup = (id) => (dispatch) => {
       dispatch(groupSuccessLoad(response.data));
     })
     .catch((error) => {
+      dispatch(refreshToken());
       dispatch(groupErrorLoad("errrrror"));
     });
 };

@@ -96,6 +96,7 @@ export const registerUser = (fn, ln, email, password) => (dispatch) => {
     });
 };
 
+//LEFTOFF: refreshtoken functie gemaakt en in catch gezet in group.js en groups.js
 export const refreshToken = (dispatch) => () => {
   axios
     .post(`${process.env.REACT_APP_API}/token/refresh`, {
@@ -104,7 +105,10 @@ export const refreshToken = (dispatch) => () => {
         Authorization: `Bearer ${Cookies.get("jwt")}`,
       },
     })
-    .then(console.log);
+    .then(console.log)
+    .catch((error) => {
+      console.log(error.response);
+    });
 };
 
 export const startRegister = () => ({

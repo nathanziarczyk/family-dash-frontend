@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 export default function EventsSummary({ events, alignCenter }) {
   const classes = useStyles();
   return (
-    <List>
+    <List dense>
       <ListItem>
         <ListItemText
           className={alignCenter === true ? classes.centerText : ""}
@@ -42,9 +42,9 @@ export default function EventsSummary({ events, alignCenter }) {
       )}
       {events.length > 0 &&
         events.map((event, index) => {
-          if (index > 5) return null;
+          if (index > 8) return null;
           return (
-            <ListItem button>
+            <ListItem key={event["@id"]} button>
               <ListItemText
                 primary={event.title}
                 secondary={moment(event.start).format("LLL")}

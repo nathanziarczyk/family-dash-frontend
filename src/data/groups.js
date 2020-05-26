@@ -1,6 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
+import { refreshToken } from "./user";
+
 /* INITIAL STATE */
 export const initialState = {
   groups: [],
@@ -37,6 +39,7 @@ export const getGroups = () => (dispatch) => {
       dispatch(successSearch(groups, invitations));
     })
     .catch((error) => {
+      dispatch(refreshToken());
       dispatch(errorSearch("Oops... Something went wrong, try again later"));
     });
 };

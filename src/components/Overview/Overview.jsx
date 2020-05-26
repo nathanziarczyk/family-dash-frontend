@@ -12,6 +12,7 @@ import { getGroups } from "../../data/groups";
 import NewGroupForm from "./NewGroupForm";
 import InvitationList from "./InvitationList";
 import GroupList from "./GroupList";
+import { Helmet } from "react-helmet";
 
 const useStyles = makeStyles((theme) => ({
   flexContainer: {
@@ -79,6 +80,9 @@ export default function Overview() {
 
   return (
     <>
+      <Helmet>
+        <title>FamilyDash — overview</title>
+      </Helmet>
       <Grid item xs={false} sm={3} />
       <Grid item xs={12} sm={6} className={classes.flexContainer}>
         <div>
