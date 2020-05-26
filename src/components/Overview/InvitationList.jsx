@@ -12,10 +12,11 @@ export default function InvitationList({ invitations, loading }) {
           invitations.map((group) => {
             return (
               <InvitationListItem
-                key={group.id}
-                groupName={group.name}
-                groupId={group.id}
-                groupMembers={group.groupMembers}
+                key={group.group.id}
+                groupName={group.group.name}
+                groupId={group.group.id}
+                groupMembers={group.group.groupMembers}
+                groupMemberId={group.groupMemberId}
               />
             );
           })

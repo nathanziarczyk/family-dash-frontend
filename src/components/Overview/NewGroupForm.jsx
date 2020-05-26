@@ -15,7 +15,8 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
-import { useDispatch } from "react-redux";
+import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Cookies from "js-cookie";
 
@@ -40,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   input: {
-    width: "80%",
-    paddingBottom: theme.spacing(1),
+    width: "60%",
+    marginBottom: theme.spacing(1),
   },
   addFriendButton: {
     color: theme.palette.primary.main,
@@ -51,6 +52,12 @@ const useStyles = makeStyles((theme) => ({
 export default function NewGroupForm({ loading, newGroupMessage }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  // GET CURRENT USER ID
+  const userId = useSelector((state) => state.user.user.id);
+
+  // LOADING STATE SEARCH USERS
+  const [searchLoading, setSearchLoading] = useState(false);
 
   // STATE LIJST MET TOEGEVOEGDE USERS AAN GROEP
   const [users, setUsers] = useState([]);
@@ -63,11 +70,14 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
   const [error, setError] = useState("");
 
   // USER TOEVOEGEN AAN GROEP HANDLER
-  const handleAddUserClick = (e) => {
+  const handleAddUserSubmit = (e) => {
+    e.preventDefault();
+    let check = false;
     if (usersInput === "") {
       setError("Please add an email for the user you want to add.");
       return null;
     }
+    setSearchLoading(true);
     axios
       .get(`${process.env.REACT_APP_API}/users?email=${usersInput}`, {
         headers: {
@@ -75,14 +85,27 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
         },
       })
       .then((response) => {
+        setSearchLoading(false);
         if (response.data["hydra:totalItems"] === 1) {
           const user = response.data["hydra:member"][0];
-          setUsers([...users, user]);
+          users.map((use) => {
+            if (use.id === user.id) check = true;
+          });
+          if (userId === user.id) check = true;
+          if (check === true) {
+            setError("You already added this user.");
+            check = false;
+          } else {
+            setUsers([...users, user]);
+          }
         } else {
           setError("Can't find a registered user with this email.");
         }
       })
-      .catch((error) => setError);
+      .catch((error) => {
+        setError(error);
+        setSearchLoading(false);
+      });
   };
 
   // VERANDERING IN ADD USER INPUT HANDLER
@@ -94,11 +117,13 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
   // FORM SUBMIT HANDLER
   const handleNewGroupFormSubmit = (e) => {
     e.preventDefault();
+    const usersToAdd = users.map((user) => user.id);
+    console.log(usersToAdd);
     if (groupNameInput === "" || usersInput === "") {
       setError("Please choose a group name.");
       return null;
     }
-    dispatch(newGroup(groupNameInput));
+    dispatch(newGroup({ groupName: groupNameInput, users: usersToAdd }));
     setGroupNameInput("");
     setUsersInput("");
     setUsers([]);
@@ -121,6 +146,8 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
               value={groupNameInput}
               onChange={(e) => setGroupNameInput(e.target.value)}
             />
+          </form>
+          <form onSubmit={handleAddUserSubmit}>
             <FormControl
               variant="outlined"
               size="small"
@@ -136,43 +163,54 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
-                      aria-label="toggle password visibility"
                       edge="end"
                       size="small"
-                      onClick={handleAddUserClick}
+                      onClick={handleAddUserSubmit}
                     >
-                      <AddCircleRoundedIcon
-                        className={classes.addFriendButton}
-                      />
+                      {!searchLoading ? (
+                        <AddCircleRoundedIcon
+                          className={classes.addFriendButton}
+                        />
+                      ) : (
+                        <CircularProgress size="1em" />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 }
                 labelWidth={70}
               />
             </FormControl>
-            {users.length > 0 && (
+          </form>
+          {users.length > 0 && (
+            <div>
               <List dense>
                 {users.map((user) => (
                   <ListItem key={user.id} data-id={user.id}>
-                    <ListItemText>{user.email}</ListItemText>
+                    <ListItemText
+                      primary={user.email}
+                      secondary={`${user.firstName} ${user.lastName}`}
+                    />
+                    <IconButton edge="end" size="small">
+                      <DeleteSweepIcon />
+                    </IconButton>
                   </ListItem>
                 ))}
               </List>
+            </div>
+          )}
+          <Button onClick={handleNewGroupFormSubmit} variant="outlined">
+            {loading ? (
+              <CircularProgress color="primary" size="1.8em" />
+            ) : (
+              "Create group"
             )}
-            <Button type="submit" variant="outlined">
-              {loading ? (
-                <CircularProgress color="primary" size="1.8em" />
-              ) : (
-                "GO"
-              )}
-            </Button>
-            {newGroupMessage.length > 0 && (
-              <SuccessMessage message={newGroupMessage} />
-            )}
-            {error.length > 0 && (
-              <ErrorMessage message={error} clearError={setError} />
-            )}
-          </form>
+          </Button>
+          {newGroupMessage.length > 0 && (
+            <SuccessMessage message={newGroupMessage} />
+          )}
+          {error.length > 0 && (
+            <ErrorMessage message={error} clearError={setError} />
+          )}
         </div>
       )}
     </>

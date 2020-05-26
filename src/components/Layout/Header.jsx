@@ -9,7 +9,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { useDispatch } from "react-redux";
-
+import { Link } from "react-router-dom";
 import { logoutUser } from "./../../data/user";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    color: "white",
+    cursor: "pointer",
   },
 }));
 
@@ -47,9 +49,9 @@ export default function MenuAppBar() {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Welcome, {user.firstName}!
-          </Typography>
+          <Link to="/" className={classes.title}>
+            <Typography variant="h6">Welcome, {user.firstName}!</Typography>
+          </Link>
           <div>
             <IconButton
               aria-label="account of current user"

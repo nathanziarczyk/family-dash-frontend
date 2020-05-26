@@ -2,6 +2,8 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 
+import { getGroups } from "./groups";
+
 /* INITIAL STATE */
 export const initialState = {
   user: {
@@ -35,6 +37,10 @@ export const USER_ERROR_LOGIN = "USER_ERROR_LOGIN";
 export const USER_START_REGISTER = "USER_START_REGISTER";
 export const USER_SUCCESS_REGISTER = "USER_SUCCESS_REGISTER";
 export const USER_ERROR_REGISTER = "USER_ERROR_REGISTER";
+
+export const USER_START_ACCEPT_REQUEST = "USER_START_ACCEPT_REQUEST";
+export const USER_SUCCESS_ACCEPT_REQUEST = "USER_SUCCESS_ACCEPT_REQUEST";
+export const USER_ERROR_ACCEPT_REQUEST = "USER_ERROR_ACCEPT_REQUEST";
 
 export const USER_REFRESH_TOKEN = "USER_REFRESH_TOKEN";
 
@@ -81,22 +87,23 @@ export const errorLogin = (message) => ({
 
 export const registerUser = (fn, ln, email, password) => (dispatch) => {
   dispatch(startRegister());
-  axios
-    .post(`${process.env.REACT_APP_API}/register`, {
-      _username: email,
-      _password: password,
-      first_name: fn,
-      last_name: ln,
-    })
-    .then((response) => {
-      dispatch(succesRegister(response.data));
-    })
-    .catch((error) => {
-      dispatch(errorRegister(error.response.data.error));
-    });
+  dispatch(errorRegister("Register is disabled for now."));
+  //TODO:Register terug aanzetten
+  // axios
+  //   .post(`${process.env.REACT_APP_API}/register`, {
+  //     _username: email,
+  //     _password: password,
+  //     first_name: fn,
+  //     last_name: ln,
+  //   })
+  //   .then((response) => {
+  //     dispatch(succesRegister(response.data));
+  //   })
+  //   .catch((error) => {
+  //     dispatch(errorRegister(error.response.data.error));
+  //   });
 };
 
-//LEFTOFF: refreshtoken functie gemaakt en in catch gezet in group.js en groups.js
 export const refreshToken = (dispatch) => () => {
   axios
     .post(`${process.env.REACT_APP_API}/token/refresh`, {
@@ -122,6 +129,32 @@ export const succesRegister = (data) => ({
 
 export const errorRegister = (message) => ({
   type: USER_ERROR_REGISTER,
+  payload: message,
+});
+
+export const userAcceptRequest = ({ groupId, userId }) => (dispatch) => {
+  dispatch(startAcceptRequest());
+  axios
+    .put(`${process.env.REACT_APP_API}/user/${userId}`, {
+      acceptGroupRequest: `/api/groups/${groupId}`,
+      headers: {
+        Authorization: `Bearer ${Cookies.get("jwt")}`,
+      },
+    })
+    .then(console.log)
+    .catch(console.log);
+};
+
+export const startAcceptRequest = () => ({
+  type: USER_START_ACCEPT_REQUEST,
+});
+
+export const successAcceptRequest = () => ({
+  type: USER_SUCCESS_ACCEPT_REQUEST,
+});
+
+export const errorAcceptRequest = (message) => ({
+  type: USER_ERROR_ACCEPT_REQUEST,
   payload: message,
 });
 
