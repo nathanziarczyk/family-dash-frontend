@@ -5,8 +5,10 @@ import {
   makeStyles,
   Typography,
   CircularProgress,
+  Badge,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 import { getGroups } from "../../data/groups";
 import NewGroupForm from "./NewGroupForm";
@@ -30,21 +32,18 @@ const useStyles = makeStyles((theme) => ({
     display: "inline",
     backgroundColor: theme.palette.secondary.light,
     color: theme.palette.primary.main,
-    width: "20%",
+    width: "100%",
     padding: ".4em",
     borderTopLeftRadius: "5px",
     borderTopRightRadius: "5px",
     cursor: "pointer",
-    marginRight: ".4em",
   },
   active: {
     display: "inline",
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.secondary.light,
-    marginRight: ".4em",
-    width: "20%",
+    width: "100%",
     padding: ".4em",
-    zIndex: 2000,
     borderTopLeftRadius: "5px",
     borderTopRightRadius: "5px",
     cursor: "pointer",
@@ -55,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  badge: {
+    marginRight: "1em",
   },
 }));
 
@@ -86,36 +88,46 @@ export default function Overview() {
       <Grid item xs={false} sm={3} />
       <Grid item xs={12} sm={6} className={classes.flexContainer}>
         <div>
-          <Typography
-            onClick={() => {
-              setShowGroups(true);
-              setShowInvitations(false);
-              setShowNewGroup(false);
-            }}
-            className={showGroups ? classes.active : classes.notActive}
+          <Badge className={classes.badge}>
+            <Typography
+              onClick={() => {
+                setShowGroups(true);
+                setShowInvitations(false);
+                setShowNewGroup(false);
+              }}
+              className={showGroups ? classes.active : classes.notActive}
+            >
+              Your Groups
+            </Typography>
+          </Badge>
+          <Badge
+            badgeContent={invitations.length === 0 ? false : invitations.length}
+            color={invitations.length === 0 ? "" : "error"}
+            className={classes.badge}
           >
-            Your Groups
-          </Typography>
-          <Typography
-            onClick={() => {
-              setShowInvitations(true);
-              setShowGroups(false);
-              setShowNewGroup(false);
-            }}
-            className={showInvitations ? classes.active : classes.notActive}
-          >
-            Your Invitations
-          </Typography>
-          <Typography
-            onClick={() => {
-              setShowNewGroup(true);
-              setShowInvitations(false);
-              setShowGroups(false);
-            }}
-            className={showNewGroup ? classes.active : classes.notActive}
-          >
-            +
-          </Typography>
+            <Typography
+              onClick={() => {
+                setShowInvitations(true);
+                setShowGroups(false);
+                setShowNewGroup(false);
+              }}
+              className={showInvitations ? classes.active : classes.notActive}
+            >
+              Your Invitations
+            </Typography>
+          </Badge>
+          <Badge className={classes.badge}>
+            <Typography
+              onClick={() => {
+                setShowNewGroup(true);
+                setShowInvitations(false);
+                setShowGroups(false);
+              }}
+              className={showNewGroup ? classes.active : classes.notActive}
+            >
+              <AddCircleOutlineIcon fontSize="small" />
+            </Typography>
+          </Badge>
         </div>
         <Paper elevation={3} className={classes.paper}>
           {loading && (

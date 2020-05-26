@@ -34,8 +34,9 @@ export const loadGroup = (id) => (dispatch) => {
       dispatch(groupSuccessLoad(response.data));
     })
     .catch((error) => {
-      dispatch(refreshToken());
-      dispatch(groupErrorLoad("errrrror"));
+      // dispatch(refreshToken());
+      // dispatch(groupErrorLoad("errrrror"));
+      console.log(error.response);
     });
 };
 

@@ -40,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
+  addedUsersList: {
+    margin: "0 auto",
+    width: "60%",
+  },
   input: {
     width: "60%",
     marginBottom: theme.spacing(1),
@@ -129,6 +133,11 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
     setUsers([]);
   };
 
+  // REMOVE USER FROM LIST
+  const handleRemoveUserClick = (id) => {
+    return null;
+  };
+
   return (
     <>
       {!loading && (
@@ -182,21 +191,24 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
             </FormControl>
           </form>
           {users.length > 0 && (
-            <div>
-              <List dense>
-                {users.map((user) => (
-                  <ListItem key={user.id} data-id={user.id}>
-                    <ListItemText
-                      primary={user.email}
-                      secondary={`${user.firstName} ${user.lastName}`}
-                    />
-                    <IconButton edge="end" size="small">
-                      <DeleteSweepIcon />
-                    </IconButton>
-                  </ListItem>
-                ))}
-              </List>
-            </div>
+            <List dense className={classes.addedUsersList}>
+              {users.map((user) => (
+                <ListItem key={user.id} data-id={user.id}>
+                  <ListItemText
+                    primary={user.email}
+                    secondary={`${user.firstName} ${user.lastName}`}
+                  />
+                  {/* LEFTOFF: Gebruiker verwijderen uit lijst */}
+                  <IconButton
+                    onClick={handleRemoveUserClick(user.id)}
+                    edge="end"
+                    size="small"
+                  >
+                    <DeleteSweepIcon />
+                  </IconButton>
+                </ListItem>
+              ))}
+            </List>
           )}
           <Button onClick={handleNewGroupFormSubmit} variant="outlined">
             {loading ? (
