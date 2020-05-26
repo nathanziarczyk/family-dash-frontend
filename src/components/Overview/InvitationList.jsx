@@ -16,7 +16,7 @@ export default function InvitationList({ invitations, loading }) {
                 groupName={group.group.name}
                 groupId={group.group.id}
                 groupMembers={group.group.groupMembers}
-                groupMemberId={group.groupMemberId}
+                groupMemberId={group.groupMember.id}
               />
             );
           })

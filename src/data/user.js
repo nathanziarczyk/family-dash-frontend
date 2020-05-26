@@ -26,6 +26,12 @@ export const initialState = {
     },
     loading: false,
   },
+  request: {
+    error: {
+      bool: false,
+      msg: "",
+    },
+  },
   loggedIn: false,
 };
 
@@ -133,30 +139,32 @@ export const errorRegister = (message) => ({
 });
 
 export const userAcceptRequest = ({ groupId, userId }) => (dispatch) => {
-  dispatch(startAcceptRequest());
   axios
-    .put(`${process.env.REACT_APP_API}/user/${userId}`, {
-      acceptGroupRequest: `/api/groups/${groupId}`,
+    .put(
+      `${process.env.REACT_APP_API}/users/${userId}`,
+      {
+        acceptGroupRequest: `/api/groups/${groupId}`,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("jwt")}`,
+        },
+      }
+    )
+    .then((response) => dispatch(getGroups()))
+    .catch((error) => console.log(error.response)); // TODO: dispatch error
+};
+
+export const userDenyRequest = (requestId) => (dispatch) => {
+  axios
+    .delete(`${process.env.REACT_APP_API}/group_members/${requestId}`, {
       headers: {
         Authorization: `Bearer ${Cookies.get("jwt")}`,
       },
     })
-    .then(console.log)
-    .catch(console.log);
+    .then((response) => dispatch(getGroups()))
+    .catch((error) => console.log(error.response)); // TODO: dispatch error
 };
-
-export const startAcceptRequest = () => ({
-  type: USER_START_ACCEPT_REQUEST,
-});
-
-export const successAcceptRequest = () => ({
-  type: USER_SUCCESS_ACCEPT_REQUEST,
-});
-
-export const errorAcceptRequest = (message) => ({
-  type: USER_ERROR_ACCEPT_REQUEST,
-  payload: message,
-});
 
 export const tokenRefreshed = (token) => ({
   type: USER_REFRESH_TOKEN,

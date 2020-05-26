@@ -40,7 +40,6 @@ export const getGroups = () => (dispatch) => {
     })
     .catch((error) => {
       // dispatch(refreshToken());
-      console.log(error.response);
       dispatch(errorSearch("Oops... Something went wrong, try again later"));
     });
 };
@@ -59,7 +58,6 @@ export const errorSearch = (message) => ({
 
 export const newGroup = ({ groupName, users }) => (dispatch) => {
   dispatch(startNewGroup());
-  console.log(groupName, users);
   axios
     .post(
       `${process.env.REACT_APP_API}/groups`,
@@ -77,7 +75,7 @@ export const newGroup = ({ groupName, users }) => (dispatch) => {
       dispatch(getGroups());
       dispatch(successNewGroup(`Group ${groupName} created`));
     })
-    .catch((error) => console.log(error.response));
+    .catch((error) => console.log(error.response)); //TODO: dispatch error
 };
 
 export const startNewGroup = () => ({

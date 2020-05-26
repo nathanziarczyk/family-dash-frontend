@@ -1,18 +1,29 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ListItem from "@material-ui/core/ListItem";
 import { ListItemText, IconButton } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
 
-export default function GroupListItem({ groupName, groupId, groupMembers }) {
-  const members = groupMembers.length > 1 ? "members" : "member";
+import { userAcceptRequest, userDenyRequest } from "../../data/user";
 
+export default function GroupListItem({
+  groupName,
+  groupId,
+  groupMembers,
+  groupMemberId,
+}) {
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state.user.user.id);
+  const members = groupMembers.length > 1 ? "members" : "member";
   const acceptRequest = () => {
-    return null;
+    dispatch(userAcceptRequest({ groupId, userId }));
   };
+
   const denyRequest = () => {
-    return null;
+    dispatch(userDenyRequest(groupMemberId));
   };
+
   return (
     <ListItem key={groupId}>
       <ListItemText
