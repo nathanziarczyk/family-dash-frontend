@@ -6,7 +6,6 @@ import {
   FormControl,
   InputLabel,
   OutlinedInput,
-  InputAdornment,
   IconButton,
   Button,
   List,
@@ -14,7 +13,6 @@ import {
   ListItemText,
   CircularProgress,
 } from "@material-ui/core";
-import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
 import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -60,9 +58,6 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
   // GET CURRENT USER ID
   const currentUserId = useSelector((state) => state.user.user.id);
 
-  // LOADING STATE SEARCH USERS
-  const [searchLoading, setSearchLoading] = useState(false);
-
   // STATE LIJST MET TOEGEVOEGDE USERS AAN GROEP
   const [users, setUsers] = useState([]);
 
@@ -81,7 +76,6 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
   const handleAddUser = (userId) => {
     // BOOL VOOR ERRORS
     let check = false;
-    setSearchLoading(true);
     axios
       .get(`${process.env.REACT_APP_API}/users/${userId}`, {
         headers: {
@@ -89,11 +83,11 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
         },
       })
       .then((response) => {
-        setSearchLoading(false);
         if (response !== undefined) {
           const user = response.data;
           users.map((use) => {
             if (use.id === user.id) check = true;
+            return null;
           });
           if (currentUserId === user.id) check = true;
           if (check === true) {
@@ -109,7 +103,6 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
       })
       .catch((error) => {
         setError(error);
-        setSearchLoading(false);
       });
   };
 
@@ -138,7 +131,6 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
   const handleNewGroupFormSubmit = (e) => {
     e.preventDefault();
     const usersToAdd = users.map((user) => user.id);
-    console.log(usersToAdd);
     if (groupNameInput === "") {
       setError("Please choose a group name.");
       return null;
@@ -153,7 +145,6 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
   const handleRemoveUserClick = (id) => {
     const newUsers = users.filter((user) => user.id !== id);
     setUsers([...newUsers]);
-    console.log(users);
     return null;
   };
 
@@ -175,47 +166,38 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
               value={groupNameInput}
               onChange={(e) => setGroupNameInput(e.target.value)}
             />
-            <FormControl
+            <TextField
+              margin="dense"
+              id="outlined-basic"
+              label="Search users by email"
               variant="outlined"
               size="small"
               className={classes.input}
-            >
-              <InputLabel htmlFor="outlined-adornment-password">
-                Search
-              </InputLabel>
-              <OutlinedInput
-                margin="dense"
-                placeholder="Search users by email"
-                id="outlined-adornment-password"
-                onChange={handleAddUserFieldChange}
-                value={usersInput}
-                labelWidth={70}
-              />
-              {usersInput.length > 1 ? (
-                <List dense>
-                  <ListItem>
-                    <ListItemText></ListItemText>
-                  </ListItem>
-                  <ListItem>
-                    <ListItemText>Users</ListItemText>
-                  </ListItem>
-                  {suggestionsLoading ? (
-                    <CircularProgress />
-                  ) : (
-                    suggestions.map((user) => (
-                      <ListItem button onClick={() => handleAddUser(user.id)}>
-                        <ListItemText
-                          primary={user.email}
-                          secondary={`${user.firstName} ${user.lastName}`}
-                        />
-                      </ListItem>
-                    ))
-                  )}
-                </List>
-              ) : (
-                ""
-              )}
-            </FormControl>
+              value={usersInput}
+              onChange={handleAddUserFieldChange}
+            />
+            {usersInput.length > 1 ? (
+              <List>
+                {suggestionsLoading ? (
+                  <CircularProgress />
+                ) : (
+                  suggestions.map((user) => (
+                    <ListItem
+                      button
+                      key={user.id}
+                      onClick={() => handleAddUser(user.id)}
+                    >
+                      <ListItemText
+                        primary={user.email}
+                        secondary={`${user.firstName} ${user.lastName}`}
+                      />
+                    </ListItem>
+                  ))
+                )}
+              </List>
+            ) : (
+              ""
+            )}
             <Button type="submit" variant="outlined">
               {loading ? (
                 <CircularProgress color="primary" size="1.8em" />

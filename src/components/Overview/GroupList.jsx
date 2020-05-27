@@ -17,6 +17,7 @@ export default function GroupList({ error, loading, groups }) {
                 groupName={group.name}
                 groupId={group.id}
                 groupMembers={group.groupMembers}
+                groupAdmin={group.user.id}
               />
             );
           })
