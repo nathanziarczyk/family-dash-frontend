@@ -102,7 +102,8 @@ export default function Overview() {
           </Badge>
           <Badge
             badgeContent={invitations.length === 0 ? false : invitations.length}
-            color={invitations.length === 0 ? "" : "error"}
+            color="error"
+            invisible={invitations.length === 0}
             className={classes.badge}
           >
             <Typography

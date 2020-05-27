@@ -58,7 +58,7 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
   const dispatch = useDispatch();
 
   // GET CURRENT USER ID
-  const userId = useSelector((state) => state.user.user.id);
+  const currentUserId = useSelector((state) => state.user.user.id);
 
   // LOADING STATE SEARCH USERS
   const [searchLoading, setSearchLoading] = useState(false);
@@ -73,34 +73,35 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
   // INPUTFIELD ERROR STATE
   const [error, setError] = useState("");
 
+  // STATE SUGGESTIONS
+  const [suggestions, setSuggestions] = useState([]);
+  const [suggestionsLoading, setSuggestionsLoading] = useState(false);
+
   // USER TOEVOEGEN AAN GROEP HANDLER
-  const handleAddUserSubmit = (e) => {
-    e.preventDefault();
+  const handleAddUser = (userId) => {
+    // BOOL VOOR ERRORS
     let check = false;
-    if (usersInput === "") {
-      setError("Please add an email for the user you want to add.");
-      return null;
-    }
     setSearchLoading(true);
     axios
-      .get(`${process.env.REACT_APP_API}/users?email=${usersInput}`, {
+      .get(`${process.env.REACT_APP_API}/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${Cookies.get("jwt")}`,
         },
       })
       .then((response) => {
         setSearchLoading(false);
-        if (response.data["hydra:totalItems"] === 1) {
-          const user = response.data["hydra:member"][0];
+        if (response !== undefined) {
+          const user = response.data;
           users.map((use) => {
             if (use.id === user.id) check = true;
           });
-          if (userId === user.id) check = true;
+          if (currentUserId === user.id) check = true;
           if (check === true) {
             setError("You already added this user.");
             check = false;
           } else {
             setUsers([...users, user]);
+            setUsersInput("");
           }
         } else {
           setError("Can't find a registered user with this email.");
@@ -116,6 +117,21 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
   const handleAddUserFieldChange = (e) => {
     setUsersInput(e.target.value);
     setError("");
+    if (e.target.value.length > 1) {
+      setSuggestionsLoading(true);
+      axios
+        .get(`${process.env.REACT_APP_API}/users?email=${e.target.value}`, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("jwt")}`,
+          },
+        })
+        .then((response) => {
+          setSuggestionsLoading(false);
+          setSuggestions(response.data["hydra:member"]);
+        });
+    } else {
+      setSuggestions([]);
+    }
   };
 
   // FORM SUBMIT HANDLER
@@ -123,7 +139,7 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
     e.preventDefault();
     const usersToAdd = users.map((user) => user.id);
     console.log(usersToAdd);
-    if (groupNameInput === "" || usersInput === "") {
+    if (groupNameInput === "") {
       setError("Please choose a group name.");
       return null;
     }
@@ -135,6 +151,9 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
 
   // REMOVE USER FROM LIST
   const handleRemoveUserClick = (id) => {
+    const newUsers = users.filter((user) => user.id !== id);
+    setUsers([...newUsers]);
+    console.log(users);
     return null;
   };
 
@@ -147,6 +166,7 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
           </Typography>
           <form className={classes.form} onSubmit={handleNewGroupFormSubmit}>
             <TextField
+              margin="dense"
               id="outlined-basic"
               label="Group Name"
               variant="outlined"
@@ -155,52 +175,70 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
               value={groupNameInput}
               onChange={(e) => setGroupNameInput(e.target.value)}
             />
-          </form>
-          <form onSubmit={handleAddUserSubmit}>
             <FormControl
               variant="outlined"
               size="small"
               className={classes.input}
             >
               <InputLabel htmlFor="outlined-adornment-password">
-                Add user
+                Search
               </InputLabel>
               <OutlinedInput
+                margin="dense"
+                placeholder="Search users by email"
                 id="outlined-adornment-password"
                 onChange={handleAddUserFieldChange}
                 value={usersInput}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      edge="end"
-                      size="small"
-                      onClick={handleAddUserSubmit}
-                    >
-                      {!searchLoading ? (
-                        <AddCircleRoundedIcon
-                          className={classes.addFriendButton}
-                        />
-                      ) : (
-                        <CircularProgress size="1em" />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                }
                 labelWidth={70}
               />
+              {usersInput.length > 1 ? (
+                <List dense>
+                  <ListItem>
+                    <ListItemText></ListItemText>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText>Users</ListItemText>
+                  </ListItem>
+                  {suggestionsLoading ? (
+                    <CircularProgress />
+                  ) : (
+                    suggestions.map((user) => (
+                      <ListItem button onClick={() => handleAddUser(user.id)}>
+                        <ListItemText
+                          primary={user.email}
+                          secondary={`${user.firstName} ${user.lastName}`}
+                        />
+                      </ListItem>
+                    ))
+                  )}
+                </List>
+              ) : (
+                ""
+              )}
             </FormControl>
+            <Button type="submit" variant="outlined">
+              {loading ? (
+                <CircularProgress color="primary" size="1.8em" />
+              ) : (
+                "Create group"
+              )}
+            </Button>
           </form>
+
           {users.length > 0 && (
             <List dense className={classes.addedUsersList}>
+              <ListItem key={1}>
+                <ListItemText>Added users</ListItemText>
+              </ListItem>
               {users.map((user) => (
-                <ListItem key={user.id} data-id={user.id}>
+                <ListItem key={user.id}>
                   <ListItemText
                     primary={user.email}
                     secondary={`${user.firstName} ${user.lastName}`}
                   />
                   {/* LEFTOFF: Gebruiker verwijderen uit lijst */}
                   <IconButton
-                    onClick={handleRemoveUserClick(user.id)}
+                    onClick={() => handleRemoveUserClick(user.id)}
                     edge="end"
                     size="small"
                   >
@@ -210,13 +248,6 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
               ))}
             </List>
           )}
-          <Button onClick={handleNewGroupFormSubmit} variant="outlined">
-            {loading ? (
-              <CircularProgress color="primary" size="1.8em" />
-            ) : (
-              "Create group"
-            )}
-          </Button>
           {newGroupMessage.length > 0 && (
             <SuccessMessage message={newGroupMessage} />
           )}

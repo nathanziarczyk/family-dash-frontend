@@ -72,6 +72,7 @@ export const newGroup = ({ groupName, users }) => (dispatch) => {
       }
     )
     .then((response) => {
+      console.log(response);
       dispatch(getGroups());
       dispatch(successNewGroup(`Group ${groupName} created`));
     })
