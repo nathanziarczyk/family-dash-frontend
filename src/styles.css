@@ -14,3 +14,7 @@ a {
 .CarouselItem > div {
   height: 90%;
 }
+
+.makeStyles-carouselContainer-276 {
+  position: relative;
+}

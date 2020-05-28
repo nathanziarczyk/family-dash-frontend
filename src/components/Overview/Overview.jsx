@@ -16,7 +16,7 @@ import { getGroups } from "../../data/groups";
 import NewGroupForm from "./NewGroupForm";
 import InvitationList from "./InvitationList";
 import GroupList from "./GroupList";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 const useStyles = makeStyles((theme) => ({
   flexContainer: {
@@ -93,11 +93,11 @@ export default function Overview() {
   return (
     <>
       <Helmet>
-        <title>FamilyDash — overview</title>
+        <title>{loading ? "Loading" : "FamilyDash — overview"}</title>
       </Helmet>
       <Grid item xs={false} sm={3} />
       <Grid item xs={12} sm={6} className={classes.flexContainer}>
-        <div className={mobile && classes.mobileTabs}>
+        <div className={mobile ? classes.mobileTabs : ""}>
           <Badge className={classes.badge}>
             <Typography
               onClick={() => {
@@ -111,7 +111,7 @@ export default function Overview() {
             </Typography>
           </Badge>
           <Badge
-            badgeContent={invitations.length === 0 ? false : invitations.length}
+            badgeContent={invitations.length}
             color="error"
             invisible={invitations.length === 0}
             className={classes.badge}
@@ -146,13 +146,15 @@ export default function Overview() {
               <CircularProgress />
             </div>
           )}
-          {error.bool && (
+          {!loading && error.bool ? (
             <div className={classes.center}>
               <Typography variant="subtitle2">{error.message}</Typography>
             </div>
+          ) : (
+            ""
           )}
 
-          {error.bool ? (
+          {!loading && error.bool ? (
             ""
           ) : (
             <>

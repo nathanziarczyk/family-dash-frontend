@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     height: "95%",
     width: "100%",
   },
+  carouselContainer: {},
 }));
 
 export default function GroupMobile(props) {
@@ -25,7 +26,7 @@ export default function GroupMobile(props) {
   const { events, mobile } = props;
 
   return (
-    <Grid item xs={12}>
+    <Grid item xs={12} className={classes.carouselContainer}>
       <Carousel
         autoPlay={false}
         style={{ height: "90%" }}

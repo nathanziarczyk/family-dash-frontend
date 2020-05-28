@@ -32,6 +32,7 @@ instance.interceptors.response.use(
     ) {
       // TODO: LOGOUT
       window.history.push("/logout");
+      console.log("oei");
       return Promise.reject(error);
     }
     if (error.response.status === 401) {

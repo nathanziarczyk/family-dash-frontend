@@ -7,10 +7,9 @@ import {
   useTheme,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 import { loadGroup } from "../../data/group";
-import { searchEvents } from "../../data/events";
 import GroupWeb from "./GroupWeb";
 import GroupMobile from "./GroupMobile";
 
@@ -41,13 +40,12 @@ export default function Group({ props }) {
 
   useEffect(() => {
     dispatch(loadGroup(props.match.params.id));
-    // dispatch(searchEvents(props.match.params.id));
   }, [dispatch, props.match.params.id]);
 
   return (
     <>
       <Helmet>
-        <title>FamilyDash — {name}</title>
+        <title>{loading ? "Loading" : `FamilyDash — ${name}`}</title>
       </Helmet>
       <Grid container className={classes.gridContainer}>
         {loading ? (
