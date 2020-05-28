@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios";
 import Cookies from "js-cookie";
 
 import { refreshToken } from "./user";
@@ -28,11 +28,7 @@ export const NEW_GROUP_ERROR = "NEW_GROUP_ERROR";
 export const getGroups = () => (dispatch) => {
   dispatch(startSearch());
   axios
-    .get(`${process.env.REACT_APP_API}/groups`, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get("jwt")}`,
-      },
-    })
+    .get(`/groups`)
     .then((response) => {
       const groups = response.data.groups;
       const invitations = response.data.invitations;
