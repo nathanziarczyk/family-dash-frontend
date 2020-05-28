@@ -1,7 +1,4 @@
 import axios from "../axios";
-import Cookies from "js-cookie";
-
-import { refreshToken } from "./user";
 
 /* INITIAL STATE */
 export const initialState = {
@@ -55,18 +52,10 @@ export const errorSearch = (message) => ({
 export const newGroup = ({ groupName, users }) => (dispatch) => {
   dispatch(startNewGroup());
   axios
-    .post(
-      `${process.env.REACT_APP_API}/groups`,
-      {
-        name: groupName,
-        postGroupMembers: users,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("jwt")}`,
-        },
-      }
-    )
+    .post(`/groups`, {
+      name: groupName,
+      postGroupMembers: users,
+    })
     .then((response) => {
       console.log(response);
       dispatch(getGroups());

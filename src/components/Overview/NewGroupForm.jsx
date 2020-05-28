@@ -3,9 +3,6 @@ import {
   TextField,
   makeStyles,
   Typography,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
   IconButton,
   Button,
   List,
@@ -15,8 +12,7 @@ import {
 } from "@material-ui/core";
 import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import Cookies from "js-cookie";
+import axios from "../../axios";
 
 import { newGroup } from "../../data/groups";
 import SuccessMessage from "../Messages/SuccessMessage";
@@ -77,11 +73,7 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
     // BOOL VOOR ERRORS
     let check = false;
     axios
-      .get(`${process.env.REACT_APP_API}/users/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("jwt")}`,
-        },
-      })
+      .get(`/users/${userId}`)
       .then((response) => {
         if (response !== undefined) {
           const user = response.data;
@@ -112,16 +104,10 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
     setError("");
     if (e.target.value.length > 1) {
       setSuggestionsLoading(true);
-      axios
-        .get(`${process.env.REACT_APP_API}/users?email=${e.target.value}`, {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("jwt")}`,
-          },
-        })
-        .then((response) => {
-          setSuggestionsLoading(false);
-          setSuggestions(response.data["hydra:member"]);
-        });
+      axios.get(`/users?email=${e.target.value}`).then((response) => {
+        setSuggestionsLoading(false);
+        setSuggestions(response.data["hydra:member"]);
+      });
     } else {
       setSuggestions([]);
     }

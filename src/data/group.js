@@ -1,7 +1,4 @@
-import axios from "axios";
-import Cookies from "js-cookie";
-
-import { refreshToken } from "./user";
+import axios from "../axios";
 
 /* INITIAL STATE */
 export const initialState = {
@@ -25,11 +22,7 @@ export const GROUP_ERROR_LOAD = "GROUP_ERROR_LOAD";
 export const loadGroup = (id) => (dispatch) => {
   dispatch(groupStartLoad());
   axios
-    .get(`${process.env.REACT_APP_API}/groups/${id}`, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get("jwt")}`,
-      },
-    })
+    .get(`/groups/${id}`)
     .then((response) => {
       dispatch(groupSuccessLoad(response.data));
     })

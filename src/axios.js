@@ -22,7 +22,6 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response) => {
-    console.log(response);
     return response;
   },
   function (error) {
@@ -43,7 +42,6 @@ instance.interceptors.response.use(
           refresh_token: refreshToken,
         })
         .then((res) => {
-          console.log(res);
           if (res.status === 200) {
             Cookie.remove("jwt");
             Cookie.remove("refresh");

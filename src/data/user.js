@@ -48,8 +48,6 @@ export const USER_START_ACCEPT_REQUEST = "USER_START_ACCEPT_REQUEST";
 export const USER_SUCCESS_ACCEPT_REQUEST = "USER_SUCCESS_ACCEPT_REQUEST";
 export const USER_ERROR_ACCEPT_REQUEST = "USER_ERROR_ACCEPT_REQUEST";
 
-export const USER_REFRESH_TOKEN = "USER_REFRESH_TOKEN";
-
 export const USER_LOGOUT = "USER_LOGOUT";
 
 /* ACTION CREATORS */
@@ -110,20 +108,6 @@ export const registerUser = (fn, ln, email, password) => (dispatch) => {
   //   });
 };
 
-export const refreshToken = (dispatch) => () => {
-  axios
-    .post(`${process.env.REACT_APP_API}/token/refresh`, {
-      token: Cookies.get("refresh"),
-      headers: {
-        Authorization: `Bearer ${Cookies.get("jwt")}`,
-      },
-    })
-    .then(console.log)
-    .catch((error) => {
-      console.log(error.response);
-    });
-};
-
 export const startRegister = () => ({
   type: USER_START_REGISTER,
 });
@@ -165,11 +149,6 @@ export const userDenyRequest = (requestId) => (dispatch) => {
     .then((response) => dispatch(getGroups()))
     .catch((error) => console.log(error.response)); // TODO: dispatch error
 };
-
-export const tokenRefreshed = (token) => ({
-  type: USER_REFRESH_TOKEN,
-  payload: token,
-});
 
 /* REDUCER */
 export default (state = initialState, { type, payload }) => {

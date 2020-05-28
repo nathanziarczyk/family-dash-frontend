@@ -4,8 +4,7 @@ import { ListItemText, IconButton } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
-import axios from "axios";
-import Cookie from "js-cookie";
+import axios from "../../axios";
 
 import { getGroups } from "../../data/groups";
 import ErrorMessage from "../Messages/ErrorMessage";
@@ -31,11 +30,7 @@ export default function GroupListItem({
 
   const handleDeleteGroupClick = () => {
     axios
-      .delete(`${process.env.REACT_APP_API}/groups/${groupId}`, {
-        headers: {
-          Authorization: `Bearer ${Cookie.get("jwt")}`,
-        },
-      })
+      .delete(`/groups/${groupId}`)
       .then((response) => {
         setMessage({
           type: "success",
