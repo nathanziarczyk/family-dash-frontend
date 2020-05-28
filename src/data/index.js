@@ -9,6 +9,7 @@ import themeReducer from "./theme";
 import userReducer from "./user";
 import groupsReducer from "./groups";
 import groupReducer from "./group";
+import eventReducer from "./events";
 
 const persistConfig = {
   key: "root",
@@ -21,6 +22,7 @@ const appReducer = persistCombineReducers(persistConfig, {
   theme: themeReducer,
   groups: groupsReducer,
   group: groupReducer,
+  events: eventReducer,
 });
 
 const rootReducer = (state, action) => {

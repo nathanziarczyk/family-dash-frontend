@@ -9,6 +9,8 @@ import {
   ListItem,
   ListItemText,
   CircularProgress,
+  useTheme,
+  useMediaQuery,
 } from "@material-ui/core";
 import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
 import { useDispatch, useSelector } from "react-redux";
@@ -42,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
     width: "60%",
     marginBottom: theme.spacing(1),
   },
+  inputFullWidth: {
+    width: "100%",
+    marginBottom: theme.spacing(1),
+  },
   addFriendButton: {
     color: theme.palette.primary.main,
   },
@@ -50,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
 export default function NewGroupForm({ loading, newGroupMessage }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   // GET CURRENT USER ID
   const currentUserId = useSelector((state) => state.user.user.id);
@@ -148,7 +157,7 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
               label="Group Name"
               variant="outlined"
               size="small"
-              className={classes.input}
+              className={mobile ? classes.inputFullWidth : classes.input}
               value={groupNameInput}
               onChange={(e) => setGroupNameInput(e.target.value)}
             />
@@ -158,7 +167,7 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
               label="Search users by email"
               variant="outlined"
               size="small"
-              className={classes.input}
+              className={mobile ? classes.inputFullWidth : classes.input}
               value={usersInput}
               onChange={handleAddUserFieldChange}
             />

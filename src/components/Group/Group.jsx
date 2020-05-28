@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Helmet } from "react-helmet";
 
 import { loadGroup } from "../../data/group";
+import { searchEvents } from "../../data/events";
 import GroupWeb from "./GroupWeb";
 import GroupMobile from "./GroupMobile";
 
@@ -36,10 +37,11 @@ export default function Group({ props }) {
   const classes = useStyles();
 
   // GROUP EN EVENT DATA UIT REDUX STORE HALEN
-  const { name, loading, error, events } = useSelector((state) => state.group);
+  const { name, loading, error } = useSelector((state) => state.group);
 
   useEffect(() => {
     dispatch(loadGroup(props.match.params.id));
+    // dispatch(searchEvents(props.match.params.id));
   }, [dispatch, props.match.params.id]);
 
   return (
@@ -54,8 +56,8 @@ export default function Group({ props }) {
           </div>
         ) : (
           <>
-            {!mobile && <GroupWeb events={events} />}
-            {mobile && <GroupMobile events={events} />}
+            {!mobile && <GroupWeb mobile={mobile} />}
+            {mobile && <GroupMobile mobile={mobile} />}
           </>
         )}
       </Grid>

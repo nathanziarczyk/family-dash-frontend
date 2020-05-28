@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, Paper, Grid } from "@material-ui/core";
+import { makeStyles, Paper, Grid, IconButton } from "@material-ui/core";
 import Carousel from "react-material-ui-carousel";
 
 import EventsSummary from "./EventsSummary";
@@ -22,7 +22,7 @@ export default function GroupMobile(props) {
   const classes = useStyles();
 
   // EVENTS DATA UIT PROPS HALEN
-  const { events } = props;
+  const { events, mobile } = props;
 
   return (
     <Grid item xs={12}>
@@ -35,13 +35,13 @@ export default function GroupMobile(props) {
         timeout={200}
       >
         <Paper className={classes.paper} elevation={0}>
-          <EventsSummary events={events} alignCenter={true} />
+          <EventsSummary mobile={mobile} events={events} alignCenter={true} />
         </Paper>
         <Paper className={classes.paper} elevation={0}>
-          <ShoppingListsSummary alignCenter={true} />
+          <ShoppingListsSummary mobile={mobile} alignCenter={true} />
         </Paper>
         <Paper className={classes.paper} elevation={0}>
-          <NotesSummary alignCenter={true} />
+          <NotesSummary mobile={mobile} alignCenter={true} />
         </Paper>
       </Carousel>
     </Grid>

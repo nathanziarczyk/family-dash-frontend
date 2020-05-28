@@ -7,7 +7,10 @@ import {
   Container,
   Button,
   CircularProgress,
+  useTheme,
+  useMediaQuery,
 } from "@material-ui/core";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { useSelector, useDispatch } from "react-redux";
 import * as EmailValidator from "email-validator";
 
@@ -40,6 +43,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Register() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   // INPUTFIELDS STATE
   const [firstName, setFirstName] = useState("");
@@ -86,7 +91,7 @@ export default function Register() {
             className={classes.loginForm}
           >
             <div>
-              <form onSubmit={submitHandler}>
+              <form onSubmit={submitHandler} id="register">
                 <TextField
                   className={classes.inputField}
                   InputProps={{
@@ -176,6 +181,21 @@ export default function Register() {
                   {loading && <CircularProgress color="primary" size="1.8em" />}
                   {!loading && "Sign Up"}
                 </Button>
+                {mobile && (
+                  <a
+                    href="#login"
+                    style={{
+                      textAlign: "center",
+                      padding: "1em",
+                      marginTop: "1em",
+                    }}
+                  >
+                    <Typography color="primary">Sign in</Typography>
+                    <p style={{ margin: 0 }}>
+                      <ExpandLessIcon color="primary" />
+                    </p>
+                  </a>
+                )}
               </form>
             </div>
           </Container>
@@ -186,7 +206,7 @@ export default function Register() {
         <ErrorMessage
           message={inputError}
           clearError={setInputError}
-          position={"bottomRight"}
+          position={!mobile && "bottomRight"}
         />
       )}
     </Grid>

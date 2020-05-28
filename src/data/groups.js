@@ -27,12 +27,12 @@ export const getGroups = () => (dispatch) => {
   axios
     .get(`/groups`)
     .then((response) => {
+      console.log("zoeken...");
       const groups = response.data.groups;
       const invitations = response.data.invitations;
       dispatch(successSearch(groups, invitations));
     })
     .catch((error) => {
-      // dispatch(refreshToken());
       dispatch(errorSearch("Oops... Something went wrong, try again later"));
     });
 };

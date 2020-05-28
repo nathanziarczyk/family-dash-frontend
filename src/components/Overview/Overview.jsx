@@ -6,6 +6,8 @@ import {
   Typography,
   CircularProgress,
   Badge,
+  useTheme,
+  useMediaQuery,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -58,11 +60,19 @@ const useStyles = makeStyles((theme) => ({
   badge: {
     marginRight: "1em",
   },
+  mobileTabs: {
+    display: "flex",
+    justifyContent: "center",
+    borderBottom: `1px solid ${theme.palette.primary.main}`,
+    width: "100%",
+  },
 }));
 
 export default function Overview() {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   // STATE VOOR TABS
   const [showGroups, setShowGroups] = useState(true);
@@ -87,7 +97,7 @@ export default function Overview() {
       </Helmet>
       <Grid item xs={false} sm={3} />
       <Grid item xs={12} sm={6} className={classes.flexContainer}>
-        <div>
+        <div className={mobile && classes.mobileTabs}>
           <Badge className={classes.badge}>
             <Typography
               onClick={() => {
@@ -130,7 +140,7 @@ export default function Overview() {
             </Typography>
           </Badge>
         </div>
-        <Paper elevation={3} className={classes.paper}>
+        <Paper elevation={mobile ? 0 : 3} className={classes.paper}>
           {loading && (
             <div className={classes.center}>
               <CircularProgress />

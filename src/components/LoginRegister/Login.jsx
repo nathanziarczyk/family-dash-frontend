@@ -8,7 +8,10 @@ import {
   Container,
   Button,
   CircularProgress,
+  useTheme,
+  useMediaQuery,
 } from "@material-ui/core";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import { loginUser } from "./../../data/user";
 import ErrorMessage from "../Messages/ErrorMessage";
@@ -74,10 +77,12 @@ export default function Login() {
     }
     dispatch(loginUser(email, password));
   };
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <>
-      <div className={classes.famdash}>
+      <div className={classes.famdash} id="login">
         <Typography className={classes.title} variant="h3" component="h1">
           FamilyDash
         </Typography>
@@ -152,6 +157,21 @@ export default function Login() {
                     )}
                     {!loading && "Sign In"}
                   </Button>
+                  {mobile && (
+                    <a
+                      href="#register"
+                      style={{
+                        textAlign: "center",
+                        padding: "1em",
+                        marginTop: "1em",
+                      }}
+                    >
+                      <Typography color="secondary">Sign up</Typography>
+                      <p style={{ margin: 0 }}>
+                        <ExpandMoreIcon color="secondary" />
+                      </p>
+                    </a>
+                  )}
                 </form>
               </div>
             </Container>
@@ -163,7 +183,7 @@ export default function Login() {
         <ErrorMessage
           message={inputError}
           clearError={setInputError}
-          position={"bottomLeft"}
+          position={!mobile && "bottomLeft"}
         />
       )}
     </>

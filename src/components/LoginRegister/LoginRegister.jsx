@@ -1,6 +1,6 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Paper, Grid } from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { Paper, Grid, useMediaQuery } from "@material-ui/core";
 
 import Login from "./Login";
 import Register from "./Register";
@@ -19,16 +19,18 @@ const useStyles = makeStyles((theme) => ({
 export default function LoginRegister() {
   const classes = useStyles();
   window.localStorage.removeItem("persist:root");
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <Grid container spacing={0}>
       <Grid item xs={false} sm={12} md={6}>
         <Paper className={classes.loginPaper} elevation={0}>
-          <Login />
+          <Login id="login" />
         </Paper>
       </Grid>
       <Grid item xs={false} sm={12} md={6}>
         <Paper elevation={0}>
-          <Register />
+          <Register id="register" />
         </Paper>
       </Grid>
     </Grid>
