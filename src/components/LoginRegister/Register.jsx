@@ -62,6 +62,11 @@ export default function Register() {
   // FORM SUBMIT HANDLER
   const submitHandler = (e) => {
     e.preventDefault();
+    setInputError(
+      "Register is disabled while i'm developing the app :) patience :)"
+    );
+    return null;
+    //TODO: Register terug aanzetten (setInputError & return null weghalen)
     if (
       firstName === "" ||
       lastName === "" ||

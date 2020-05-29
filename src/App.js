@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
+import NotFound from "./components/NotFound";
 import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Overview from "./components/Overview/Overview";
 import Layout from "./components/Layout/Layout";
@@ -51,6 +52,7 @@ function App() {
           );
         }}
       />
+      <Route render={() => <NotFound />} />
     </ThemeProvider>
   );
 }

@@ -91,21 +91,19 @@ export const errorLogin = (message) => ({
 
 export const registerUser = (fn, ln, email, password) => (dispatch) => {
   dispatch(startRegister());
-  dispatch(errorRegister("Register is disabled for now."));
-  //TODO:Register terug aanzetten
-  // axios
-  //   .post(`${process.env.REACT_APP_API}/register`, {
-  //     _username: email,
-  //     _password: password,
-  //     first_name: fn,
-  //     last_name: ln,
-  //   })
-  //   .then((response) => {
-  //     dispatch(succesRegister(response.data));
-  //   })
-  //   .catch((error) => {
-  //     dispatch(errorRegister(error.response.data.error));
-  //   });
+  axios
+    .post(`${process.env.REACT_APP_API}/register`, {
+      _username: email,
+      _password: password,
+      first_name: fn,
+      last_name: ln,
+    })
+    .then((response) => {
+      dispatch(succesRegister(response.data));
+    })
+    .catch((error) => {
+      dispatch(errorRegister(error.response.data.error));
+    });
 };
 
 export const startRegister = () => ({
@@ -124,28 +122,16 @@ export const errorRegister = (message) => ({
 
 export const userAcceptRequest = ({ groupId, userId }) => (dispatch) => {
   axios
-    .put(
-      `${process.env.REACT_APP_API}/users/${userId}`,
-      {
-        acceptGroupRequest: `/api/groups/${groupId}`,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("jwt")}`,
-        },
-      }
-    )
+    .put(`/users/${userId}`, {
+      acceptGroupRequest: `/api/groups/${groupId}`,
+    })
     .then((response) => dispatch(getGroups()))
     .catch((error) => console.log(error.response)); // TODO: dispatch error
 };
 
 export const userDenyRequest = (requestId) => (dispatch) => {
   axios
-    .delete(`${process.env.REACT_APP_API}/group_members/${requestId}`, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get("jwt")}`,
-      },
-    })
+    .delete(`/group_members/${requestId}`)
     .then((response) => dispatch(getGroups()))
     .catch((error) => console.log(error.response)); // TODO: dispatch error
 };
