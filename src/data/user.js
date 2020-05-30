@@ -122,16 +122,28 @@ export const errorRegister = (message) => ({
 
 export const userAcceptRequest = ({ groupId, userId }) => (dispatch) => {
   axios
-    .put(`/users/${userId}`, {
-      acceptGroupRequest: `/api/groups/${groupId}`,
-    })
+    .put(
+      `${process.env.REACT_APP_API}/users/${userId}`,
+      {
+        acceptGroupRequest: `/api/groups/${groupId}`,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("jwt")}`,
+        },
+      }
+    )
     .then((response) => dispatch(getGroups()))
     .catch((error) => console.log(error.response)); // TODO: dispatch error
 };
 
 export const userDenyRequest = (requestId) => (dispatch) => {
   axios
-    .delete(`/group_members/${requestId}`)
+    .delete(`${process.env.REACT_APP_API}/group_members/${requestId}`, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get("jwt")}`,
+      },
+    })
     .then((response) => dispatch(getGroups()))
     .catch((error) => console.log(error.response)); // TODO: dispatch error
 };

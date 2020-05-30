@@ -5,24 +5,23 @@ import {
   ListItemText,
   Typography,
   makeStyles,
-  FormControlLabel,
-  Checkbox,
   IconButton,
   LinearProgress,
+  Button,
 } from "@material-ui/core";
-import moment from "moment";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import HomeIcon from "@material-ui/icons/Home";
 
 import axios from "../../axios";
 import { searchEvents } from "../../data/events";
+import EventListItem from "./EventListItem";
 
 const useStyles = makeStyles((theme) => ({
   centerText: { textAlign: "center" },
   centerContainer: {
     width: "100%",
-
+    height: "100%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -37,6 +36,8 @@ export default function EventsSummary({ alignCenter, mobile }) {
   const groupId = useSelector((state) => state.group.id);
 
   const handleAttending = (eventId, type) => {
+    //TODO: ID RECHTREEKS UIT RESPONSE
+    //TODO: CUSTOM HOOK VAN MAKEN
     const arr = eventId.split("/");
     const id = arr[arr.length - 1];
     if (type === "remove") {
@@ -63,7 +64,7 @@ export default function EventsSummary({ alignCenter, mobile }) {
   return (
     <>
       {loading && <LinearProgress />}
-      <List dense>
+      <List dense style={{ height: "80%" }}>
         <ListItem style={{ position: "relative" }}>
           <ListItemText
             className={alignCenter === true ? classes.centerText : ""}
@@ -83,9 +84,9 @@ export default function EventsSummary({ alignCenter, mobile }) {
         </ListItem>
         {!loading && events.length === 0 ? (
           <div className={classes.centerContainer}>
-            <Typography variant="subtitle2">
-              You have no events yet! {/* TODO: juiste link*/}
-              <Link to="/">Create event</Link>
+            <Typography variant="subtitle2" align="center">
+              You have no events yet! {/* TODO: juiste link*/} <br />
+              <Button color="primary">Create event</Button>
             </Typography>
           </div>
         ) : (
@@ -96,30 +97,16 @@ export default function EventsSummary({ alignCenter, mobile }) {
               let attending = false;
               event.attendants.filter((attendant) => {
                 if (attendant.id === currentUserId) attending = true;
+                return null;
               });
               if (index > 8) return null;
               return (
-                <ListItem key={event["@id"]} button>
-                  <ListItemText
-                    primary={event.title}
-                    secondary={moment(event.start).format("LLL")}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={attending}
-                        onClick={() => {
-                          if (attending)
-                            handleAttending(event["@id"], "remove");
-                          if (!attending) handleAttending(event["@id"], "add");
-                        }}
-                        name="checkedB"
-                        color="primary"
-                      />
-                    }
-                    label={attending ? "Going" : "Not going"}
-                  />
-                </ListItem>
+                <EventListItem
+                  key={event["@id"]}
+                  event={event}
+                  attending={attending}
+                  handleAttending={handleAttending}
+                />
               );
             })
           : ""}

@@ -9,7 +9,7 @@ import axios from "../../axios";
 import { getGroups } from "../../data/groups";
 import ErrorMessage from "../Messages/ErrorMessage";
 import SuccessMessage from "../Messages/SuccessMessage";
-import ConfirmDialog from "../CustomComponents/ConfirmDialog";
+import ConfirmDialog from "../ReUsable/ConfirmDialog";
 
 export default function GroupListItem({
   groupName,

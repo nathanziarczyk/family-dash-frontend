@@ -11,8 +11,11 @@ import {
   CircularProgress,
   useTheme,
   useMediaQuery,
+  Divider,
+  InputAdornment,
 } from "@material-ui/core";
 import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
+import SearchIcon from "@material-ui/icons/Search";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../axios";
 
@@ -170,9 +173,16 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
               className={mobile ? classes.inputFullWidth : classes.input}
               value={usersInput}
               onChange={handleAddUserFieldChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
             />
             {usersInput.length > 1 ? (
-              <List>
+              <List dense className={classes.addedUsersList}>
                 {suggestionsLoading ? (
                   <CircularProgress />
                 ) : (
@@ -205,8 +215,11 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
           {users.length > 0 && (
             <List dense className={classes.addedUsersList}>
               <ListItem key={1}>
-                <ListItemText>Added users</ListItemText>
+                <ListItemText>
+                  <b>Added users</b>
+                </ListItemText>
               </ListItem>
+              <Divider />
               {users.map((user) => (
                 <ListItem key={user.id}>
                   <ListItemText
