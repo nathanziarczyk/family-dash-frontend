@@ -8,24 +8,28 @@ import { PersistGate } from "redux-persist/es/integration/react";
 import { store, persistor } from "./data/index";
 import { CircularProgress } from "@material-ui/core";
 import { HelmetProvider } from "react-helmet-async";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
 
 import "./styles.css";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <HelmetProvider>
-      <Provider store={store}>
-        <PersistGate
-          loading={<CircularProgress color="secondary" size="1.8em" />}
-          persistor={persistor}
-        >
-          <React.StrictMode>
-            <App />
-          </React.StrictMode>
-        </PersistGate>
-      </Provider>
-    </HelmetProvider>
-  </BrowserRouter>,
+  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+    <BrowserRouter>
+      <HelmetProvider>
+        <Provider store={store}>
+          <PersistGate
+            loading={<CircularProgress color="secondary" size="1.8em" />}
+            persistor={persistor}
+          >
+            <React.StrictMode>
+              <App />
+            </React.StrictMode>
+          </PersistGate>
+        </Provider>
+      </HelmetProvider>
+    </BrowserRouter>
+  </MuiPickersUtilsProvider>,
   document.getElementById("root")
 );
 

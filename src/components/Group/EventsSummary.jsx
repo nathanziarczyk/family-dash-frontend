@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   List,
   ListItem,
@@ -16,6 +16,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import axios from "../../axios";
 import { searchEvents } from "../../data/events";
 import EventListItem from "./EventListItem";
+import AddEventModal from "../ReUsable/AddEventModal";
 
 const useStyles = makeStyles((theme) => ({
   centerText: { textAlign: "center" },
@@ -26,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
+  addButtonContainer: {
+    width: "100%",
+    textAlign: "center",
+  },
 }));
 
 export default function EventsSummary({ alignCenter, mobile }) {
@@ -34,6 +39,7 @@ export default function EventsSummary({ alignCenter, mobile }) {
   const currentUserId = useSelector((state) => state.user.user.id);
   const { events, loading } = useSelector((state) => state.events);
   const groupId = useSelector((state) => state.group.id);
+  const [addEventOpen, setAddEventOpen] = useState(false);
 
   const handleAttending = (eventId, type) => {
     //TODO: ID RECHTREEKS UIT RESPONSE
@@ -86,7 +92,9 @@ export default function EventsSummary({ alignCenter, mobile }) {
           <div className={classes.centerContainer}>
             <Typography variant="subtitle2" align="center">
               You have no events yet! {/* TODO: juiste link*/} <br />
-              <Button color="primary">Create event</Button>
+              <Button color="primary" onClick={() => setAddEventOpen(true)}>
+                Create event
+              </Button>
             </Typography>
           </div>
         ) : (
@@ -111,6 +119,20 @@ export default function EventsSummary({ alignCenter, mobile }) {
             })
           : ""}
       </List>
+      {!loading && events.length > 0 ? (
+        <div className={classes.addButtonContainer}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setAddEventOpen(true)}
+          >
+            Add Event
+          </Button>
+        </div>
+      ) : (
+        ""
+      )}
+      <AddEventModal open={addEventOpen} setOpen={setAddEventOpen} />
     </>
   );
 }
