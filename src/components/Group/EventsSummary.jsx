@@ -91,7 +91,7 @@ export default function EventsSummary({ alignCenter, mobile }) {
         {!loading && events.length === 0 ? (
           <div className={classes.centerContainer}>
             <Typography variant="subtitle2" align="center">
-              You have no events yet! {/* TODO: juiste link*/} <br />
+              You have no events yet! <br />
               <Button color="primary" onClick={() => setAddEventOpen(true)}>
                 Create event
               </Button>
