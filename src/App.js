@@ -9,6 +9,7 @@ import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Overview from "./components/Overview/Overview";
 import Layout from "./components/Layout/Layout";
 import Group from "./components/Group/Group";
+import Calendar from "./components/Calendar/Calendar";
 
 function App() {
   const themeData = useSelector((state) => state.theme);
@@ -48,6 +49,18 @@ function App() {
           ) : (
             <Layout>
               <Group props={props} />
+            </Layout>
+          );
+        }}
+      />
+      <Route
+        path="/calendar"
+        render={(props) => {
+          return !loggedIn ? (
+            <Redirect to="/" />
+          ) : (
+            <Layout>
+              <Calendar props={props} />
             </Layout>
           );
         }}

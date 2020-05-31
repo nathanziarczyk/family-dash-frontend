@@ -68,8 +68,10 @@ export default function FullScreenDialog({ open, setOpen }) {
       return null;
     }
     if (start > end) return null;
-    createEvent(title, description, start, end, currentGroup);
-    dispatch(searchEvents());
+    createEvent(title, description, start, end, currentGroup).then(() => {
+      console.log(currentGroup);
+      dispatch(searchEvents(currentGroup));
+    });
     setOpen(false);
   };
 

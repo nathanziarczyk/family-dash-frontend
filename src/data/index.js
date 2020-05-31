@@ -13,7 +13,7 @@ import eventReducer from "./events";
 
 const persistConfig = {
   key: "root",
-  whitelist: ["user"],
+  whitelist: ["user", "events", "group"],
   storage,
 };
 

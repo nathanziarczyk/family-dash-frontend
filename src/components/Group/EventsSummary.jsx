@@ -85,7 +85,9 @@ export default function EventsSummary({ alignCenter, mobile }) {
               </Link>
             )}
             <Typography variant="h5">Upcoming events</Typography>
-            <Typography variant="subtitle2">Show all</Typography>
+            <Link to="/calendar" className="underlined">
+              <Typography variant="subtitle2">Show all</Typography>
+            </Link>
           </ListItemText>
         </ListItem>
         {!loading && events.length === 0 ? (
@@ -107,7 +109,7 @@ export default function EventsSummary({ alignCenter, mobile }) {
                 if (attendant.id === currentUserId) attending = true;
                 return null;
               });
-              if (index > 8) return null;
+              if (index > 6) return null;
               return (
                 <EventListItem
                   key={event["@id"]}

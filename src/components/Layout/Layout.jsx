@@ -27,7 +27,6 @@ export default function Layout({ children }) {
       <Header />
       <Grid
         container
-        alignItems="center"
         className={
           matchesSM
             ? classes.childrenContainerMobile
