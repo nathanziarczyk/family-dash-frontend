@@ -24,15 +24,6 @@ export default function ShoppingListsSummary({ alignCenter, mobile }) {
           <ListItemText
             className={alignCenter === true ? classes.centerText : ""}
           >
-            {mobile && (
-              <Link to="/">
-                <div style={{ position: "absolute", top: 2, left: 10 }}>
-                  <IconButton style={{}}>
-                    <HomeIcon />
-                  </IconButton>
-                </div>
-              </Link>
-            )}
             <Typography variant="h5">Shopping Lists</Typography>
             <Typography variant="subtitle2">Show all</Typography>
           </ListItemText>

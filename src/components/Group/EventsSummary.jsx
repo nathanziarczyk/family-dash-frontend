@@ -76,15 +76,6 @@ export default function EventsSummary({ alignCenter, mobile }) {
           <ListItemText
             className={alignCenter === true ? classes.centerText : ""}
           >
-            {mobile && (
-              <Link to="/">
-                <div style={{ position: "absolute", top: 2, left: 10 }}>
-                  <IconButton style={{}}>
-                    <HomeIcon />
-                  </IconButton>
-                </div>
-              </Link>
-            )}
             <Typography variant="h5">Upcoming events</Typography>
             <Link to="/calendar" className="underlined">
               <Typography variant="subtitle2">Show all</Typography>
@@ -103,6 +94,22 @@ export default function EventsSummary({ alignCenter, mobile }) {
         ) : (
           ""
         )}
+        {mobile &&
+          (!loading && events.length > 0 ? (
+            <div className={classes.addButtonContainer}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setAddEventOpen(true)}
+                fullWidth={true}
+                style={{ borderRadius: 0 }}
+              >
+                Add Event
+              </Button>
+            </div>
+          ) : (
+            ""
+          ))}
         {!loading && events.length > 0
           ? events.map((event, index) => {
               let attending = false;
@@ -122,19 +129,21 @@ export default function EventsSummary({ alignCenter, mobile }) {
             })
           : ""}
       </List>
-      {!loading && events.length > 0 ? (
-        <div className={classes.addButtonContainer}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setAddEventOpen(true)}
-          >
-            Add Event
-          </Button>
-        </div>
-      ) : (
-        ""
-      )}
+      {!mobile &&
+        (!loading && events.length > 0 ? (
+          <div className={classes.addButtonContainer}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setAddEventOpen(true)}
+            >
+              Add Event
+            </Button>
+          </div>
+        ) : (
+          ""
+        ))}
+
       <AddEventModal
         open={addEventOpen}
         setOpen={setAddEventOpen}

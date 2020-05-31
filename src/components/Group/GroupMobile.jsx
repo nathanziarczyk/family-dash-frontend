@@ -29,7 +29,7 @@ export default function GroupMobile(props) {
     <Grid item xs={12} className={classes.carouselContainer}>
       <Carousel
         autoPlay={false}
-        style={{ height: "90%" }}
+        style={{ height: "100%" }}
         navButtonsAlwaysVisible={true}
         indicators={false}
         fullHeightHover={false}

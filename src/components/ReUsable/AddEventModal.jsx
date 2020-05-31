@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import AppBar from "@material-ui/core/AppBar";
@@ -8,7 +8,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
-import { TextField, Grid } from "@material-ui/core";
+import { TextField, Grid, useMediaQuery } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 import { useSelector, useDispatch } from "react-redux";
 import { Helmet } from "react-helmet-async";
@@ -34,13 +34,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function FullScreenDialog({ open, setOpen, setAddedLoading }) {
+export default function AddEventModal({ open, setOpen, setAddedLoading }) {
   const currentGroup = useSelector((state) => state.group.id);
   const classes = useStyles();
   const [selectedStartDate, handleStartDateChange] = useState(new Date());
   const [selectedEndDate, handleEndDateChange] = useState(new Date());
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   // INPUT ERRORS
   const [descriptionError, setDescriptionError] = useState(false);
@@ -191,9 +194,21 @@ export default function FullScreenDialog({ open, setOpen, setAddedLoading }) {
           <Grid container item xs={12}>
             <Grid item xs={false} sm={4} />
             <Grid item xs={12} sm={4} style={{ textAlign: "center" }}>
-              <Button type="submit" variant="contained" color="primary">
-                create event
-              </Button>
+              {mobile ? (
+                <Button
+                  fullWidth
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  style={{ borderRadius: 0 }}
+                >
+                  create event
+                </Button>
+              ) : (
+                <Button type="submit" variant="contained" color="primary">
+                  create event
+                </Button>
+              )}
             </Grid>
             <Grid item xs={false} sm={4} />
           </Grid>
