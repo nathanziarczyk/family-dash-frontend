@@ -6,7 +6,7 @@ function Alert(props) {
   return <MuiAlert elevation={10} variant="filled" {...props} />;
 }
 
-export default function ErrorMessage({ message, clearError, position }) {
+export default function ErrorMessage({ message, clearError = null, position }) {
   const pos = position;
 
   let vertical = "";

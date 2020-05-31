@@ -11,9 +11,11 @@ import Slide from "@material-ui/core/Slide";
 import { TextField, Grid } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 import { useSelector, useDispatch } from "react-redux";
+import { Helmet } from "react-helmet-async";
 
 import { searchEvents } from "../../data/events";
 import { createEvent } from "../../helpers/createEvent";
+import ErrorMessage from "../Messages/ErrorMessage";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -39,6 +41,10 @@ export default function FullScreenDialog({ open, setOpen }) {
   const [selectedEndDate, handleEndDateChange] = useState(new Date());
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
+  // INPUT ERRORS
+  const [descriptionError, setDescriptionError] = useState(false);
+  const [titleError, setTitleError] = useState(false);
   const dispatch = useDispatch();
 
   const handleClickOpen = () => {
@@ -53,7 +59,16 @@ export default function FullScreenDialog({ open, setOpen }) {
     e.preventDefault();
     const start = selectedStartDate.toISOString();
     const end = selectedEndDate.toISOString();
-    await createEvent(title, description, start, end, currentGroup);
+    if (title.length === 0) {
+      setTitleError(true);
+      return null;
+    }
+    if (description.length === 0) {
+      setDescriptionError(true);
+      return null;
+    }
+    if (start > end) return null;
+    createEvent(title, description, start, end, currentGroup);
     dispatch(searchEvents());
     setOpen(false);
   };
@@ -69,7 +84,7 @@ export default function FullScreenDialog({ open, setOpen }) {
         <Toolbar>
           <IconButton
             edge="start"
-            color="primary"
+            color="inherit"
             onClick={handleClose}
             aria-label="close"
           >
@@ -78,13 +93,13 @@ export default function FullScreenDialog({ open, setOpen }) {
           <Typography variant="h6" className={classes.title}>
             New Event
           </Typography>
-          <Button autoFocus color="inherit" onClick={handleClose}>
+          <Button autoFocus color="inherit" onClick={createEventHandler}>
             save
           </Button>
         </Toolbar>
       </AppBar>
       <form className={classes.form} onSubmit={createEventHandler}>
-        <Grid container spacing={1}>
+        <Grid container spacing={2}>
           <Grid container item xs={12}>
             <Grid item xs={4} />
             <Grid item xs={4}>
@@ -93,52 +108,60 @@ export default function FullScreenDialog({ open, setOpen }) {
             <Grid item xs={4} />
           </Grid>
           <Grid container item xs={12}>
-            <Grid item xs={4} />
-            <Grid item xs={4}>
+            <Grid item xs={false} sm={4} />
+            <Grid item xs={12} sm={4}>
               <TextField
                 color="primary"
+                error={titleError}
                 fullWidth={true}
                 size="small"
                 id="title"
-                label="Title"
-                placeholder="Title"
+                label="Title*"
+                placeholder="Title*"
                 multiline
                 variant="outlined"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => {
+                  setTitleError(false);
+                  setTitle(e.target.value);
+                }}
               />
             </Grid>
-            <Grid item xs={4} />
+            <Grid item xs={false} sm={4} />
           </Grid>
           <Grid container item xs={12}>
-            <Grid item xs={4} />
-            <Grid item xs={4}>
+            <Grid item xs={false} sm={4} />
+            <Grid item xs={12} sm={4}>
               <TextField
+                error={descriptionError}
                 color="primary"
                 fullWidth={true}
                 size="medium"
                 id="description"
-                label="Description"
-                placeholder="Description"
+                label="Description*"
+                placeholder="Description*"
                 multiline
                 variant="outlined"
                 multiline={true}
                 value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => {
+                  setDescriptionError(false);
+                  setDescription(e.target.value);
+                }}
               />
             </Grid>
-            <Grid item xs={4} />
+            <Grid item xs={false} sm={4} />
           </Grid>
           <Grid container item xs={12}>
-            <Grid item xs={4} />
-            <Grid container item xs={4}>
+            <Grid item xs={false} sm={4} />
+            <Grid container item xs={12} sm={4}>
               <Grid item spacing={1} xs={6}>
                 <DateTimePicker
                   color="primary"
                   value={selectedStartDate}
                   disablePast
                   onChange={handleStartDateChange}
-                  label="From"
+                  label="From*"
                   showTodayButton
                   inputVariant="outlined"
                   fullWidth={true}
@@ -150,7 +173,7 @@ export default function FullScreenDialog({ open, setOpen }) {
                   value={selectedEndDate}
                   disablePast
                   onChange={handleEndDateChange}
-                  label="Until"
+                  label="Until*"
                   showTodayButton
                   inputVariant="outlined"
                   minDate={selectedStartDate}
@@ -159,17 +182,24 @@ export default function FullScreenDialog({ open, setOpen }) {
                 />
               </Grid>
             </Grid>
-            <Grid item xs={4} />
+            <Grid item xs={false} sm={4} />
           </Grid>
           <Grid container item xs={12}>
-            <Grid item xs={4} />
-            <Grid item xs={4}>
-              <Button type="submit">create event</Button>
+            <Grid item xs={false} sm={4} />
+            <Grid item xs={12} sm={4} style={{ textAlign: "center" }}>
+              <Button type="submit" variant="contained" color="primary">
+                create event
+              </Button>
             </Grid>
-            <Grid item xs={4} />
+            <Grid item xs={false} sm={4} />
           </Grid>
         </Grid>
       </form>
+      {titleError || descriptionError ? (
+        <ErrorMessage message="Fill in all fields" />
+      ) : (
+        ""
+      )}
     </Dialog>
   );
 }
