@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { logoutUser } from "./../../data/user";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,9 +22,13 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1,
     color: "white",
     cursor: "pointer",
+    height: "100%",
+  },
+  grow: {
+    flexGrow: 1,
+    display: "flex",
   },
 }));
 
@@ -50,9 +55,11 @@ export default function MenuAppBar() {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Link to="/" className={classes.title}>
-            <Typography variant="h6">Welcome, {user.firstName}!</Typography>
-          </Link>
+          <div className={classes.grow}>
+            <Link to="/" className={classes.title}>
+              <Typography variant="h6">Welcome, {user.firstName}!</Typography>
+            </Link>
+          </div>
           <div>
             <IconButton
               aria-label="account of current user"

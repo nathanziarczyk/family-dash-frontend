@@ -40,6 +40,7 @@ export default function EventsSummary({ alignCenter, mobile }) {
   const { events, loading } = useSelector((state) => state.events);
   const groupId = useSelector((state) => state.group.id);
   const [addEventOpen, setAddEventOpen] = useState(false);
+  const [addedLoading, setAddedLoading] = useState(false);
 
   const handleAttending = (eventId, type) => {
     //TODO: ID RECHTREEKS UIT RESPONSE
@@ -69,7 +70,7 @@ export default function EventsSummary({ alignCenter, mobile }) {
 
   return (
     <>
-      {loading && <LinearProgress />}
+      {addedLoading || loading ? <LinearProgress color="primary" /> : ""}
       <List dense style={{ height: "80%" }}>
         <ListItem style={{ position: "relative" }}>
           <ListItemText
@@ -134,7 +135,11 @@ export default function EventsSummary({ alignCenter, mobile }) {
       ) : (
         ""
       )}
-      <AddEventModal open={addEventOpen} setOpen={setAddEventOpen} />
+      <AddEventModal
+        open={addEventOpen}
+        setOpen={setAddEventOpen}
+        setAddedLoading={setAddedLoading}
+      />
     </>
   );
 }

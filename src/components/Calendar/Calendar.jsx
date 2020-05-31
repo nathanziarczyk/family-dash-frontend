@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Grid, makeStyles, useTheme, useMediaQuery } from "@material-ui/core";
+import {
+  Grid,
+  makeStyles,
+  useTheme,
+  useMediaQuery,
+  LinearProgress,
+} from "@material-ui/core";
 import FullCalendar from "@fullcalendar/react";
 import listPlugin from "@fullcalendar/list";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -18,12 +24,12 @@ const useStyles = makeStyles((theme) => ({
 export default function Calendar() {
   const classes = useStyles();
   const { events, loading } = useSelector((state) => state.events);
+  const [addedLoading, setAddedLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <>
-      {loading && <p>laden</p>}
       <Grid container className={classes.gridContainer + " " + "calendar"}>
         <Grid item xs={false} sm={2} />
         <Grid
@@ -87,11 +93,16 @@ export default function Calendar() {
                 }}
               />
             )}
+            {addedLoading || loading ? <LinearProgress color="primary" /> : ""}
           </div>
         </Grid>
         <Grid item xs={false} sm={2} />
       </Grid>
-      <AddEventModal open={modalOpen} setOpen={setModalOpen} />
+      <AddEventModal
+        open={modalOpen}
+        setOpen={setModalOpen}
+        setAddedLoading={setAddedLoading}
+      />
     </>
   );
 }

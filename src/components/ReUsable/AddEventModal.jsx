@@ -34,7 +34,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function FullScreenDialog({ open, setOpen }) {
+export default function FullScreenDialog({ open, setOpen, setAddedLoading }) {
   const currentGroup = useSelector((state) => state.group.id);
   const classes = useStyles();
   const [selectedStartDate, handleStartDateChange] = useState(new Date());
@@ -57,6 +57,7 @@ export default function FullScreenDialog({ open, setOpen }) {
 
   const createEventHandler = async (e) => {
     e.preventDefault();
+    setAddedLoading(true);
     const start = selectedStartDate.toISOString();
     const end = selectedEndDate.toISOString();
     if (title.length === 0) {
@@ -68,9 +69,10 @@ export default function FullScreenDialog({ open, setOpen }) {
       return null;
     }
     if (start > end) return null;
-    createEvent(title, description, start, end, currentGroup).then(() => {
+    createEvent(title, description, start, end, currentGroup).then(async () => {
       console.log(currentGroup);
-      dispatch(searchEvents(currentGroup));
+      await dispatch(searchEvents(currentGroup));
+      setAddedLoading(false);
     });
     setOpen(false);
   };
@@ -103,11 +105,11 @@ export default function FullScreenDialog({ open, setOpen }) {
       <form className={classes.form} onSubmit={createEventHandler}>
         <Grid container spacing={2}>
           <Grid container item xs={12}>
-            <Grid item xs={4} />
-            <Grid item xs={4}>
-              <Typography>Create a new event</Typography>
+            <Grid item xs={false} sm={4} />
+            <Grid item xs={12} sm={4} style={{ textAlign: "center" }}>
+              <Typography variant="h6">Create a new event</Typography>
             </Grid>
-            <Grid item xs={4} />
+            <Grid item xs={false} sm={4} />
           </Grid>
           <Grid container item xs={12}>
             <Grid item xs={false} sm={4} />

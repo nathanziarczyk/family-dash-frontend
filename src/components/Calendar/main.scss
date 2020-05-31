@@ -22,4 +22,15 @@
   .fc-center {
     padding-bottom: 1em;
   }
+  height: 100%;
+}
+
+.fc-button-primary {
+  background-color: #009688;
+  border: none;
+}
+
+.fc-button-active {
+  background-color: #003f3a !important;
+  border: none;
 }
