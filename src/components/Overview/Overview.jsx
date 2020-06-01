@@ -8,6 +8,9 @@ import {
   Badge,
   useTheme,
   useMediaQuery,
+  List,
+  ListItem,
+  ListItemText,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -17,6 +20,7 @@ import NewGroupForm from "./NewGroupForm";
 import InvitationList from "./InvitationList";
 import GroupList from "./GroupList";
 import { Helmet } from "react-helmet-async";
+import Skeleton from "react-loading-skeleton";
 
 const useStyles = makeStyles((theme) => ({
   flexContainer: {
@@ -142,20 +146,23 @@ export default function Overview() {
         </div>
         <Paper elevation={mobile ? 0 : 3} className={classes.paper}>
           {loading && (
-            <div className={classes.center}>
-              <CircularProgress />
-            </div>
+            <List>
+              <ListItem>
+                <ListItemText>
+                  <Skeleton />
+                </ListItemText>
+              </ListItem>
+              <ListItem>
+                <ListItemText>
+                  <Skeleton />
+                </ListItemText>
+              </ListItem>
+            </List>
           )}
           {!loading && error.bool ? (
             <div className={classes.center}>
               <Typography variant="subtitle2">{error.message}</Typography>
             </div>
-          ) : (
-            ""
-          )}
-
-          {!loading && error.bool ? (
-            ""
           ) : (
             <>
               {showGroups && (

@@ -23,7 +23,7 @@ export default function GroupMobile(props) {
   const classes = useStyles();
 
   // EVENTS DATA UIT PROPS HALEN
-  const { events, mobile } = props;
+  const { events, mobile, loading } = props;
 
   return (
     <Grid item xs={12} className={classes.carouselContainer}>
@@ -36,7 +36,12 @@ export default function GroupMobile(props) {
         timeout={200}
       >
         <Paper className={classes.paper} elevation={0}>
-          <EventsSummary mobile={mobile} events={events} alignCenter={true} />
+          <EventsSummary
+            mobile={mobile}
+            events={events}
+            loading={loading}
+            alignCenter={true}
+          />
         </Paper>
         <Paper className={classes.paper} elevation={0}>
           <ShoppingListsSummary mobile={mobile} alignCenter={true} />

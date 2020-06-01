@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EventsSummary({ alignCenter, mobile }) {
+export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const currentUserId = useSelector((state) => state.user.user.id);
@@ -88,8 +88,10 @@ export default function EventsSummary({ alignCenter, mobile }) {
             </Link>
           </ListItemText>
         </ListItem>
-        {addedLoading || loading ? skeleton.map((item) => item) : ""}
-        {!loading && events.length === 0 ? (
+        {addedLoading || loading || groupLoading
+          ? skeleton.map((item) => item)
+          : ""}
+        {!loading && !groupLoading && events.length === 0 ? (
           <div className={classes.centerContainer}>
             <Typography variant="subtitle2" align="center">
               You have no events yet! <br />
@@ -102,7 +104,7 @@ export default function EventsSummary({ alignCenter, mobile }) {
           ""
         )}
         {mobile &&
-          (!loading && events.length > 0 ? (
+          (!loading && !groupLoading && events.length > 0 ? (
             <div className={classes.addButtonContainer}>
               <Button
                 variant="contained"
@@ -117,7 +119,7 @@ export default function EventsSummary({ alignCenter, mobile }) {
           ) : (
             ""
           ))}
-        {!loading && events.length > 0
+        {!loading && !groupLoading && events.length > 0
           ? events.map((event, index) => {
               let attending = false;
               event.attendants.filter((attendant) => {
@@ -137,7 +139,7 @@ export default function EventsSummary({ alignCenter, mobile }) {
           : ""}
       </List>
       {!mobile &&
-        (!loading && events.length > 0 ? (
+        (!loading && !groupLoading && events.length > 0 ? (
           <div className={classes.addButtonContainer}>
             <Button
               variant="contained"

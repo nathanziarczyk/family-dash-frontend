@@ -18,14 +18,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GroupWeb(props) {
   const classes = useStyles();
-
+  const { loading } = props;
   return (
     <>
       <Grid item xs={1} />
       <Grid item container xs={12} sm={5}>
         <Grid item container alignItems="center" xs={12}>
           <Paper className={classes.bigPaper} elevation={3}>
-            <EventsSummary />
+            <EventsSummary groupLoading={loading} />
           </Paper>
         </Grid>
       </Grid>

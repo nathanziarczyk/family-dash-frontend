@@ -48,16 +48,10 @@ export default function Group({ props }) {
         <title>{loading ? "Loading" : `FamilyDash — ${name}`}</title>
       </Helmet>
       <Grid container className={classes.gridContainer}>
-        {loading ? (
-          <div className={classes.loadingDiv}>
-            <CircularProgress color="primary" />
-          </div>
-        ) : (
-          <>
-            {!mobile && <GroupWeb mobile={mobile} />}
-            {mobile && <GroupMobile mobile={mobile} />}
-          </>
-        )}
+        <>
+          {!mobile && <GroupWeb mobile={mobile} loading={loading} />}
+          {mobile && <GroupMobile mobile={mobile} loading={loading} />}
+        </>
       </Grid>
     </>
   );
