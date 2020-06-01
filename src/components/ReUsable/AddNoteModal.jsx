@@ -9,12 +9,11 @@ import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import { TextField, Grid, useMediaQuery } from "@material-ui/core";
-import { DateTimePicker } from "@material-ui/pickers";
 import { useSelector, useDispatch } from "react-redux";
+import { Editor } from "@tinymce/tinymce-react";
 
-import { searchEvents } from "../../data/events";
-import { createEvent } from "../../helpers/createEvent";
 import ErrorMessage from "../Messages/ErrorMessage";
+import { createNote } from "../../helpers/createNote";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -36,43 +35,33 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AddEventModal({ open, setOpen, setAddedLoading }) {
+export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
   const currentGroup = useSelector((state) => state.group.id);
   const classes = useStyles();
-  const [selectedStartDate, handleStartDateChange] = useState(new Date());
-  const [selectedEndDate, handleEndDateChange] = useState(new Date());
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [body, setBody] = useState("");
 
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   // INPUT ERRORS
-  const [descriptionError, setDescriptionError] = useState(false);
   const [titleError, setTitleError] = useState(false);
   const dispatch = useDispatch();
 
   const handleClose = () => {
     setOpen(false);
   };
-
-  const createEventHandler = async (e) => {
+  const handleEditorChange = (e) => {
+    setBody(e);
+  };
+  const createNoteHandler = (e) => {
     e.preventDefault();
-    setAddedLoading(true);
-    const start = selectedStartDate.toISOString();
-    const end = selectedEndDate.toISOString();
     if (title.length === 0) {
       setTitleError(true);
       return null;
     }
-    if (description.length === 0) {
-      setDescriptionError(true);
-      return null;
-    }
-    if (start > end) return null;
-    createEvent(title, description, start, end, currentGroup).then(async () => {
-      await dispatch(searchEvents(currentGroup));
-      setAddedLoading(false);
+    createNote(title, body, currentGroup).then(async () => {
+      //   setAddedLoading(false);
     });
     setOpen(false);
   };
@@ -95,21 +84,21 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
             <CloseIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            New Event
+            New Note
           </Typography>
-          <Button autoFocus color="inherit" onClick={createEventHandler}>
+          <Button autoFocus color="inherit" onClick={createNoteHandler}>
             save
           </Button>
         </Toolbar>
       </AppBar>
-      <form className={classes.form} onSubmit={createEventHandler}>
+      <form className={classes.form} onSubmit={createNoteHandler}>
         <Grid container spacing={2}>
           <Grid container item xs={12}>
-            <Grid item xs={false} sm={4} />
-            <Grid item xs={12} sm={4} style={{ textAlign: "center" }}>
-              <Typography variant="h6">Create a new event</Typography>
+            <Grid item xs={false} sm={3} />
+            <Grid item xs={12} sm={6} style={{ textAlign: "center" }}>
+              <Typography variant="h6">Create a new note</Typography>
             </Grid>
-            <Grid item xs={false} sm={4} />
+            <Grid item xs={false} sm={3} />
           </Grid>
           <Grid container item xs={12}>
             <Grid item xs={false} sm={4} />
@@ -134,69 +123,32 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
             <Grid item xs={false} sm={4} />
           </Grid>
           <Grid container item xs={12}>
-            <Grid item xs={false} sm={4} />
-            <Grid item xs={12} sm={4} className={mobile && classes.input}>
-              <TextField
-                error={descriptionError}
-                color="primary"
-                fullWidth={true}
-                size="medium"
-                id="description"
-                label="Description*"
-                placeholder="Description*"
-                multiline
-                variant="outlined"
-                multiline={true}
-                value={description}
-                onChange={(e) => {
-                  setDescriptionError(false);
-                  setDescription(e.target.value);
+            <Grid item xs={false} sm={3} />
+            <Grid item xs={12} sm={6} className={mobile && classes.input}>
+              <Editor
+                apiKey={process.env.REACT_APP_TINY}
+                value={body}
+                init={{
+                  height: 300,
+                  menubar: false,
+                  plugins: [
+                    "advlist autolink lists link image charmap print preview anchor",
+                    "searchreplace visualblocks code fullscreen",
+                    "insertdatetime media table paste code help wordcount",
+                  ],
+                  toolbar:
+                    "undo redo | formatselect | bold italic backcolor | \
+                    alignleft aligncenter alignright alignjustify | \
+                    bullist numlist outdent indent | removeformat | help",
                 }}
+                onEditorChange={(e) => handleEditorChange(e)}
               />
             </Grid>
-            <Grid item xs={false} sm={4} />
+            <Grid item xs={false} sm={3} />
           </Grid>
           <Grid container item xs={12}>
-            <Grid item xs={false} sm={4} />
-            <Grid
-              container
-              item
-              xs={12}
-              sm={4}
-              className={mobile && classes.input}
-            >
-              <Grid item xs={6}>
-                <DateTimePicker
-                  color="primary"
-                  value={selectedStartDate}
-                  disablePast
-                  onChange={handleStartDateChange}
-                  label="From*"
-                  showTodayButton
-                  inputVariant="outlined"
-                  fullWidth={true}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <DateTimePicker
-                  color="primary"
-                  value={selectedEndDate}
-                  disablePast
-                  onChange={handleEndDateChange}
-                  label="Until*"
-                  showTodayButton
-                  inputVariant="outlined"
-                  minDate={selectedStartDate}
-                  minDateMessage="Pick a date after start date"
-                  fullWidth={true}
-                />
-              </Grid>
-            </Grid>
-            <Grid item xs={false} sm={4} />
-          </Grid>
-          <Grid container item xs={12}>
-            <Grid item xs={false} sm={4} />
-            <Grid item xs={12} sm={4} style={{ textAlign: "center" }}>
+            <Grid item xs={false} sm={3} />
+            <Grid item xs={12} sm={6} style={{ textAlign: "center" }}>
               {mobile ? (
                 <Button
                   fullWidth
@@ -213,15 +165,11 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
                 </Button>
               )}
             </Grid>
-            <Grid item xs={false} sm={4} />
+            <Grid item xs={false} sm={3} />
           </Grid>
         </Grid>
       </form>
-      {titleError || descriptionError ? (
-        <ErrorMessage message="Fill in all fields" />
-      ) : (
-        ""
-      )}
+      {titleError ? <ErrorMessage message="Fill in the title" /> : ""}
     </Dialog>
   );
 }

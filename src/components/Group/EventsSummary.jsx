@@ -124,6 +124,7 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
                 if (attendant.id === currentUserId) attending = true;
                 return null;
               });
+              if (new Date(event.start) <= new Date()) return null;
               if (index > 6) return null;
               return (
                 <EventListItem

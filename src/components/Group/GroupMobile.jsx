@@ -17,7 +17,7 @@ import ShoppingListsSummary from "./ShoppingListsSummary";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    height: "90%",
+    height: "92%",
     width: "100%",
   },
   container: {

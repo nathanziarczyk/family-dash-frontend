@@ -53,6 +53,7 @@ export default (state = initialState, { type, payload }) => {
       };
 
     case SUCCESS_EVENTS_SEARCH:
+      console.log(payload);
       return {
         ...state,
         events: payload,

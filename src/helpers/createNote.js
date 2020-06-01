@@ -1,12 +1,10 @@
 import axios from "../axios";
 
-export const createEvent = (title, description, start, end, groep) => {
+export const createNote = (title, body, groep) => {
   return axios
-    .post("/events", {
+    .post("/notes", {
       title,
-      description,
-      start,
-      end,
+      body,
       groep: `/api/groups/${groep}`,
     })
     .then((response) => true)

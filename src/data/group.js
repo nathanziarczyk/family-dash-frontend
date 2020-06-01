@@ -1,5 +1,6 @@
 import axios from "../axios";
-import { searchEvents } from "./events";
+import { successEventsSearch } from "./events";
+import { successNotesSearch } from "./notes";
 
 /* INITIAL STATE */
 export const initialState = {
@@ -25,7 +26,8 @@ export const loadGroup = (id) => (dispatch) => {
     .get(`/groups/${id}`)
     .then((response) => {
       dispatch(groupSuccessLoad(response.data));
-      dispatch(searchEvents(id));
+      dispatch(successEventsSearch(response.data.events));
+      dispatch(successNotesSearch(response.data.notes));
     })
     .catch((error) => {
       console.log(error.response);
