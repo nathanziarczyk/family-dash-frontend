@@ -5,7 +5,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import FaceIcon from "@material-ui/icons/Face";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { useDispatch } from "react-redux";
@@ -56,10 +56,17 @@ export default function MenuAppBar() {
         <Toolbar>
           <div className={classes.grow}>
             <Link to="/" className={classes.title}>
-              <Typography variant="h6">Welcome, {user.firstName}!</Typography>
+              <Typography variant="h6">FamilyDash</Typography>
             </Link>
           </div>
-          <div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h6">{user.firstName}</Typography>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -67,7 +74,7 @@ export default function MenuAppBar() {
               onClick={handleMenu}
               color="inherit"
             >
-              <AccountCircle />
+              <FaceIcon />
             </IconButton>
             <Menu
               id="menu-appbar"

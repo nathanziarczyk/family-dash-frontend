@@ -18,6 +18,7 @@ import {
 import { useSelector } from "react-redux";
 import FaceIcon from "@material-ui/icons/Face";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import Skeleton from "react-loading-skeleton";
 
 import axios from "../../axios";
 import { formatDate } from "../../helpers/formatDate";
@@ -111,14 +112,18 @@ export default function EventDetail({ props }) {
     <Grid container>
       <Grid item xs={false} md={4} />
       <Grid container justify="center" alignItems="center" item xs={12} md={4}>
-        {!loading && (
-          <Card className={classes.card}>
-            <CardHeader
-              title={event.title}
-              subheader={`${formatDate(event.start)} — ${formatDate(
-                event.end
-              )}`}
-            />
+        <Card className={classes.card}>
+          <CardHeader
+            title={loading ? <Skeleton /> : event.title}
+            subheader={
+              loading ? (
+                <Skeleton />
+              ) : (
+                `${formatDate(event.start)} — ${formatDate(event.end)}`
+              )
+            }
+          />
+          {!loading && (
             <FormControl
               className={classes.select}
               variant="outlined"
@@ -136,60 +141,72 @@ export default function EventDetail({ props }) {
                 <MenuItem value={0}>Not Going</MenuItem>
               </Select>
             </FormControl>
-            <CardContent style={{ paddingTop: 0 }}>
-              <div className={classes.detailContainer}>
-                <Typography variant="subtitle1">
-                  Created by: <b>{owner.firstName}</b>
-                </Typography>
-              </div>
-              <div className={classes.detailContainer}>
-                <Typography variant="h6">Description</Typography>
-                <Divider style={{ marginBottom: ".5em" }} />
-                <Typography>{event.description}</Typography>
-              </div>
-              <div className={classes.detailContainer}>
-                <Typography variant="h6">Attendants</Typography>
-                <Divider />
-                <List>
-                  {attendants.length === 0 ? (
-                    <ListItem>
-                      <ListItemText> No attendants</ListItemText>
-                    </ListItem>
-                  ) : (
-                    attendants.map((user) => {
-                      if (user.id === currentUserId)
-                        return (
-                          <>
-                            <ListItem>
-                              <ListItemAvatar>
-                                <FaceIcon />
-                              </ListItemAvatar>
-                              <ListItemText>
-                                <b>You</b>
-                              </ListItemText>
-                            </ListItem>
-                            <Divider variant="inset" />
-                          </>
-                        );
-                      else
-                        return (
-                          <>
-                            <ListItem divider>
-                              <ListItemAvatar>
-                                <AccountCircleIcon />
-                              </ListItemAvatar>
-                              <ListItemText>{user.firstName}</ListItemText>
-                            </ListItem>
-                            <Divider variant="inset" />
-                          </>
-                        );
-                    })
-                  )}
-                </List>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+          )}
+          <CardContent style={{ paddingTop: 0 }}>
+            <div className={classes.detailContainer}>
+              <Typography variant="subtitle1">
+                {loading ? <Skeleton /> : `Created by: ${owner.firstName}`}
+              </Typography>
+            </div>
+            <div className={classes.detailContainer}>
+              <Typography variant="h6">Description</Typography>
+              <Divider style={{ marginBottom: ".5em" }} />
+              <Typography>
+                {loading ? <Skeleton /> : event.description}
+              </Typography>
+            </div>
+            <div className={classes.detailContainer}>
+              <Typography variant="h6">Attendants</Typography>
+              <Divider />
+              <List>
+                {loading && (
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Skeleton circle={true} height={30} width={30} />
+                    </ListItemAvatar>
+                    <ListItemText>
+                      <Skeleton />
+                    </ListItemText>
+                  </ListItem>
+                )}
+                {!loading && attendants.length === 0 ? (
+                  <ListItem key={0}>
+                    <ListItemText> No attendants</ListItemText>
+                  </ListItem>
+                ) : (
+                  attendants.map((user) => {
+                    if (user.id === currentUserId)
+                      return (
+                        <div key={user.id}>
+                          <ListItem key={currentUserId}>
+                            <ListItemAvatar>
+                              <FaceIcon />
+                            </ListItemAvatar>
+                            <ListItemText>
+                              <b>You</b>
+                            </ListItemText>
+                          </ListItem>
+                          <Divider variant="inset" component="li" />
+                        </div>
+                      );
+                    else
+                      return (
+                        <div key={user.id}>
+                          <ListItem divider key={user.id}>
+                            <ListItemAvatar>
+                              <AccountCircleIcon />
+                            </ListItemAvatar>
+                            <ListItemText>{user.firstName}</ListItemText>
+                          </ListItem>
+                          <Divider variant="inset" component="li" />
+                        </div>
+                      );
+                  })
+                )}
+              </List>
+            </div>
+          </CardContent>
+        </Card>
       </Grid>
       <Grid item xs={false} md={4} />
     </Grid>

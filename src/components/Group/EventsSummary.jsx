@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import Skeleton from "react-loading-skeleton";
 
 import axios from "../../axios";
 import { searchEvents } from "../../data/events";
@@ -65,10 +66,17 @@ export default function EventsSummary({ alignCenter, mobile }) {
         .catch((error) => console.log(error.response));
     }
   };
+  const skeleton = [];
+  for (let i = 0; i < 5; i++) {
+    skeleton.push(
+      <ListItem>
+        <ListItemText primary={<Skeleton />} secondary={<Skeleton />} />
+      </ListItem>
+    );
+  }
 
   return (
     <>
-      {addedLoading || loading ? <LinearProgress color="primary" /> : ""}
       <List dense style={{ height: "80%" }}>
         <ListItem style={{ position: "relative" }}>
           <ListItemText
@@ -80,6 +88,7 @@ export default function EventsSummary({ alignCenter, mobile }) {
             </Link>
           </ListItemText>
         </ListItem>
+        {addedLoading || loading ? skeleton.map((item) => item) : ""}
         {!loading && events.length === 0 ? (
           <div className={classes.centerContainer}>
             <Typography variant="subtitle2" align="center">
