@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   select: {
-    top: "15px",
+    top: "12px",
     right: "10px",
   },
   detailContainer: {
@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 export default function EventDetail({ props }) {
   const [event, setEvent] = useState({});
   const [loading, setLoading] = useState(false);
+  const [attLoading, setAttLoading] = useState(false);
   const [attending, setAttending] = useState(false);
   const [owner, setOwner] = useState({});
   const [attendants, setAttendants] = useState([]);
@@ -95,8 +96,10 @@ export default function EventDetail({ props }) {
   };
 
   const removeAtt = () => {
+    setAttLoading(true);
     const newAtt = attendants.filter((user) => user.id !== currentUserId);
     setAttendants([...newAtt]);
+    setAttLoading(false);
   };
   const addAtt = () => {
     setAttendants([
@@ -126,6 +129,7 @@ export default function EventDetail({ props }) {
           {!loading && (
             <FormControl
               className={classes.select}
+              style={{ position: "absolute" }}
               variant="outlined"
               size="small"
             >
@@ -159,7 +163,7 @@ export default function EventDetail({ props }) {
               <Typography variant="h6">Attendants</Typography>
               <Divider />
               <List>
-                {loading && (
+                {loading || attLoading ? (
                   <ListItem>
                     <ListItemAvatar>
                       <Skeleton circle={true} height={30} width={30} />
@@ -168,8 +172,10 @@ export default function EventDetail({ props }) {
                       <Skeleton />
                     </ListItemText>
                   </ListItem>
+                ) : (
+                  ""
                 )}
-                {!loading && attendants.length === 0 ? (
+                {!loading && !attLoading && attendants.length === 0 ? (
                   <ListItem key={0}>
                     <ListItemText> No attendants</ListItemText>
                   </ListItem>

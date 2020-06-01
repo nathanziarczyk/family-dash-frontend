@@ -1,6 +1,15 @@
-import React from "react";
-import { makeStyles, Paper, Grid } from "@material-ui/core";
+import React, { useState } from "react";
+import {
+  makeStyles,
+  Paper,
+  Grid,
+  BottomNavigation,
+  BottomNavigationAction,
+} from "@material-ui/core";
 import Carousel from "react-material-ui-carousel";
+import EventIcon from "@material-ui/icons/Event";
+import NoteIcon from "@material-ui/icons/Note";
+import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 
 import EventsSummary from "./EventsSummary";
 import NotesSummary from "./NotesSummary";
@@ -8,8 +17,7 @@ import ShoppingListsSummary from "./ShoppingListsSummary";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: "1em",
-    height: "100%",
+    height: "90%",
     width: "100%",
   },
   container: {
@@ -21,20 +29,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GroupMobile(props) {
   const classes = useStyles();
+  const [value, setValue] = useState(0);
 
   // EVENTS DATA UIT PROPS HALEN
   const { events, mobile, loading } = props;
 
   return (
-    <Grid item xs={12} className={classes.carouselContainer}>
-      <Carousel
-        autoPlay={false}
-        style={{ height: "100%" }}
-        navButtonsAlwaysVisible={true}
-        indicators={false}
-        fullHeightHover={false}
-        timeout={200}
-      >
+    <Grid item xs={12}>
+      {value === 0 && (
         <Paper className={classes.paper} elevation={0}>
           <EventsSummary
             mobile={mobile}
@@ -43,13 +45,35 @@ export default function GroupMobile(props) {
             alignCenter={true}
           />
         </Paper>
+      )}
+
+      {value === 1 && (
         <Paper className={classes.paper} elevation={0}>
           <ShoppingListsSummary mobile={mobile} alignCenter={true} />
         </Paper>
+      )}
+
+      {value === 2 && (
         <Paper className={classes.paper} elevation={0}>
           <NotesSummary mobile={mobile} alignCenter={true} />
         </Paper>
-      </Carousel>
+      )}
+
+      <BottomNavigation
+        value={value}
+        onChange={(event, newValue) => {
+          setValue(newValue);
+        }}
+        showLabels
+        className={classes.root}
+      >
+        <BottomNavigationAction label="Events" icon={<EventIcon />} />
+        <BottomNavigationAction
+          label="Shopping Lists"
+          icon={<ShoppingBasketIcon />}
+        />
+        <BottomNavigationAction label="Notes" icon={<NoteIcon />} />
+      </BottomNavigation>
     </Grid>
   );
 }

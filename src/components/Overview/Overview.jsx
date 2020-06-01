@@ -4,7 +4,6 @@ import {
   Paper,
   makeStyles,
   Typography,
-  CircularProgress,
   Badge,
   useTheme,
   useMediaQuery,

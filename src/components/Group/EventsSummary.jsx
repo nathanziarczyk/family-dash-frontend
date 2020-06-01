@@ -7,10 +7,12 @@ import {
   makeStyles,
   LinearProgress,
   Button,
+  IconButton,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Skeleton from "react-loading-skeleton";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 import axios from "../../axios";
 import { searchEvents } from "../../data/events";
@@ -77,7 +79,7 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
 
   return (
     <>
-      <List dense style={{ height: "80%" }}>
+      <List dense style={{ height: "80%", position: "relative" }}>
         <ListItem style={{ position: "relative" }}>
           <ListItemText
             className={alignCenter === true ? classes.centerText : ""}
@@ -105,17 +107,13 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
         )}
         {mobile &&
           (!loading && !groupLoading && events.length > 0 ? (
-            <div className={classes.addButtonContainer}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => setAddEventOpen(true)}
-                fullWidth={true}
-                style={{ borderRadius: 0 }}
-              >
-                Add Event
-              </Button>
-            </div>
+            <IconButton
+              color="primary"
+              onClick={() => setAddEventOpen(true)}
+              style={{ position: "absolute", right: "20px", top: "3px" }}
+            >
+              <AddCircleIcon fontSize="large" />
+            </IconButton>
           ) : (
             ""
           ))}
