@@ -18,6 +18,7 @@ import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
 import SearchIcon from "@material-ui/icons/Search";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../axios";
+import Skeleton from "react-loading-skeleton";
 
 import { newGroup } from "../../data/groups";
 import SuccessMessage from "../Messages/SuccessMessage";
@@ -182,9 +183,14 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
               }}
             />
             {usersInput.length > 1 ? (
-              <List dense className={classes.addedUsersList}>
+              <List dense className={!mobile && classes.addedUsersList}>
                 {suggestionsLoading ? (
-                  <CircularProgress />
+                  <ListItem>
+                    <ListItemText
+                      primary={<Skeleton width={200} />}
+                      secondary={<Skeleton width={100} />}
+                    />
+                  </ListItem>
                 ) : (
                   suggestions.map((user) => (
                     <ListItem
@@ -213,7 +219,7 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
           </form>
 
           {users.length > 0 && (
-            <List dense className={classes.addedUsersList}>
+            <List dense className={!mobile && classes.addedUsersList}>
               <ListItem key={1}>
                 <ListItemText>
                   <b>Added users</b>

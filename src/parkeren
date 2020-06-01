@@ -10,9 +10,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  AppBar,
-  Tabs,
-  Tab,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -79,7 +76,7 @@ export default function Overview() {
   const classes = useStyles();
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const [value, setValue] = useState(0);
+
   // STATE VOOR TABS
   const [showGroups, setShowGroups] = useState(true);
   const [showInvitations, setShowInvitations] = useState(false);
@@ -96,9 +93,6 @@ export default function Overview() {
     dispatch(getGroups());
   }, [dispatch]);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
   return (
     <>
       <Helmet>
@@ -106,13 +100,49 @@ export default function Overview() {
       </Helmet>
       <Grid item xs={false} sm={3} />
       <Grid item xs={12} sm={6} className={classes.flexContainer}>
-        <AppBar position="static" color="transparent" elevation={1}>
-          <Tabs value={value} onChange={handleChange} centered>
-            <Tab value={0} label="Groups" wrapped />
-            <Tab value={1} label="Invitations" wrapped />
-            <Tab value={2} label="New group" wrapped />
-          </Tabs>
-        </AppBar>
+        <div className={mobile ? classes.mobileTabs : ""}>
+          <Badge className={classes.badge}>
+            <Typography
+              onClick={() => {
+                setShowGroups(true);
+                setShowInvitations(false);
+                setShowNewGroup(false);
+              }}
+              className={showGroups ? classes.active : classes.notActive}
+            >
+              Your Groups
+            </Typography>
+          </Badge>
+          <Badge
+            badgeContent={invitations.length}
+            color="error"
+            invisible={invitations.length === 0}
+            className={classes.badge}
+          >
+            <Typography
+              onClick={() => {
+                setShowInvitations(true);
+                setShowGroups(false);
+                setShowNewGroup(false);
+              }}
+              className={showInvitations ? classes.active : classes.notActive}
+            >
+              Your Invitations
+            </Typography>
+          </Badge>
+          <Badge className={classes.badge}>
+            <Typography
+              onClick={() => {
+                setShowNewGroup(true);
+                setShowInvitations(false);
+                setShowGroups(false);
+              }}
+              className={showNewGroup ? classes.active : classes.notActive}
+            >
+              <AddCircleOutlineIcon fontSize="small" />
+            </Typography>
+          </Badge>
+        </div>
         <Paper elevation={mobile ? 0 : 3} className={classes.paper}>
           {loading && (
             <List>
@@ -134,17 +164,17 @@ export default function Overview() {
             </div>
           ) : (
             <>
-              {value === 0 && (
+              {showGroups && (
                 <GroupList groups={groups} loading={loading} error={error} />
               )}
-              {value === 1 && (
+              {showInvitations && (
                 <InvitationList
                   invitations={invitations}
                   loading={loading}
                   error={error}
                 />
               )}
-              {value === 2 && (
+              {showNewGroup && (
                 <NewGroupForm
                   loading={loading}
                   error={error}

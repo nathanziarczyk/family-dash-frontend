@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
   form: {
     paddingTop: theme.spacing(2),
   },
+  input: {
+    padding: "0 .8em",
+  },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -111,7 +114,7 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
           </Grid>
           <Grid container item xs={12}>
             <Grid item xs={false} sm={4} />
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={4} className={mobile && classes.input}>
               <TextField
                 color="primary"
                 error={titleError}
@@ -133,7 +136,7 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
           </Grid>
           <Grid container item xs={12}>
             <Grid item xs={false} sm={4} />
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={4} className={mobile && classes.input}>
               <TextField
                 error={descriptionError}
                 color="primary"
@@ -156,7 +159,13 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
           </Grid>
           <Grid container item xs={12}>
             <Grid item xs={false} sm={4} />
-            <Grid container item xs={12} sm={4}>
+            <Grid
+              container
+              item
+              xs={12}
+              sm={4}
+              className={mobile && classes.input}
+            >
               <Grid item xs={6}>
                 <DateTimePicker
                   color="primary"
