@@ -5,10 +5,7 @@ import {
   ListItemText,
   Typography,
   makeStyles,
-  IconButton,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import HomeIcon from "@material-ui/icons/Home";
 
 const useStyles = makeStyles((theme) => ({
   centerText: { textAlign: "center" },

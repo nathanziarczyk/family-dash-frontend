@@ -11,7 +11,6 @@ import Slide from "@material-ui/core/Slide";
 import { TextField, Grid, useMediaQuery } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 import { useSelector, useDispatch } from "react-redux";
-import { Helmet } from "react-helmet-async";
 
 import { searchEvents } from "../../data/events";
 import { createEvent } from "../../helpers/createEvent";
@@ -49,10 +48,6 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
   const [descriptionError, setDescriptionError] = useState(false);
   const [titleError, setTitleError] = useState(false);
   const dispatch = useDispatch();
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     setOpen(false);
@@ -162,7 +157,7 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
           <Grid container item xs={12}>
             <Grid item xs={false} sm={4} />
             <Grid container item xs={12} sm={4}>
-              <Grid item spacing={1} xs={6}>
+              <Grid item xs={6}>
                 <DateTimePicker
                   color="primary"
                   value={selectedStartDate}

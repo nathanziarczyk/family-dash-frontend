@@ -36,7 +36,7 @@ export default function Group({ props }) {
   const classes = useStyles();
 
   // GROUP EN EVENT DATA UIT REDUX STORE HALEN
-  const { name, loading, error } = useSelector((state) => state.group);
+  const { name, loading } = useSelector((state) => state.group);
 
   useEffect(() => {
     dispatch(loadGroup(props.match.params.id));

@@ -5,7 +5,6 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Collapse,
   Typography,
   Divider,
   FormControl,
@@ -43,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EventDetail({ props }) {
   const [event, setEvent] = useState({});
-  const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [attending, setAttending] = useState(false);
   const [owner, setOwner] = useState({});
@@ -51,6 +49,7 @@ export default function EventDetail({ props }) {
   const currentUserId = useSelector((state) => state.user.user.id);
   const currentUserFn = useSelector((state) => state.user.user.firstName);
   const classes = useStyles();
+  const id = props.match.params.id;
   useEffect(() => {
     setLoading(true);
     axios
@@ -61,7 +60,7 @@ export default function EventDetail({ props }) {
       })
       .catch(() => console.log(""))
       .finally(() => setLoading(false));
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (Object.keys(event).length > 0) {
@@ -71,7 +70,7 @@ export default function EventDetail({ props }) {
         return null;
       });
     }
-  }, [event]);
+  }, [event, currentUserId]);
   const handleAttending = (bool) => {
     if (bool === 0) {
       axios
@@ -108,8 +107,6 @@ export default function EventDetail({ props }) {
     ]);
   };
 
-  const id = props.match.params.id;
-  console.log(owner);
   return (
     <Grid container>
       <Grid item xs={false} md={4} />
@@ -191,7 +188,6 @@ export default function EventDetail({ props }) {
                 </List>
               </div>
             </CardContent>
-            <Collapse in={expanded}></Collapse>
           </Card>
         )}
       </Grid>

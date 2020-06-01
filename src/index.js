@@ -11,8 +11,6 @@ import { HelmetProvider } from "react-helmet-async";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 
-import "./styles.scss";
-
 ReactDOM.render(
   <MuiPickersUtilsProvider utils={DateFnsUtils}>
     <BrowserRouter>

@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, Paper, Grid, IconButton } from "@material-ui/core";
+import { makeStyles, Paper, Grid } from "@material-ui/core";
 import Carousel from "react-material-ui-carousel";
 
 import EventsSummary from "./EventsSummary";

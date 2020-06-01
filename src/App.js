@@ -4,13 +4,14 @@ import { useSelector } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
-import NotFound from "./components/ReUsable/NotFound";
 import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Overview from "./components/Overview/Overview";
 import Layout from "./components/Layout/Layout";
 import Group from "./components/Group/Group";
 import Calendar from "./components/Calendar/Calendar";
-import EventDetail from "./components/ReUsable/EventDetail";
+import EventDetail from "./components/Detail/EventDetail";
+
+import "./styles.scss";
 
 function App() {
   const themeData = useSelector((state) => state.theme);
@@ -78,7 +79,6 @@ function App() {
           );
         }}
       />
-      {/* <Route render={() => <NotFound />} /> */}
     </ThemeProvider>
   );
 }

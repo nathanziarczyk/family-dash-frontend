@@ -12,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { logoutUser } from "./../../data/user";
-import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -5,13 +5,11 @@ import {
   ListItemText,
   Typography,
   makeStyles,
-  IconButton,
   LinearProgress,
   Button,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import HomeIcon from "@material-ui/icons/Home";
 
 import axios from "../../axios";
 import { searchEvents } from "../../data/events";

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Grid,
   makeStyles,
@@ -8,12 +8,10 @@ import {
 } from "@material-ui/core";
 import FullCalendar from "@fullcalendar/react";
 import listPlugin from "@fullcalendar/list";
-import dayGridPlugin from "@fullcalendar/daygrid";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import AddEventModal from "../ReUsable/AddEventModal";
-import EventDialog from "../ReUsable/EventDialog";
 
 import "./main.scss";
 
@@ -29,13 +27,11 @@ export default function Calendar() {
   const { events, loading } = useSelector((state) => state.events);
   const [addedLoading, setAddedLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [eventDialogOpen, setEventDialogOpen] = useState(false);
-  const [eventArgs, setEventArgs] = useState({});
   const history = useHistory();
 
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const openEventDialog = (e) => {
+  const handleEventClick = (e) => {
     const idArr = e.event["_def"]["extendedProps"]["@id"].split("/");
     const id = idArr[idArr.length - 1];
     history.push(`/event/${id}`);
@@ -43,7 +39,7 @@ export default function Calendar() {
 
   return (
     <>
-      <Grid container className={classes.gridContainer + " " + "calendar"}>
+      <Grid container className={classes.gridContainer + " calendar"}>
         <Grid item xs={false} sm={2} />
         <Grid
           item
@@ -69,7 +65,7 @@ export default function Calendar() {
               height="parent"
               themeSystem="regular"
               events={events}
-              eventClick={(arg) => openEventDialog(arg)}
+              eventClick={(arg) => handleEventClick(arg)}
               views={{
                 listDay: { buttonText: "Day" },
                 listWeek: { buttonText: "Week" },
@@ -91,11 +87,6 @@ export default function Calendar() {
         setOpen={setModalOpen}
         setAddedLoading={setAddedLoading}
         date={""}
-      />
-      <EventDialog
-        setOpen={setEventDialogOpen}
-        open={eventDialogOpen}
-        event={eventDialogOpen && eventArgs.event}
       />
     </>
   );
