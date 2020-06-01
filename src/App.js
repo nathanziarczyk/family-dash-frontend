@@ -10,6 +10,7 @@ import Overview from "./components/Overview/Overview";
 import Layout from "./components/Layout/Layout";
 import Group from "./components/Group/Group";
 import Calendar from "./components/Calendar/Calendar";
+import EventDetail from "./components/ReUsable/EventDetail";
 
 function App() {
   const themeData = useSelector((state) => state.theme);
@@ -61,6 +62,18 @@ function App() {
           ) : (
             <Layout>
               <Calendar props={props} />
+            </Layout>
+          );
+        }}
+      />
+      <Route
+        path="/event/:id"
+        render={(props) => {
+          return !loggedIn ? (
+            <Redirect to="/" />
+          ) : (
+            <Layout>
+              <EventDetail props={props} />
             </Layout>
           );
         }}

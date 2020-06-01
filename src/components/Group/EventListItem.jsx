@@ -11,13 +11,22 @@ import {
 import EventDialog from "../ReUsable/EventDialog";
 
 import { formatDate } from "../../helpers/formatDate";
+import { useHistory } from "react-router-dom";
 
 export default function EventListItem({ event, attending, handleAttending }) {
+  const history = useHistory();
   const [open, setOpen] = useState(false);
   const type = attending ? "remove" : "add";
+  const eventArr = event["@id"].split("/");
+  const eventId = eventArr[eventArr.length - 1];
+  console.log(event);
   return (
     <>
-      <ListItem key={event["@id"]} button onClick={() => setOpen(true)}>
+      <ListItem
+        key={event["@id"]}
+        button
+        onClick={() => history.push(`/event/${eventId}`)}
+      >
         <ListItemText
           primary={event.title}
           secondary={formatDate(event.start)}

@@ -9,33 +9,27 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
   },
   childrenContainerMobile: {
-    height: "calc(100vh - 64px)",
+    height: "calc(100vh - 56px)",
     margin: 0,
   },
 }));
 
 export default function Layout({ children }) {
   const theme = useTheme();
-  const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
-  const [width, setWidth] = useState(window.innerWidth);
-  window.addEventListener("resize", (e) => {
-    setWidth(window.innerWidth);
-  });
   return (
     <>
       <Header />
       <Grid
         container
         className={
-          matchesSM
-            ? classes.childrenContainerMobile
-            : classes.childrenContainer
+          mobile ? classes.childrenContainerMobile : classes.childrenContainer
         }
       >
         {children}
       </Grid>
-      {width > 600 && <Footer />}
+      {!mobile && <Footer />}
     </>
   );
 }

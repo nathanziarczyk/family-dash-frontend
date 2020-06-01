@@ -10,6 +10,7 @@ import FullCalendar from "@fullcalendar/react";
 import listPlugin from "@fullcalendar/list";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import AddEventModal from "../ReUsable/AddEventModal";
 import EventDialog from "../ReUsable/EventDialog";
@@ -30,20 +31,14 @@ export default function Calendar() {
   const [modalOpen, setModalOpen] = useState(false);
   const [eventDialogOpen, setEventDialogOpen] = useState(false);
   const [eventArgs, setEventArgs] = useState({});
+  const history = useHistory();
 
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const openEventDialog = (e) => {
-    const event = {
-      title: e.event["_def"]["title"],
-      ...e.event["_def"]["extendedProps"],
-    };
-    console.log(e);
-    setEventArgs({
-      event,
-    });
-    setEventDialogOpen(true);
-    return null;
+    const idArr = e.event["_def"]["extendedProps"]["@id"].split("/");
+    const id = idArr[idArr.length - 1];
+    history.push(`/event/${id}`);
   };
 
   return (

@@ -26,9 +26,11 @@ instance.interceptors.response.use(
   },
   function (error) {
     const originalRequest = error.config;
+    console.log(originalRequest);
     if (
       error.response.status === 401 &&
-      originalRequest.url === "http://wdev.be/wdev_nathan/api/token/refresh"
+      originalRequest.url ===
+        "http://wdev.be/wdev_nathan/eindwerk/api/token/refresh"
     ) {
       // TODO: LOGOUT
       window.history.push("/logout");
