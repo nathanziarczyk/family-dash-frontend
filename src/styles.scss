@@ -10,3 +10,7 @@ a {
 .MuiDialog-paper {
   overflow-y: inherit !important;
 }
+
+.MuiGrid-grid-xs-12 {
+  max-width: none !important;
+}

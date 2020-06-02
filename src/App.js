@@ -37,7 +37,7 @@ function App() {
           return !loggedIn ? (
             <Redirect to="/" />
           ) : (
-            <Layout>
+            <Layout group={false}>
               <Overview />
             </Layout>
           );

@@ -107,7 +107,12 @@ export default function Overview() {
       <Grid item xs={false} sm={3} />
       <Grid item xs={12} sm={6} className={classes.flexContainer}>
         <AppBar position="static" color="transparent" elevation={1}>
-          <Tabs value={value} onChange={handleChange} centered>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            indicatorColor="primary"
+            centered
+          >
             <Tab value={0} label="Groups" wrapped />
             <Tab value={1} label="Invitations" wrapped />
             <Tab value={2} label="New group" wrapped />

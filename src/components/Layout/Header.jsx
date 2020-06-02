@@ -10,6 +10,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import GroupIcon from "@material-ui/icons/Group";
+import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import CancelIcon from "@material-ui/icons/Cancel";
+import GroupAddIcon from "@material-ui/icons/GroupAdd";
 
 import { logoutUser } from "./../../data/user";
 
@@ -26,23 +31,35 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
   },
   grow: {
-    flexGrow: 1,
     display: "flex",
   },
 }));
 
-export default function MenuAppBar() {
+export default function MenuAppBar({ group, mobile }) {
   const user = useSelector((state) => state.user.user);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorElGroup, setAnchorElGroup] = React.useState(null);
   const dispatch = useDispatch();
   const open = Boolean(anchorEl);
+  const openGroup = Boolean(anchorElGroup);
+
+  const currentGroup = useSelector((state) => state.group);
+
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleGroupMenu = (event) => {
+    setAnchorElGroup(event.currentTarget);
+  };
+
+  const handleGroupClose = () => {
+    setAnchorElGroup(null);
   };
 
   const handleLogoutClick = () => {
@@ -53,12 +70,63 @@ export default function MenuAppBar() {
   return (
     <div className={classes.root}>
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
           <div className={classes.grow}>
             <Link to="/" className={classes.title}>
               <Typography variant="h6">FamilyDash</Typography>
             </Link>
           </div>
+          {group && (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                }}
+                onClick={handleGroupMenu}
+              >
+                <GroupIcon style={{ marginRight: !mobile && ".5em" }} />
+                {!mobile && (
+                  <Typography
+                    variant="subtitle2"
+                    style={{ display: "flex", alignItems: "flex-end" }}
+                  >
+                    {currentGroup.name}
+                  </Typography>
+                )}
+                {openGroup ? <ArrowDropDownIcon /> : <ArrowLeftIcon />}
+              </div>
+              <Menu
+                id="menu-appbar"
+                style={{ padding: "1em", width: "100%" }}
+                anchorEl={anchorElGroup}
+                getContentAnchorEl={null}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                transformOrigin={{ vertical: "top", horizontal: "center" }}
+                open={openGroup}
+                onClose={handleGroupClose}
+              >
+                <MenuItem button={false}>
+                  <Typography variant="subtitle2">
+                    Current group <br />
+                    <b>{currentGroup.name}</b>
+                  </Typography>
+                </MenuItem>
+                <MenuItem onClick={(e) => console.log(e)}>
+                  <GroupAddIcon
+                    color="primary"
+                    style={{ marginRight: ".5em" }}
+                  />
+                  <Typography variant="body2">Add member</Typography>
+                </MenuItem>
+                <MenuItem onClick={(e) => console.log(e)}>
+                  <CancelIcon color="error" style={{ marginRight: ".5em" }} />
+                  <Typography variant="body2">Leave group</Typography>
+                </MenuItem>
+              </Menu>
+            </>
+          )}
           <div
             style={{
               display: "flex",
@@ -78,6 +146,7 @@ export default function MenuAppBar() {
             </IconButton>
             <Menu
               id="menu-appbar"
+              style={{ padding: "1em" }}
               anchorEl={anchorEl}
               anchorOrigin={{
                 vertical: "top",
@@ -91,7 +160,14 @@ export default function MenuAppBar() {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem button={false}>
+                <Typography variant="subtitle2">
+                  Logged in as <br />
+                  <b>
+                    {user.firstName} {user.lastName}
+                  </b>
+                </Typography>
+              </MenuItem>
               <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
             </Menu>
           </div>

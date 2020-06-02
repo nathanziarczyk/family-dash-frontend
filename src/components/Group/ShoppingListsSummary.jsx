@@ -6,9 +6,19 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   centerText: { textAlign: "center" },
+  title: {
+    position: "absolute",
+    top: "-15px",
+    left: "5px",
+    backgroundColor: "white",
+    display: "flex",
+    alignItems: "center",
+    width: "97%",
+  },
 }));
 
 export default function ShoppingListsSummary({ alignCenter, mobile }) {
@@ -17,14 +27,28 @@ export default function ShoppingListsSummary({ alignCenter, mobile }) {
   return (
     <>
       <List>
-        <ListItem style={{ position: "relative" }}>
-          <ListItemText
-            className={alignCenter === true ? classes.centerText : ""}
-          >
-            <Typography variant="h5">Shopping Lists</Typography>
-            <Typography variant="subtitle2">Show all</Typography>
-          </ListItemText>
-        </ListItem>
+        {mobile ? (
+          <ListItem>
+            <ListItemText
+              className={alignCenter === true ? classes.centerText : ""}
+            >
+              <Typography variant="h5">Shopping Lists</Typography>
+              <Link to="/notes" className="underlined">
+                <Typography variant="subtitle2">All shopping lists</Typography>
+              </Link>
+            </ListItemText>
+          </ListItem>
+        ) : (
+          <div className={classes.title}>
+            <Typography variant="h5" style={{ flexGrow: 1 }}>
+              Shopping Lists
+            </Typography>
+            <Link to="/notes" className="underlined">
+              <Typography variant="subtitle2">All shopping lists</Typography>
+            </Link>
+          </div>
+        )}
+        <div style={{ marginTop: ".8em" }}></div>
       </List>
     </>
   );

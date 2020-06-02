@@ -195,7 +195,7 @@ export default function EventDetail({ props }) {
                     else
                       return (
                         <div key={user.id}>
-                          <ListItem divider key={user.id}>
+                          <ListItem key={user.id}>
                             <ListItemAvatar>
                               <AccountCircleIcon />
                             </ListItemAvatar>
