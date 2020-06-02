@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import NoteListItem from "./NoteListItem";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import Skeleton from "react-loading-skeleton";
 
 const useStyles = makeStyles((theme) => ({
   centerText: { textAlign: "center" },
@@ -26,16 +27,31 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     width: "97%",
   },
+  addButtonContainer: {
+    width: "100%",
+    textAlign: "center",
+  },
 }));
 
 export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const { notes, loading, error } = useSelector((state) => state.notes);
-  console.log(groupLoading);
+
+  const skeleton = [];
+  for (let i = 0; i < 3; i++) {
+    skeleton.push(
+      <ListItem>
+        <ListItemText
+          primary={<Skeleton width={400} />}
+          secondary={<Skeleton width={200} />}
+        />
+      </ListItem>
+    );
+  }
   return (
     <>
-      <List dense style={{ position: "relative" }}>
+      <List dense style={{ position: "relative", height: "80%" }}>
         {mobile ? (
           <>
             <ListItem>
@@ -70,27 +86,48 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
             </Link>
           </div>
         )}
+        <div style={{ marginTop: ".8em" }}>
+          {!loading &&
+            !groupLoading &&
+            (notes.length > 0 ? (
+              <>
+                {notes.map((note, i) => {
+                  if (i > 2) return null;
+                  return (
+                    <NoteListItem
+                      note={note}
+                      groupLoading={loading}
+                      mobile={mobile}
+                    />
+                  );
+                })}
+              </>
+            ) : (
+              <div margin>
+                <Typography variant="subtitle2" align="center">
+                  You have no notes yet! <br />
+                  <Button color="primary" onClick={() => setOpen(true)}>
+                    Create note
+                  </Button>
+                </Typography>
+              </div>
+            ))}
+          {loading || groupLoading ? skeleton.map((e) => e) : ""}
+        </div>
       </List>
-      <Grid
-        item
-        container
-        spacing={1}
-        xs={12}
-        style={{ height: mobile ? "70%" : "97%" }}
-      >
-        {notes.map((note, i) => {
-          if (i > 2) return null;
-          return (
-            <Grid item xs={12} sm={6}>
-              <NoteListItem
-                note={note}
-                groupLoading={loading}
-                mobile={mobile}
-              />
-            </Grid>
-          );
-        })}
-      </Grid>
+      {!loading && !groupLoading && !mobile && notes.length > 0 ? (
+        <div className={classes.addButtonContainer}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setOpen(true)}
+          >
+            Add note
+          </Button>
+        </div>
+      ) : (
+        ""
+      )}
       <AddNoteModal open={open} setOpen={setOpen} />
     </>
   );

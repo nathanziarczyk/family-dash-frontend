@@ -50,16 +50,19 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
   const [addedLoading, setAddedLoading] = useState(false);
 
   const skeleton = [];
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 3; i++) {
     skeleton.push(
       <ListItem>
-        <ListItemText primary={<Skeleton />} secondary={<Skeleton />} />
+        <ListItemText
+          primary={<Skeleton width={400} />}
+          secondary={<Skeleton width={200} />}
+        />
       </ListItem>
     );
   }
   return (
     <>
-      <List dense style={{ height: "80%", position: "relative" }}>
+      <List dense style={{ height: "85%", position: "relative" }}>
         {mobile ? (
           <ListItem>
             <ListItemText
@@ -118,7 +121,7 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
                   return null;
                 });
                 if (new Date(event.start) <= new Date()) return null;
-                if (index > 6) return null;
+                if (index > 7) return null;
                 if (event.user.id === currentUserId) owner = true;
                 return (
                   <EventListItem
