@@ -125,7 +125,7 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
                 if (event.user.id === currentUserId) owner = true;
                 return (
                   <EventListItem
-                    key={event["@id"]}
+                    key={event.id}
                     event={event}
                     attending={attending}
                     owner={owner}

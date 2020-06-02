@@ -32,8 +32,8 @@ export default function Calendar() {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const handleEventClick = (e) => {
-    const idArr = e.event["_def"]["extendedProps"]["@id"].split("/");
-    const id = idArr[idArr.length - 1];
+    console.log(e);
+    const id = e.event["_def"]["publicId"];
     history.push(`/event/${id}`);
   };
 

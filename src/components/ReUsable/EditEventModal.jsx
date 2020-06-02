@@ -13,7 +13,7 @@ import { DateTimePicker } from "@material-ui/pickers";
 import { useSelector, useDispatch } from "react-redux";
 
 import { searchEvents } from "../../data/events";
-import { createEvent } from "../../helpers/createEvent";
+import { editEvent } from "../../helpers/editEvent";
 import ErrorMessage from "../Messages/ErrorMessage";
 
 const useStyles = makeStyles((theme) => ({
@@ -36,13 +36,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AddEventModal({ open, setOpen, setAddedLoading }) {
+export default function AddEventModal({
+  open,
+  setOpen,
+  setEditedLoading,
+  event,
+}) {
   const currentGroup = useSelector((state) => state.group.id);
   const classes = useStyles();
-  const [selectedStartDate, handleStartDateChange] = useState(new Date());
-  const [selectedEndDate, handleEndDateChange] = useState(new Date());
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [selectedStartDate, handleStartDateChange] = useState(
+    new Date(event.start)
+  );
+  const [selectedEndDate, handleEndDateChange] = useState(new Date(event.end));
+  const [title, setTitle] = useState(event.title);
+  const [description, setDescription] = useState(event.description);
 
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -58,7 +65,7 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
 
   const createEventHandler = async (e) => {
     e.preventDefault();
-    setAddedLoading(true);
+    // setEditedLoading(true);
     const start = selectedStartDate.toISOString();
     const end = selectedEndDate.toISOString();
     if (title.length === 0) {
@@ -70,9 +77,9 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
       return null;
     }
     if (start > end) return null;
-    createEvent(title, description, start, end, currentGroup).then(async () => {
+    editEvent(title, description, start, end, event.id).then(async () => {
       await dispatch(searchEvents(currentGroup));
-      setAddedLoading(false);
+      //   setEditedLoading(false);
     });
     setOpen(false);
   };
@@ -95,7 +102,7 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
             <CloseIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            New Event
+            Edit Event
           </Typography>
           <Button autoFocus color="inherit" onClick={createEventHandler}>
             save
@@ -107,7 +114,7 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
           <Grid container item xs={12}>
             <Grid item xs={false} sm={4} />
             <Grid item xs={12} sm={4} style={{ textAlign: "center" }}>
-              <Typography variant="h6">Create a new event</Typography>
+              <Typography variant="h6">Edit event</Typography>
             </Grid>
             <Grid item xs={false} sm={4} />
           </Grid>
@@ -208,11 +215,11 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
                   color="primary"
                   style={{ borderRadius: 0 }}
                 >
-                  create event
+                  edit event
                 </Button>
               ) : (
                 <Button type="submit" variant="contained" color="primary">
-                  create event
+                  edit event
                 </Button>
               )}
             </Grid>
