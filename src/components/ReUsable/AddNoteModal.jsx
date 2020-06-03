@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Editor } from "@tinymce/tinymce-react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -14,6 +14,7 @@ import { TextField, Grid, useMediaQuery } from "@material-ui/core";
 
 import ErrorMessage from "../Messages/ErrorMessage";
 import { createNote } from "../../helpers/createNote";
+import { getNotes } from "../../data/notes";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -41,6 +42,8 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
+  const dispatch = useDispatch();
+
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -55,6 +58,7 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
   };
   const createNoteHandler = (e) => {
     e.preventDefault();
+    setAddedLoading(true);
     if (title.length === 0) {
       setTitleError(true);
       return null;
@@ -64,7 +68,8 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
       return null;
     }
     createNote(title, body, currentGroup).then(async () => {
-      //   setAddedLoading(false);
+      await dispatch(getNotes(currentGroup));
+      setAddedLoading(false);
     });
     setOpen(false);
   };

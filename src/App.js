@@ -8,8 +8,10 @@ import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Overview from "./components/Overview/Overview";
 import Layout from "./components/Layout/Layout";
 import Group from "./components/Group/Group";
-import Calendar from "./components/Calendar/Calendar";
+import Calendar from "./components/Detail/Calendar/Calendar";
 import EventDetail from "./components/Detail/EventDetail";
+import Notes from "./components/Detail/Notes";
+import NoteDetail from "./components/Detail/NoteDetail";
 
 import "./styles.scss";
 
@@ -74,6 +76,18 @@ function App() {
           ) : (
             <Layout>
               <EventDetail props={props} />
+            </Layout>
+          );
+        }}
+      />
+      <Route
+        path="/notes"
+        render={(props) => {
+          return !loggedIn ? (
+            <Redirect to="/" />
+          ) : (
+            <Layout>
+              <Notes props={props} />
             </Layout>
           );
         }}

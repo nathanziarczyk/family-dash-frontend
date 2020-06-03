@@ -18,7 +18,10 @@ export const ERROR_NOTES_SEARCH = "ERROR_NOTES_SEARCH";
 // ACTION CREATORS
 export const getNotes = (groupId) => (dispatch) => {
   dispatch(startNotesSearch());
-  axios.get(`/groups/${groupId}`).then(console.log).catch(console.log);
+  axios
+    .get(`/groups/${groupId}`)
+    .then((response) => dispatch(successNotesSearch(response.data.notes)))
+    .catch((error) => dispatch(errorNotesSearch()));
 };
 
 export const startNotesSearch = () => ({
@@ -40,7 +43,7 @@ export default (state = initialState, { type, payload }) => {
     case START_NOTES_SEARCH:
       return {
         ...state,
-        loading: false,
+        loading: true,
         error: {
           bool: false,
           msg: "",
@@ -62,7 +65,8 @@ export default (state = initialState, { type, payload }) => {
         loading: false,
         error: {
           bool: true,
-          msg: "Error",
+          msg:
+            "Something went wrong, try signing in again if you keep having problems. /n Sorry for the inconvenience",
         },
       };
     default:

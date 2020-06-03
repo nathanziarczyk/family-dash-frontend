@@ -48,6 +48,9 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
   // NOTES, LOADING & ERROR UIT STORE
   const { notes, loading } = useSelector((state) => state.notes);
 
+  //
+  const [addedLoading, setAddedLoading] = useState(false);
+
   // SKELETON LOADING
   const skeleton = [];
   for (let i = 0; i < 3; i++) {
@@ -62,7 +65,7 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
   }
   return (
     <>
-      <List dense style={{ position: "relative", height: "80%" }}>
+      <List dense style={{ position: "relative", height: "70%" }}>
         {mobile ? (
           <>
             <ListItem>
@@ -97,7 +100,7 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
             </Link>
           </div>
         )}
-        {!loading && !groupLoading && notes.length <= 0 && (
+        {!loading && !groupLoading && !addedLoading && notes.length <= 0 && (
           <div className={classes.centerContainer}>
             <Typography variant="subtitle2" align="center">
               You have no notes yet! <br />
@@ -108,7 +111,7 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
           </div>
         )}
         <div style={{ marginTop: ".8em" }}>
-          {!loading && !groupLoading && notes.length > 0 && (
+          {!loading && !groupLoading && !addedLoading && notes.length > 0 && (
             <>
               {notes.map((note, i) => {
                 if (i > 2) return null;
@@ -122,21 +125,31 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
               })}
             </>
           )}
-          {loading || groupLoading ? skeleton.map((e) => e) : ""}
+          {loading || groupLoading || addedLoading
+            ? skeleton.map((e) => e)
+            : ""}
         </div>
       </List>
-      {!loading && !groupLoading && !mobile && notes.length > 0 && (
-        <div className={classes.addButtonContainer}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setOpen(true)}
-          >
-            Add note
-          </Button>
-        </div>
-      )}
-      <AddNoteModal open={open} setOpen={setOpen} />
+      {!loading &&
+        !groupLoading &&
+        !addedLoading &&
+        !mobile &&
+        notes.length > 0 && (
+          <div className={classes.addButtonContainer}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setOpen(true)}
+            >
+              Add note
+            </Button>
+          </div>
+        )}
+      <AddNoteModal
+        open={open}
+        setOpen={setOpen}
+        setAddedLoading={setAddedLoading}
+      />
     </>
   );
 }

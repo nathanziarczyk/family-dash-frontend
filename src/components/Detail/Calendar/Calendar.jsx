@@ -11,7 +11,7 @@ import listPlugin from "@fullcalendar/list";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import AddEventModal from "../ReUsable/AddEventModal";
+import AddEventModal from "../../ReUsable/AddEventModal";
 
 import "./main.scss";
 

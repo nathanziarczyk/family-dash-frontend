@@ -32,8 +32,8 @@ export default function GroupMobile(props) {
   // STATE VOOR TABS BOTTOM NAV
   const [value, setValue] = useState(0);
 
-  // EVENTS DATA UIT PROPS HALEN
-  const { events, mobile, loading } = props;
+  // DATA UIT PROPS HALEN
+  const { mobile, loading } = props;
 
   return (
     <Grid item xs={12}>
@@ -41,8 +41,7 @@ export default function GroupMobile(props) {
         <Paper className={classes.paper} elevation={0}>
           <EventsSummary
             mobile={mobile}
-            events={events}
-            loading={loading}
+            groupLoading={loading}
             alignCenter={true}
           />
         </Paper>
@@ -56,7 +55,11 @@ export default function GroupMobile(props) {
 
       {value === 2 && (
         <Paper className={classes.paper} elevation={0}>
-          <NotesSummary mobile={mobile} alignCenter={true} />
+          <NotesSummary
+            mobile={mobile}
+            groupLoading={loading}
+            alignCenter={true}
+          />
         </Paper>
       )}
 

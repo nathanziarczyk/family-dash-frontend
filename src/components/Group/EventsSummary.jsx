@@ -91,9 +91,11 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
             </Link>
           </div>
         )}
+
         {addedLoading || loading || groupLoading || editedLoading
           ? skeleton.map((item) => item)
           : ""}
+
         {!loading &&
         !groupLoading &&
         !editedLoading &&

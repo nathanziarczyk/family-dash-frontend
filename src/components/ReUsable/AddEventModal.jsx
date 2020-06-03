@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { searchEvents } from "../../data/events";
 import { createEvent } from "../../helpers/createEvent";
+import { dateToLocalISO } from "../../helpers/formatDate";
 import ErrorMessage from "../Messages/ErrorMessage";
 
 const useStyles = makeStyles((theme) => ({
@@ -59,8 +60,8 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
   const createEventHandler = async (e) => {
     e.preventDefault();
     setAddedLoading(true);
-    const start = selectedStartDate.toISOString();
-    const end = selectedEndDate.toISOString();
+    const start = dateToLocalISO(selectedStartDate);
+    const end = dateToLocalISO(selectedEndDate);
     if (title.length === 0) {
       setTitleError(true);
       return null;
