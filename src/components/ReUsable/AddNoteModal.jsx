@@ -102,7 +102,7 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
           </Grid>
           <Grid container item xs={12}>
             <Grid item xs={false} sm={4} />
-            <Grid item xs={12} sm={4} className={mobile && classes.input}>
+            <Grid item xs={12} sm={4} className={mobile ? classes.input : ""}>
               <TextField
                 color="primary"
                 error={titleError}
@@ -131,15 +131,11 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
                 init={{
                   height: 300,
                   menubar: false,
-                  plugins: [
-                    "advlist autolink lists link image charmap print preview anchor",
-                    "searchreplace visualblocks code fullscreen",
-                    "insertdatetime media table paste code help wordcount",
-                  ],
+                  plugins: [],
                   toolbar:
-                    "undo redo | formatselect | bold italic backcolor | \
-                    alignleft aligncenter alignright alignjustify | \
-                    bullist numlist outdent indent | removeformat | help",
+                    "undo redo  | bold italic backcolor | \
+                    alignleft aligncenter | \
+                    help",
                 }}
                 onEditorChange={(e) => handleEditorChange(e)}
               />

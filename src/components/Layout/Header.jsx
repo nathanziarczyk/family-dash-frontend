@@ -134,7 +134,6 @@ export default function MenuAppBar({ group, mobile }) {
               alignItems: "center",
             }}
           >
-            <Typography variant="h6">{user.firstName}</Typography>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"

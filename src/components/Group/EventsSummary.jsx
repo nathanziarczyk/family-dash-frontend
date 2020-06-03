@@ -48,6 +48,7 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
   const { events, loading } = useSelector((state) => state.events);
   const [addEventOpen, setAddEventOpen] = useState(false);
   const [addedLoading, setAddedLoading] = useState(false);
+  const [editedLoading, setEditedLoading] = useState(false);
 
   const skeleton = [];
   for (let i = 0; i < 3; i++) {
@@ -85,7 +86,7 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
           </div>
         )}
         <div style={{ marginTop: "1em" }}>
-          {addedLoading || loading || groupLoading
+          {addedLoading || loading || groupLoading || editedLoading
             ? skeleton.map((item) => item)
             : ""}
           {!loading && !groupLoading && events.length === 0 ? (
@@ -112,7 +113,11 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
             ) : (
               ""
             ))}
-          {!loading && !groupLoading && events.length > 0
+          {!loading &&
+          !groupLoading &&
+          !addedLoading &&
+          !editedLoading &&
+          events.length > 0
             ? events.map((event, index) => {
                 let attending = false;
                 let owner = false;
@@ -130,6 +135,7 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
                     attending={attending}
                     owner={owner}
                     groupId={currentGroupId}
+                    setEditedLoading={setEditedLoading}
                   />
                 );
               })
@@ -137,7 +143,11 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
         </div>
       </List>
       {!mobile &&
-        (!loading && !groupLoading && events.length > 0 ? (
+        (!loading &&
+        !groupLoading &&
+        !addedLoading &&
+        !editedLoading &&
+        events.length > 0 ? (
           <div className={classes.addButtonContainer}>
             <Button
               variant="contained"

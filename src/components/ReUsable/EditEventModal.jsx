@@ -65,7 +65,7 @@ export default function AddEventModal({
 
   const createEventHandler = async (e) => {
     e.preventDefault();
-    // setEditedLoading(true);
+    setEditedLoading(true);
     const start = selectedStartDate.toISOString();
     const end = selectedEndDate.toISOString();
     if (title.length === 0) {
@@ -79,7 +79,7 @@ export default function AddEventModal({
     if (start > end) return null;
     editEvent(title, description, start, end, event.id).then(async () => {
       await dispatch(searchEvents(currentGroup));
-      //   setEditedLoading(false);
+      setEditedLoading(false);
     });
     setOpen(false);
   };

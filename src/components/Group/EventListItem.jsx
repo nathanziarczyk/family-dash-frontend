@@ -15,7 +15,12 @@ import { useHistory } from "react-router-dom";
 import { deleteEvent } from "../../helpers/deleteEvent";
 import { searchEvents } from "../../data/events";
 
-export default function EventListItem({ event, owner, groupId }) {
+export default function EventListItem({
+  event,
+  owner,
+  groupId,
+  setEditedLoading,
+}) {
   const history = useHistory();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -50,7 +55,12 @@ export default function EventListItem({ event, owner, groupId }) {
           </ListItemSecondaryAction>
         )}
       </ListItem>
-      <EditEventModal open={open} setOpen={setOpen} event={event} />
+      <EditEventModal
+        open={open}
+        setOpen={setOpen}
+        event={event}
+        setEditedLoading={setEditedLoading}
+      />
     </>
   );
 }
