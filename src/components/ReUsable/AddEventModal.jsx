@@ -171,7 +171,9 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
                   disablePast
                   onChange={(e) => {
                     handleStartDateChange(e);
-                    handleEndDateChange(e);
+                    const dt = new Date(e);
+                    dt.setHours(dt.getHours() + 1);
+                    handleEndDateChange(dt);
                   }}
                   label="From*"
                   showTodayButton

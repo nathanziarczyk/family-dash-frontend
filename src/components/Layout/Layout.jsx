@@ -5,15 +5,13 @@ import { makeStyles, Grid, useMediaQuery, useTheme } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   childrenContainer: {
-    height: "calc(100vh - 128px)",
+    height: "calc(100vh - 50px)",
     width: "100%",
     margin: 0,
-    marginTop: ".3em",
-    marginBottom: "-.3em",
   },
   childrenContainerMobile: {
-    height: "calc(100vh - 56px)",
-    width: "99.1%",
+    height: "calc(100vh - 50px)",
+    width: "100%",
     margin: 0,
   },
 }));
@@ -33,7 +31,7 @@ export default function Layout({ children, group = true }) {
       >
         {children}
       </Grid>
-      {!mobile && <Footer />}
+      {/* {!mobile && <Footer />} */}
     </>
   );
 }

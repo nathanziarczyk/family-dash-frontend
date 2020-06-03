@@ -15,11 +15,16 @@ import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import CancelIcon from "@material-ui/icons/Cancel";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
+import EventIcon from "@material-ui/icons/Event";
+import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
+import NoteIcon from "@material-ui/icons/Note";
+import sizing from "@material-ui/core";
 
 import { logoutUser } from "./../../data/user";
 import AddGroupMemberModal from "../ReUsable/AddGroupMemberModal";
 import ConfirmDialog from "../ReUsable/ConfirmDialog";
 import axios from "../../axios";
+import { Divider } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,8 +89,15 @@ export default function MenuAppBar({ group, mobile }) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar style={{ display: "flex", justifyContent: "space-between" }}>
+      <AppBar position="static" elevation={0} style={{ height: "50px" }}>
+        <Toolbar
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            minHeight: "0px",
+          }}
+        >
           <div className={classes.grow}>
             <Link to="/" className={classes.title}>
               <Typography variant="h6">FamilyDash</Typography>
@@ -113,8 +125,8 @@ export default function MenuAppBar({ group, mobile }) {
                 {openGroup ? <ArrowDropDownIcon /> : <ArrowLeftIcon />}
               </div>
               <Menu
-                id="menu-appbar"
-                style={{ padding: "1em", width: "100%" }}
+                style={{ padding: 0, width: "100%" }}
+                className={classes.title}
                 anchorEl={anchorElGroup}
                 getContentAnchorEl={null}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
@@ -123,12 +135,15 @@ export default function MenuAppBar({ group, mobile }) {
                 onClose={handleGroupClose}
                 dense={true}
               >
-                <MenuItem button={false}>
-                  <Typography variant="subtitle2">
-                    Current group <br />
-                    <b>{currentGroup.name}</b>
-                  </Typography>
-                </MenuItem>
+                <Link to={`/group/${currentGroup.id}`}>
+                  <MenuItem>
+                    <Typography variant="subtitle2">
+                      Current group <br />
+                      <b>{currentGroup.name}</b>
+                    </Typography>
+                  </MenuItem>
+                </Link>
+                <Divider />
                 <MenuItem onClick={(e) => setModalOpen(true)}>
                   <GroupAddIcon
                     color="primary"
@@ -136,11 +151,35 @@ export default function MenuAppBar({ group, mobile }) {
                   />
                   <Typography variant="body2">Add member</Typography>
                 </MenuItem>
-
                 <MenuItem onClick={(e) => setConfirmOpen(true)}>
                   <CancelIcon color="error" style={{ marginRight: ".5em" }} />
                   <Typography variant="body2">Leave group</Typography>
                 </MenuItem>
+                <Divider />
+                <Link to="/calendar">
+                  <MenuItem>
+                    <EventIcon
+                      color="primary"
+                      style={{ marginRight: ".5em" }}
+                    />
+                    <Typography variant="body2">Calendar</Typography>
+                  </MenuItem>
+                </Link>
+                <Link to="/shopping-lists">
+                  <MenuItem>
+                    <ShoppingBasketIcon
+                      color="primary"
+                      style={{ marginRight: ".5em" }}
+                    />
+                    <Typography variant="body2">Shopping lists</Typography>
+                  </MenuItem>
+                </Link>
+                <Link to="/notes">
+                  <MenuItem>
+                    <NoteIcon color="primary" style={{ marginRight: ".5em" }} />
+                    <Typography variant="body2">Notes</Typography>
+                  </MenuItem>
+                </Link>
               </Menu>
             </>
           )}
@@ -151,13 +190,7 @@ export default function MenuAppBar({ group, mobile }) {
               alignItems: "center",
             }}
           >
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-            >
+            <IconButton onClick={handleMenu} color="inherit">
               <FaceIcon />
             </IconButton>
             <Menu

@@ -30,13 +30,25 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   title: {
-    position: "absolute",
-    top: "-15px",
-    left: "5px",
-    backgroundColor: "white",
+    background: theme.palette.primary.dark,
+    marginTop: 0,
+  },
+  titleText: {
+    color: "white",
+  },
+  spaceBetween: {
     display: "flex",
-    alignItems: "center",
-    width: "97%",
+    justifyContent: "space-between",
+  },
+  list: {
+    position: "relative",
+    height: "85.8%",
+    paddingTop: 0,
+  },
+  floatingButton: {
+    position: "absolute",
+    right: "20px",
+    top: "-5px",
   },
 }));
 
@@ -55,6 +67,21 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
   const [addedLoading, setAddedLoading] = useState(false);
   const [editedLoading, setEditedLoading] = useState(false);
 
+  //
+  const loadingGlob = addedLoading || loading || groupLoading || editedLoading;
+  const notLoadingAndEmpty =
+    !loading &&
+    !groupLoading &&
+    !editedLoading &&
+    !addedLoading &&
+    upcoming.length <= 0;
+  const notLoadingAndNotEmpty =
+    !loading &&
+    !groupLoading &&
+    !addedLoading &&
+    !editedLoading &&
+    upcoming.length > 0;
+
   // SKELETON LOADING
   const skeleton = [];
   for (let i = 0; i < 3; i++) {
@@ -69,38 +96,25 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
   }
   return (
     <>
-      <List dense style={{ height: "85%", position: "relative" }}>
-        {mobile ? (
-          <ListItem>
-            <ListItemText
-              className={alignCenter === true ? classes.centerText : ""}
-            >
-              <Typography variant="h5">Upcoming events</Typography>
-              <Link to="/calendar" className="underlined">
-                <Typography variant="subtitle2">All events</Typography>
-              </Link>
-            </ListItemText>
-          </ListItem>
-        ) : (
-          <div className={classes.title}>
-            <Typography variant="h5" style={{ flexGrow: 1 }}>
-              Upcoming events
-            </Typography>
-            <Link to="/calendar" className="underlined">
-              <Typography variant="subtitle2">All events</Typography>
+      <List dense className={classes.list}>
+        <ListItem className={!mobile ? classes.title : ""}>
+          <ListItemText
+            className={
+              alignCenter === true ? classes.centerText : classes.spaceBetween
+            }
+          >
+            <Link to="/calendar">
+              <Typography
+                variant="h5"
+                className={!mobile ? classes.titleText : ""}
+              >
+                Upcoming events
+              </Typography>
             </Link>
-          </div>
-        )}
+          </ListItemText>
+        </ListItem>
 
-        {addedLoading || loading || groupLoading || editedLoading
-          ? skeleton.map((item) => item)
-          : ""}
-
-        {!loading &&
-        !groupLoading &&
-        !editedLoading &&
-        !addedLoading &&
-        upcoming.length === 0 ? (
+        {notLoadingAndEmpty ? (
           <div className={classes.centerContainer}>
             <Typography variant="subtitle2" align="center">
               There are no upcoming events <br />
@@ -113,27 +127,20 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
           ""
         )}
         <div style={{ marginTop: "1em" }}>
+          {loadingGlob && skeleton.map((item) => item)}
           {mobile &&
-            (!loading &&
-            !groupLoading &&
-            !addedLoading &&
-            !editedLoading &&
-            upcoming.length > 0 ? (
+            (notLoadingAndNotEmpty ? (
               <IconButton
                 color="primary"
                 onClick={() => setAddEventOpen(true)}
-                style={{ position: "absolute", right: "20px", top: "3px" }}
+                className={classes.floatingButton}
               >
                 <AddCircleIcon fontSize="large" />
               </IconButton>
             ) : (
               ""
             ))}
-          {!loading &&
-          !groupLoading &&
-          !addedLoading &&
-          !editedLoading &&
-          upcoming.length > 0
+          {notLoadingAndNotEmpty
             ? upcoming.map((event, index) => {
                 let attending = false;
                 let owner = false;
@@ -142,7 +149,7 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
                   return null;
                 });
                 if (new Date(event.start) <= new Date()) return null;
-                if (index > 7) return null;
+                if (index > 8) return null;
                 if (event.user.id === currentUserId) owner = true;
                 return (
                   <EventListItem
@@ -159,19 +166,11 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
         </div>
       </List>
       {!mobile &&
-        (!loading &&
-        !groupLoading &&
-        !addedLoading &&
-        !editedLoading &&
-        upcoming.length > 0 ? (
+        (notLoadingAndNotEmpty ? (
           <div className={classes.addButtonContainer}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => setAddEventOpen(true)}
-            >
-              Add Event
-            </Button>
+            <IconButton color="primary" onClick={() => setAddEventOpen(true)}>
+              <AddCircleIcon fontSize="large" />
+            </IconButton>
           </div>
         ) : (
           ""

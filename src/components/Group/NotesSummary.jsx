@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   List,
   ListItem,
@@ -18,13 +18,15 @@ import Skeleton from "react-loading-skeleton";
 const useStyles = makeStyles((theme) => ({
   centerText: { textAlign: "center" },
   title: {
-    position: "absolute",
-    top: "-15px",
-    left: "5px",
-    backgroundColor: "white",
-    display: "flex",
-    alignItems: "center",
-    width: "97%",
+    background: theme.palette.primary.dark,
+  },
+  list: {
+    height: "70%",
+    paddingTop: 0,
+    position: "relative",
+  },
+  titleText: {
+    color: "white",
   },
   addButtonContainer: {
     width: "100%",
@@ -36,6 +38,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  floatingButton: {
+    position: "absolute",
+    right: "20px",
+    top: "-5px",
   },
 }));
 
@@ -51,9 +58,16 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
   //
   const [addedLoading, setAddedLoading] = useState(false);
 
+  //
+  const loadingGlob = loading || groupLoading || addedLoading;
+  const notLoadingAndNotEmpty =
+    !loading && !groupLoading && !addedLoading && notes.length > 0;
+  const notLoadingAndEmpty =
+    !loading && !groupLoading && !addedLoading && notes.length <= 0;
+
   // SKELETON LOADING
   const skeleton = [];
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 2; i++) {
     skeleton.push(
       <ListItem key={`skeleton${i}`}>
         <ListItemText
@@ -65,42 +79,31 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
   }
   return (
     <>
-      <List dense style={{ position: "relative", height: "70%" }}>
-        {mobile ? (
-          <>
-            <ListItem>
-              <ListItemText
-                className={alignCenter === true ? classes.centerText : ""}
+      <List dense className={classes.list}>
+        <ListItem className={!mobile ? classes.title : ""}>
+          <ListItemText
+            className={alignCenter === true ? classes.centerText : ""}
+          >
+            <Link to="/notes">
+              <Typography
+                variant="h5"
+                className={!mobile ? classes.titleText : ""}
               >
-                <Typography variant="h5">Notes</Typography>
-                <Link to="/notes" className="underlined">
-                  <Typography variant="subtitle2">All notes</Typography>
-                </Link>
-              </ListItemText>
-            </ListItem>
-            <IconButton
-              color="primary"
-              onClick={() => setOpen(true)}
-              style={{ position: "absolute", right: "20px", top: "3px" }}
-            >
-              <AddCircleIcon fontSize="large" />
-            </IconButton>
-          </>
-        ) : (
-          <div className={classes.title}>
-            <Typography
-              variant="h5"
-              style={{ flexGrow: 1 }}
-              onClick={() => setOpen(true)}
-            >
-              Notes
-            </Typography>
-            <Link to="/notes" className="underlined">
-              <Typography variant="subtitle2">All notes</Typography>
+                Notes
+              </Typography>
             </Link>
-          </div>
+          </ListItemText>
+        </ListItem>
+        {mobile && (
+          <IconButton
+            color="primary"
+            onClick={() => setOpen(true)}
+            className={classes.floatingButton}
+          >
+            <AddCircleIcon fontSize="large" />
+          </IconButton>
         )}
-        {!loading && !groupLoading && !addedLoading && notes.length <= 0 && (
+        {notLoadingAndEmpty && (
           <div className={classes.centerContainer}>
             <Typography variant="subtitle2" align="center">
               You have no notes yet! <br />
@@ -111,10 +114,11 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
           </div>
         )}
         <div style={{ marginTop: ".8em" }}>
-          {!loading && !groupLoading && !addedLoading && notes.length > 0 && (
+          {notLoadingAndNotEmpty && (
             <>
               {notes.map((note, i) => {
-                if (i > 2) return null;
+                if (mobile) if (i > 8) return null;
+                if (!mobile) if (i > 1) return null;
                 return (
                   <NoteListItem
                     note={note}
@@ -125,26 +129,16 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
               })}
             </>
           )}
-          {loading || groupLoading || addedLoading
-            ? skeleton.map((e) => e)
-            : ""}
+          {loadingGlob && skeleton.map((e) => e)}
         </div>
       </List>
-      {!loading &&
-        !groupLoading &&
-        !addedLoading &&
-        !mobile &&
-        notes.length > 0 && (
-          <div className={classes.addButtonContainer}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => setOpen(true)}
-            >
-              Add note
-            </Button>
-          </div>
-        )}
+      {!mobile && notLoadingAndNotEmpty && (
+        <div className={classes.addButtonContainer}>
+          <IconButton color="primary" onClick={() => setOpen(true)}>
+            <AddCircleIcon fontSize="large" />
+          </IconButton>
+        </div>
+      )}
       <AddNoteModal
         open={open}
         setOpen={setOpen}

@@ -11,11 +11,8 @@ const useStyles = makeStyles((theme) => ({
     width: "95%",
   },
   smallPaper: {
-    height: "38vh",
+    height: "42vh",
     width: "95%",
-  },
-  red: {
-    background: "red",
   },
 }));
 
@@ -27,19 +24,19 @@ export default function GroupWeb(props) {
       <Grid item xs={1} />
       <Grid item container xs={12} sm={5}>
         <Grid item container alignItems="center" justify="center" xs={12}>
-          <Paper className={classes.bigPaper} elevation={3}>
+          <Paper className={classes.bigPaper}>
             <EventsSummary groupLoading={loading} />
           </Paper>
         </Grid>
       </Grid>
       <Grid item container xs={12} sm={5}>
         <Grid item container alignItems="center" justify="center" xs={12}>
-          <Paper className={classes.smallPaper} elevation={3}>
+          <Paper className={classes.smallPaper}>
             <ShoppingListsSummary />
           </Paper>
         </Grid>
         <Grid item container alignItems="center" justify="center" xs={12}>
-          <Paper className={classes.smallPaper} elevation={3}>
+          <Paper className={classes.smallPaper}>
             <NotesSummary groupLoading={loading} />
           </Paper>
         </Grid>

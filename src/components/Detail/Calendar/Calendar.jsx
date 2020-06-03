@@ -45,7 +45,7 @@ export default function Calendar() {
           item
           container
           direction="row"
-          style={{ width: "100%" }}
+          style={{ height: "94%" }}
           xs={12}
           sm={8}
         >

@@ -11,13 +11,14 @@ import { Link } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   centerText: { textAlign: "center" },
   title: {
-    position: "absolute",
-    top: "-15px",
-    left: "5px",
-    backgroundColor: "white",
-    display: "flex",
-    alignItems: "center",
-    width: "97%",
+    background: theme.palette.primary.dark,
+  },
+  list: {
+    height: "85.8%",
+    paddingTop: 0,
+  },
+  titleText: {
+    color: "white",
   },
 }));
 
@@ -26,28 +27,21 @@ export default function ShoppingListsSummary({ alignCenter, mobile }) {
   //TODO: De shopping lists binnenhalen uit de api
   return (
     <>
-      <List>
-        {mobile ? (
-          <ListItem>
-            <ListItemText
-              className={alignCenter === true ? classes.centerText : ""}
-            >
-              <Typography variant="h5">Shopping Lists</Typography>
-              <Link to="/notes" className="underlined">
-                <Typography variant="subtitle2">All shopping lists</Typography>
-              </Link>
-            </ListItemText>
-          </ListItem>
-        ) : (
-          <div className={classes.title}>
-            <Typography variant="h5" style={{ flexGrow: 1 }}>
-              Shopping Lists
-            </Typography>
-            <Link to="/notes" className="underlined">
-              <Typography variant="subtitle2">All shopping lists</Typography>
+      <List dense className={classes.list}>
+        <ListItem className={!mobile ? classes.title : ""}>
+          <ListItemText
+            className={alignCenter === true ? classes.centerText : ""}
+          >
+            <Link to="/shopping-lists">
+              <Typography
+                variant="h5"
+                className={!mobile ? classes.titleText : ""}
+              >
+                Shopping Lists
+              </Typography>
             </Link>
-          </div>
-        )}
+          </ListItemText>
+        </ListItem>
         <div style={{ marginTop: ".8em" }}></div>
       </List>
     </>
