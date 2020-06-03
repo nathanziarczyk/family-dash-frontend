@@ -52,7 +52,7 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
   const skeleton = [];
   for (let i = 0; i < 3; i++) {
     skeleton.push(
-      <ListItem>
+      <ListItem key={`skeleton${i}`}>
         <ListItemText
           primary={<Skeleton width={400} />}
           secondary={<Skeleton width={200} />}

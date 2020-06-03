@@ -178,32 +178,27 @@ export default function EventDetail({ props }) {
                   </ListItem>
                 ) : (
                   attendants.map((user) => {
-                    if (user.id === currentUserId)
-                      return (
-                        <div key={user.id}>
-                          <ListItem key={currentUserId}>
-                            <ListItemAvatar>
+                    return (
+                      <div key={user.id}>
+                        <ListItem key={currentUserId}>
+                          <ListItemAvatar>
+                            {user.id === currentUserId ? (
                               <FaceIcon />
-                            </ListItemAvatar>
-                            <ListItemText>
-                              <b>You</b>
-                            </ListItemText>
-                          </ListItem>
-                          <Divider variant="inset" component="li" />
-                        </div>
-                      );
-                    else
-                      return (
-                        <div key={user.id}>
-                          <ListItem key={user.id}>
-                            <ListItemAvatar>
+                            ) : (
                               <AccountCircleIcon />
-                            </ListItemAvatar>
-                            <ListItemText>{user.firstName}</ListItemText>
-                          </ListItem>
-                          <Divider variant="inset" component="li" />
-                        </div>
-                      );
+                            )}
+                          </ListItemAvatar>
+                          <ListItemText>
+                            {user.id === currentUserId ? (
+                              <b>You</b>
+                            ) : (
+                              user.firstName
+                            )}
+                          </ListItemText>
+                        </ListItem>
+                        <Divider variant="inset" component="li" />
+                      </div>
+                    );
                   })
                 )}
               </List>

@@ -68,7 +68,6 @@ export default (state = initialState, { type, payload }) => {
       };
 
     case GROUP_ERROR_LOAD:
-      console.log(payload);
       return {
         ...state,
         loading: false,

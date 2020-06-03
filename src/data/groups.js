@@ -27,7 +27,6 @@ export const getGroups = () => (dispatch) => {
   axios
     .get(`/groups`)
     .then((response) => {
-      console.log("zoeken...");
       const groups = response.data.groups;
       const invitations = response.data.invitations;
       dispatch(successSearch(groups, invitations));
@@ -57,7 +56,6 @@ export const newGroup = ({ groupName, users }) => (dispatch) => {
       postGroupMembers: users,
     })
     .then((response) => {
-      console.log(response);
       dispatch(getGroups());
       dispatch(successNewGroup(`Group ${groupName} created`));
     })
@@ -83,6 +81,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         loading: true,
+        newGroupMessage: "",
       };
 
     case GROUPS_SUCCESS_SEARCH:
@@ -90,6 +89,7 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         groups: payload.groups,
         invitations: payload.invitations,
+        newGroupMessage: "",
         loading: false,
         error: {
           bool: false,
@@ -101,6 +101,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         loading: false,
+        newGroupMessage: "",
         error: {
           bool: true,
           message: payload,

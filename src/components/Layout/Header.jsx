@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -9,7 +9,7 @@ import FaceIcon from "@material-ui/icons/Face";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import GroupIcon from "@material-ui/icons/Group";
 import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
@@ -17,6 +17,9 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import GroupAddIcon from "@material-ui/icons/GroupAdd";
 
 import { logoutUser } from "./../../data/user";
+import AddGroupMemberModal from "../ReUsable/AddGroupMemberModal";
+import ConfirmDialog from "../ReUsable/ConfirmDialog";
+import axios from "../../axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,10 +44,15 @@ export default function MenuAppBar({ group, mobile }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorElGroup, setAnchorElGroup] = React.useState(null);
   const dispatch = useDispatch();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const history = useHistory();
+
   const open = Boolean(anchorEl);
   const openGroup = Boolean(anchorElGroup);
 
   const currentGroup = useSelector((state) => state.group);
+  const userId = useSelector((state) => state.user.user.id);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -65,6 +73,13 @@ export default function MenuAppBar({ group, mobile }) {
   const handleLogoutClick = () => {
     handleClose();
     dispatch(logoutUser());
+  };
+
+  const leaveGroup = (e) => {
+    history.push("/");
+    axios.put(`/groups/${currentGroup.id}`, {
+      removeGroupMember: `/api/users/${userId}`,
+    });
   };
 
   return (
@@ -106,6 +121,7 @@ export default function MenuAppBar({ group, mobile }) {
                 transformOrigin={{ vertical: "top", horizontal: "center" }}
                 open={openGroup}
                 onClose={handleGroupClose}
+                dense={true}
               >
                 <MenuItem button={false}>
                   <Typography variant="subtitle2">
@@ -113,14 +129,15 @@ export default function MenuAppBar({ group, mobile }) {
                     <b>{currentGroup.name}</b>
                   </Typography>
                 </MenuItem>
-                <MenuItem onClick={(e) => console.log(e)}>
+                <MenuItem onClick={(e) => setModalOpen(true)}>
                   <GroupAddIcon
                     color="primary"
                     style={{ marginRight: ".5em" }}
                   />
                   <Typography variant="body2">Add member</Typography>
                 </MenuItem>
-                <MenuItem onClick={(e) => console.log(e)}>
+
+                <MenuItem onClick={(e) => setConfirmOpen(true)}>
                   <CancelIcon color="error" style={{ marginRight: ".5em" }} />
                   <Typography variant="body2">Leave group</Typography>
                 </MenuItem>
@@ -172,6 +189,15 @@ export default function MenuAppBar({ group, mobile }) {
           </div>
         </Toolbar>
       </AppBar>
+      <AddGroupMemberModal open={modalOpen} setOpen={setModalOpen} />
+      <ConfirmDialog
+        open={confirmOpen}
+        setOpen={setConfirmOpen}
+        onConfirm={leaveGroup}
+        title="Leave group?"
+      >
+        Are you sure you want to leave the group? This cannot be undone
+      </ConfirmDialog>
     </div>
   );
 }

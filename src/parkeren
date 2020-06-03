@@ -1,12 +1,15 @@
-<Grid item container xs={12} sm={5}>
-        <Grid item container alignItems="center" xs={12}>
-          <Paper className={classes.smallPaper} elevation={3}>
-            <ShoppingListsSummary />
-          </Paper>
-        </Grid>
-        <Grid item container alignItems="center" xs={12}>
-          <Paper className={classes.smallPaper} elevation={3}>
-            <NotesSummary groupLoading={loading} />
-          </Paper>
-        </Grid>
-      </Grid>
+<TextField
+  label="Search users by email"
+  variant="outlined"
+  size="small"
+  className={mobile ? classes.inputFullWidth : classes.input}
+  value={usersInput}
+  onChange={handleAddUserFieldChange}
+  InputProps={{
+    startAdornment: (
+      <InputAdornment position="start">
+        <SearchIcon />
+      </InputAdornment>
+    ),
+  }}
+/>

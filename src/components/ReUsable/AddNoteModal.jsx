@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { Editor } from "@tinymce/tinymce-react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -9,8 +11,6 @@ import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import { TextField, Grid, useMediaQuery } from "@material-ui/core";
-import { useSelector } from "react-redux";
-import { Editor } from "@tinymce/tinymce-react";
 
 import ErrorMessage from "../Messages/ErrorMessage";
 import { createNote } from "../../helpers/createNote";
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(2),
   },
   input: {
-    padding: "0 .8em",
+    margin: "0 .8em",
   },
 }));
 
@@ -104,7 +104,7 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
             <Grid item xs={false} sm={3} />
           </Grid>
           <Grid container item xs={12}>
-            <Grid item xs={false} sm={4} />
+            <Grid item xs={false} sm={3} />
             <Grid item xs={12} sm={4} className={mobile ? classes.input : ""}>
               <TextField
                 color="primary"
@@ -123,7 +123,7 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
                 }}
               />
             </Grid>
-            <Grid item xs={false} sm={4} />
+            <Grid item xs={false} sm={5} />
           </Grid>
           <Grid container item xs={12}>
             <Grid item xs={false} sm={3} />
@@ -148,11 +148,11 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
             <Grid item xs={12} sm={6} style={{ textAlign: "center" }}>
               {mobile ? (
                 <Button
-                  fullWidth
                   type="submit"
                   variant="contained"
                   color="primary"
-                  style={{ borderRadius: 0 }}
+                  style={{ borderRadius: 0, width: "90%" }}
+                  className={classes.input}
                 >
                   create note
                 </Button>

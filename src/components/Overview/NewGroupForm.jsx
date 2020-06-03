@@ -23,6 +23,7 @@ import Skeleton from "react-loading-skeleton";
 import { newGroup } from "../../data/groups";
 import SuccessMessage from "../Messages/SuccessMessage";
 import ErrorMessage from "../Messages/ErrorMessage";
+import SearchUserInput from "../ReUsable/SearchUserInput";
 
 // CSS CLASSES
 const useStyles = makeStyles((theme) => ({
@@ -142,6 +143,7 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
     setGroupNameInput("");
     setUsersInput("");
     setUsers([]);
+    setError("");
   };
 
   // REMOVE USER FROM LIST
@@ -166,21 +168,14 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
               className={mobile ? classes.inputFullWidth : classes.input}
               value={groupNameInput}
               onChange={(e) => setGroupNameInput(e.target.value)}
+              error={error.length > 0}
             />
-            <TextField
-              label="Search users by email"
-              variant="outlined"
-              size="small"
+            <SearchUserInput
+              setUsersInput={setUsersInput}
+              usersInput={usersInput}
+              setSuggestions={setSuggestions}
+              setSuggestionsLoading={setSuggestionsLoading}
               className={mobile ? classes.inputFullWidth : classes.input}
-              value={usersInput}
-              onChange={handleAddUserFieldChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
             />
             {usersInput.length > 1 && (
               <List dense className={!mobile && classes.addedUsersList}>
