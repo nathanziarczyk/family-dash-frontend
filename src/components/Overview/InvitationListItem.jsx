@@ -14,12 +14,17 @@ export default function GroupListItem({
   groupMemberId,
 }) {
   const dispatch = useDispatch();
+
+  // ID VAN INGELOGDE GEBRUIKER
   const userId = useSelector((state) => state.user.user.id);
   const members = groupMembers.length > 1 ? "members" : "member";
+
+  // REQUEST ACCEPTEREN
   const acceptRequest = () => {
     dispatch(userAcceptRequest({ groupId, userId }));
   };
 
+  // REQUEST AFWIJZEN
   const denyRequest = () => {
     dispatch(userDenyRequest(groupMemberId));
   };

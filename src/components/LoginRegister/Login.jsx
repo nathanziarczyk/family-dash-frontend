@@ -10,12 +10,14 @@ import {
   CircularProgress,
   useTheme,
   useMediaQuery,
+  Fab,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import { loginUser } from "./../../data/user";
 import ErrorMessage from "../Messages/ErrorMessage";
 
+// CSS CLASSES
 const useStyles = makeStyles((theme) => ({
   container: {
     padding: "0 1em",
@@ -52,6 +54,12 @@ const useStyles = makeStyles((theme) => ({
   inputField: {
     color: theme.palette.secondary.main,
   },
+  fab: {
+    position: "absolute",
+    bottom: "30px",
+    left: "50%",
+    transform: "translateX(-50%)",
+  },
 }));
 
 export default function Login() {
@@ -68,6 +76,10 @@ export default function Login() {
   // ERROR EN LOADING AXIOS CALL
   const { error, loading } = useSelector((state) => state.user.login);
 
+  // VOLGENS MATERIAL UI THEME BREAKPOINT MOBILE BEPALEN
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   // LOGIN FORM SUBMIT HANDLER
   const submitHandler = (e) => {
     e.preventDefault();
@@ -77,8 +89,6 @@ export default function Login() {
     }
     dispatch(loginUser(email, password));
   };
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <>
@@ -157,23 +167,19 @@ export default function Login() {
                     )}
                     {!loading && "Sign In"}
                   </Button>
-                  {mobile && (
-                    <a
-                      href="#register"
-                      style={{
-                        textAlign: "center",
-                        padding: "1em",
-                        marginTop: "1em",
-                      }}
-                    >
-                      <Typography color="secondary">Sign up</Typography>
-                      <p style={{ margin: 0 }}>
-                        <ExpandMoreIcon color="secondary" />
-                      </p>
-                    </a>
-                  )}
                 </form>
               </div>
+              {mobile && (
+                <Fab
+                  href="#register"
+                  className={classes.fab}
+                  color="secondary"
+                  variant="extended"
+                >
+                  <ExpandMoreIcon color="inherit" />
+                  Register
+                </Fab>
+              )}
             </Container>
           </Grid>
         </Grid>

@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import ListItem from "@material-ui/core/ListItem";
-import { ListItemText, IconButton } from "@material-ui/core";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import {
+  ListItemText,
+  IconButton,
+  ListItemSecondaryAction,
+  ListItem,
+} from "@material-ui/core";
 import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
-import axios from "../../axios";
 
+import axios from "../../axios";
 import { getGroups } from "../../data/groups";
 import ErrorMessage from "../Messages/ErrorMessage";
 import SuccessMessage from "../Messages/SuccessMessage";
@@ -17,17 +21,23 @@ export default function GroupListItem({
   groupMembers,
   groupAdmin,
 }) {
+  const dispatch = useDispatch();
+
+  // ERROR / SUCCESS MESSAGE STATE
   const [message, setMessage] = useState({
     type: "",
     message: "",
   });
-  const history = useHistory();
+
+  // OPEN STATE VOOR CONFIRM MODAL
   const [confirmOpen, setConfirmOpen] = useState(false);
+
+  // DE ID VAN DE INGELOGDE GEBRUIKER
   const currentUserId = useSelector((state) => state.user.user.id);
-  const dispatch = useDispatch();
 
   const members = groupMembers.length > 1 ? "members" : "member";
 
+  // GROEP VERWIJDEREN
   const handleDeleteGroupClick = () => {
     axios
       .delete(`/groups/${groupId}`)
@@ -37,7 +47,6 @@ export default function GroupListItem({
           message: `Group ${groupName} deleted.`,
         });
         dispatch(getGroups());
-        history.push("/overview");
       })
       .catch((error) => {
         dispatch(getGroups());
@@ -47,23 +56,26 @@ export default function GroupListItem({
         });
       });
   };
+
   return (
-    <Link to={`/group/${groupId}`}>
-      <ListItem button key={groupId}>
+    <>
+      <ListItem button key={groupId} component={Link} to={`/group/${groupId}`}>
         <ListItemText
           primary={groupName}
           secondary={`${groupMembers.length} ${members}`}
         />
         {currentUserId === groupAdmin && (
-          <IconButton
-            style={{ zIndex: "2000" }}
-            onClick={(e) => {
-              e.preventDefault();
-              setConfirmOpen(true);
-            }}
-          >
-            <DeleteSweepIcon />
-          </IconButton>
+          <ListItemSecondaryAction>
+            <IconButton
+              style={{ zIndex: "2000" }}
+              onClick={(e) => {
+                e.preventDefault();
+                setConfirmOpen(true);
+              }}
+            >
+              <DeleteSweepIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
         )}
       </ListItem>
       {message.message.length > 0 &&
@@ -78,8 +90,8 @@ export default function GroupListItem({
         setOpen={setConfirmOpen}
         onConfirm={handleDeleteGroupClick}
       >
-        Are you sure you want to delete group: {groupName}
+        Are you sure you want to delete group: <b>{groupName}</b>
       </ConfirmDialog>
-    </Link>
+    </>
   );
 }

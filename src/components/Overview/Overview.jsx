@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Grid,
   Paper,
   makeStyles,
   Typography,
-  Badge,
   useTheme,
   useMediaQuery,
   List,
@@ -14,8 +14,6 @@ import {
   Tabs,
   Tab,
 } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 import { getGroups } from "../../data/groups";
 import NewGroupForm from "./NewGroupForm";
@@ -24,6 +22,7 @@ import GroupList from "./GroupList";
 import { Helmet } from "react-helmet-async";
 import Skeleton from "react-loading-skeleton";
 
+// CSS CLASSES
 const useStyles = makeStyles((theme) => ({
   flexContainer: {
     display: "flex",
@@ -78,12 +77,10 @@ export default function Overview() {
   const dispatch = useDispatch();
   const classes = useStyles();
   const theme = useTheme();
+
+  // MOBILE BREAKPOINTS BEPALEN DMV MATERIAL UI THEME
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [value, setValue] = useState(0);
-  // STATE VOOR TABS
-  const [showGroups, setShowGroups] = useState(true);
-  const [showInvitations, setShowInvitations] = useState(false);
-  const [showNewGroup, setShowNewGroup] = useState(false);
 
   // GROUP DATA UIT REDUX STORE HALEN
   const { loading, error, groups, invitations, newGroupMessage } = useSelector(

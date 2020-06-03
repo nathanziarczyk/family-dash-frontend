@@ -24,6 +24,7 @@ import { newGroup } from "../../data/groups";
 import SuccessMessage from "../Messages/SuccessMessage";
 import ErrorMessage from "../Messages/ErrorMessage";
 
+// CSS CLASSES
 const useStyles = makeStyles((theme) => ({
   container: {
     maxWidth: "100%",
@@ -90,10 +91,12 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
       .then((response) => {
         if (response !== undefined) {
           const user = response.data;
+          // ALS DE GEBRUIKER AL IS TOEGEVOEGD -> ERROR
           users.map((use) => {
             if (use.id === user.id) check = true;
             return null;
           });
+          // ALS DE USER ZICHZELF TOEVOEGT -> ERROR
           if (currentUserId === user.id) check = true;
           if (check === true) {
             setError("You already added this user.");
@@ -103,6 +106,7 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
             setUsersInput("");
           }
         } else {
+          // GEEN GEBRUIKERS GEVONDEN -> ERROR
           setError("Can't find a registered user with this email.");
         }
       })
@@ -111,7 +115,7 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
       });
   };
 
-  // VERANDERING IN ADD USER INPUT HANDLER
+  // HANDLE SUGGESTIE USERS NA VERANDERING IN INPUT
   const handleAddUserFieldChange = (e) => {
     setUsersInput(e.target.value);
     setError("");
@@ -156,8 +160,6 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
           </Typography>
           <form className={classes.form} onSubmit={handleNewGroupFormSubmit}>
             <TextField
-              margin="dense"
-              id="outlined-basic"
               label="Group Name"
               variant="outlined"
               size="small"
@@ -166,8 +168,6 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
               onChange={(e) => setGroupNameInput(e.target.value)}
             />
             <TextField
-              margin="dense"
-              id="outlined-basic"
               label="Search users by email"
               variant="outlined"
               size="small"
@@ -182,7 +182,7 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
                 ),
               }}
             />
-            {usersInput.length > 1 ? (
+            {usersInput.length > 1 && (
               <List dense className={!mobile && classes.addedUsersList}>
                 {suggestionsLoading ? (
                   <ListItem>
@@ -206,8 +206,6 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
                   ))
                 )}
               </List>
-            ) : (
-              ""
             )}
             <Button type="submit" variant="outlined">
               {loading ? (
@@ -232,7 +230,6 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
                     primary={user.email}
                     secondary={`${user.firstName} ${user.lastName}`}
                   />
-                  {/* LEFTOFF: Gebruiker verwijderen uit lijst */}
                   <IconButton
                     onClick={() => handleRemoveUserClick(user.id)}
                     edge="end"
@@ -244,9 +241,11 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
               ))}
             </List>
           )}
+
           {newGroupMessage.length > 0 && (
             <SuccessMessage message={newGroupMessage} />
           )}
+
           {error.length > 0 && (
             <ErrorMessage message={error} clearError={setError} />
           )}

@@ -9,6 +9,7 @@ import {
   CircularProgress,
   useTheme,
   useMediaQuery,
+  Fab,
 } from "@material-ui/core";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { useSelector, useDispatch } from "react-redux";
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
+    position: "relative",
   },
   inputField: {
     color: theme.palette.primary.main,
@@ -38,11 +40,19 @@ const useStyles = makeStyles((theme) => ({
   notchedOutline: {
     borderColor: theme.palette.primary.main,
   },
+  fab: {
+    position: "absolute",
+    top: "30px",
+    left: "50%",
+    transform: "translateX(-50%)",
+  },
 }));
 
 export default function Register() {
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  // VOLGENS MATERIAL UI THEME BREAKPOINTS BEPALEN
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -128,8 +138,6 @@ export default function Register() {
                   margin="normal"
                   fullWidth
                   label="Last Name"
-                  name="email"
-                  autoComplete="email"
                   value={lastName}
                   onChange={(e) => {
                     setInputError("");
@@ -147,7 +155,6 @@ export default function Register() {
                   variant="outlined"
                   margin="normal"
                   fullWidth
-                  id="email"
                   label="Email Address"
                   value={email}
                   onChange={(e) => {
@@ -166,11 +173,8 @@ export default function Register() {
                   variant="outlined"
                   margin="normal"
                   fullWidth
-                  name="password"
                   label="Password"
                   type="password"
-                  id="password"
-                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => {
                     setInputError("");
@@ -183,26 +187,25 @@ export default function Register() {
                   variant="outlined"
                   color="primary"
                 >
-                  {loading && <CircularProgress color="primary" size="1.8em" />}
-                  {!loading && "Sign Up"}
+                  {loading ? (
+                    <CircularProgress color="primary" size="1.8em" />
+                  ) : (
+                    "Sign Up"
+                  )}
                 </Button>
-                {mobile && (
-                  <a
-                    href="#login"
-                    style={{
-                      textAlign: "center",
-                      padding: "1em",
-                      marginTop: "1em",
-                    }}
-                  >
-                    <Typography color="primary">Sign in</Typography>
-                    <p style={{ margin: 0 }}>
-                      <ExpandLessIcon color="primary" />
-                    </p>
-                  </a>
-                )}
               </form>
             </div>
+            {mobile && (
+              <Fab
+                href="#login"
+                className={classes.fab}
+                color="primary"
+                variant="extended"
+              >
+                <ExpandLessIcon color="inherit" />
+                Login
+              </Fab>
+            )}
           </Container>
         </Grid>
       </Grid>

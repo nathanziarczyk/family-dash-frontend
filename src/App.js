@@ -15,9 +15,8 @@ import "./styles.scss";
 
 function App() {
   const themeData = useSelector((state) => state.theme);
-  const user = useSelector((state) => state.user.loggedIn);
+  const loggedIn = useSelector((state) => state.user.loggedIn);
   const theme = createMuiTheme(themeData);
-  const loggedIn = user;
 
   return (
     <ThemeProvider theme={theme}>

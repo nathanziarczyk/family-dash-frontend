@@ -60,6 +60,10 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
       setTitleError(true);
       return null;
     }
+    if (body.length === 0) {
+      setTitleError(true);
+      return null;
+    }
     createNote(title, body, currentGroup).then(async () => {
       //   setAddedLoading(false);
     });
@@ -153,11 +157,11 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
                   color="primary"
                   style={{ borderRadius: 0 }}
                 >
-                  create event
+                  create note
                 </Button>
               ) : (
                 <Button type="submit" variant="contained" color="primary">
-                  create event
+                  create note
                 </Button>
               )}
             </Grid>
@@ -165,7 +169,7 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
           </Grid>
         </Grid>
       </form>
-      {titleError ? <ErrorMessage message="Fill in the title" /> : ""}
+      {titleError ? <ErrorMessage message="Fill in all the fields" /> : ""}
     </Dialog>
   );
 }
