@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  CardActions,
-  Button,
-  ListItem,
-  ListItemText,
-} from "@material-ui/core";
+import { ListItem, ListItemText } from "@material-ui/core";
 
 import { formatDate } from "../../helpers/formatDate";
 

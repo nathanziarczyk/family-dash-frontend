@@ -6,7 +6,6 @@ import {
   BottomNavigation,
   BottomNavigationAction,
 } from "@material-ui/core";
-import Carousel from "react-material-ui-carousel";
 import EventIcon from "@material-ui/icons/Event";
 import NoteIcon from "@material-ui/icons/Note";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
@@ -29,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GroupMobile(props) {
   const classes = useStyles();
+
+  // STATE VOOR TABS BOTTOM NAV
   const [value, setValue] = useState(0);
 
   // EVENTS DATA UIT PROPS HALEN

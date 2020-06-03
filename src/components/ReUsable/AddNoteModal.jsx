@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 import Slide from "@material-ui/core/Slide";
 import { TextField, Grid, useMediaQuery } from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Editor } from "@tinymce/tinymce-react";
 
 import ErrorMessage from "../Messages/ErrorMessage";
@@ -46,7 +46,6 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
 
   // INPUT ERRORS
   const [titleError, setTitleError] = useState(false);
-  const dispatch = useDispatch();
 
   const handleClose = () => {
     setOpen(false);
@@ -137,9 +136,7 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
                   menubar: false,
                   plugins: [],
                   toolbar:
-                    "undo redo  | bold italic backcolor | \
-                    alignleft aligncenter | \
-                    help",
+                    "undo redo  | bold italic backcolor | alignleft aligncenter | help",
                 }}
                 onEditorChange={(e) => handleEditorChange(e)}
               />

@@ -1,11 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  Grid,
-  makeStyles,
-  CircularProgress,
-  useMediaQuery,
-  useTheme,
-} from "@material-ui/core";
+import { Grid, makeStyles, useMediaQuery, useTheme } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { Helmet } from "react-helmet-async";
 
@@ -38,6 +32,7 @@ export default function Group({ props }) {
   // GROUP EN EVENT DATA UIT REDUX STORE HALEN
   const { name, loading } = useSelector((state) => state.group);
 
+  // GROUP DATA LADEN OBV URL PARAMETER (ID)
   useEffect(() => {
     dispatch(loadGroup(props.match.params.id));
   }, [dispatch, props.match.params.id]);

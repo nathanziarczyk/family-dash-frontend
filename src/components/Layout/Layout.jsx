@@ -8,7 +8,8 @@ const useStyles = makeStyles((theme) => ({
     height: "calc(100vh - 128px)",
     width: "100%",
     margin: 0,
-    marginTop: ".5em",
+    marginTop: ".3em",
+    marginBottom: "-.3em",
   },
   childrenContainerMobile: {
     height: "calc(100vh - 56px)",

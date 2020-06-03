@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 
 import EditEventModal from "../ReUsable/EditEventModal";
 import { formatDate } from "../../helpers/formatDate";
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { deleteEvent } from "../../helpers/deleteEvent";
 import { searchEvents } from "../../data/events";
 
@@ -21,24 +21,24 @@ export default function EventListItem({
   groupId,
   setEditedLoading,
 }) {
-  const history = useHistory();
   const dispatch = useDispatch();
+
+  // OPEN STATE VOOR EDIT MODAL
   const [open, setOpen] = useState(false);
 
+  // EVENT VERWIJDEREN
   const handleDeleteClick = (e, eventId) => {
     e.preventDefault();
-    deleteEvent(eventId).then((response) => dispatch(searchEvents(groupId)));
+    deleteEvent(eventId).then(() => dispatch(searchEvents(groupId)));
   };
 
-  const handleEditClick = (e, event) => {
-    setOpen(true);
-  };
   return (
     <>
       <ListItem
         key={event.id}
         button
-        onClick={() => history.push(`/event/${event.id}`)}
+        component={Link}
+        to={`/event/${event.id}`}
       >
         <ListItemText
           primary={event.title}
@@ -46,7 +46,7 @@ export default function EventListItem({
         />
         {owner && (
           <ListItemSecondaryAction>
-            <IconButton onClick={(e) => handleEditClick(e, event)}>
+            <IconButton onClick={(e) => setOpen(true)}>
               <EditIcon />
             </IconButton>
             <IconButton onClick={(e) => handleDeleteClick(e, event.id)}>

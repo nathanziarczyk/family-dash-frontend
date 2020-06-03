@@ -122,7 +122,6 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
                 id="title"
                 label="Title*"
                 placeholder="Title*"
-                multiline
                 variant="outlined"
                 value={title}
                 onChange={(e) => {
@@ -146,7 +145,6 @@ export default function AddEventModal({ open, setOpen, setAddedLoading }) {
                 placeholder="Description*"
                 multiline
                 variant="outlined"
-                multiline={true}
                 value={description}
                 onChange={(e) => {
                   setDescriptionError(false);

@@ -14,3 +14,8 @@ a {
 .MuiGrid-grid-xs-12 {
   max-width: none !important;
 }
+
+.MuiButton-contained,
+.MuiButton-outlined {
+  border-radius: 25px !important;
+}

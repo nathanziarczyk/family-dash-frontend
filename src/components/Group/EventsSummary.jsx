@@ -9,7 +9,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Skeleton from "react-loading-skeleton";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 
@@ -42,14 +42,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
   const classes = useStyles();
-  const dispatch = useDispatch();
+
+  // ID VAN INGELOGDE GEBRUIKER EN VAN DE GROEP
   const currentUserId = useSelector((state) => state.user.user.id);
   const currentGroupId = useSelector((state) => state.group.id);
-  const { events, loading } = useSelector((state) => state.events);
+
+  // EVENTS EN LOADING UIT STORE
+  const { upcoming, loading } = useSelector((state) => state.events);
+
+  // STATE VOOR MODALS ADD EN EDIT EVENT
   const [addEventOpen, setAddEventOpen] = useState(false);
   const [addedLoading, setAddedLoading] = useState(false);
   const [editedLoading, setEditedLoading] = useState(false);
 
+  // SKELETON LOADING
   const skeleton = [];
   for (let i = 0; i < 3; i++) {
     skeleton.push(
@@ -85,24 +91,32 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
             </Link>
           </div>
         )}
+        {addedLoading || loading || groupLoading || editedLoading
+          ? skeleton.map((item) => item)
+          : ""}
+        {!loading &&
+        !groupLoading &&
+        !editedLoading &&
+        !addedLoading &&
+        upcoming.length === 0 ? (
+          <div className={classes.centerContainer}>
+            <Typography variant="subtitle2" align="center">
+              There are no upcoming events <br />
+              <Button color="primary" onClick={() => setAddEventOpen(true)}>
+                Create event
+              </Button>
+            </Typography>
+          </div>
+        ) : (
+          ""
+        )}
         <div style={{ marginTop: "1em" }}>
-          {addedLoading || loading || groupLoading || editedLoading
-            ? skeleton.map((item) => item)
-            : ""}
-          {!loading && !groupLoading && events.length === 0 ? (
-            <div className={classes.centerContainer}>
-              <Typography variant="subtitle2" align="center">
-                You have no events yet! <br />
-                <Button color="primary" onClick={() => setAddEventOpen(true)}>
-                  Create event
-                </Button>
-              </Typography>
-            </div>
-          ) : (
-            ""
-          )}
           {mobile &&
-            (!loading && !groupLoading && events.length > 0 ? (
+            (!loading &&
+            !groupLoading &&
+            !addedLoading &&
+            !editedLoading &&
+            upcoming.length > 0 ? (
               <IconButton
                 color="primary"
                 onClick={() => setAddEventOpen(true)}
@@ -117,8 +131,8 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
           !groupLoading &&
           !addedLoading &&
           !editedLoading &&
-          events.length > 0
-            ? events.map((event, index) => {
+          upcoming.length > 0
+            ? upcoming.map((event, index) => {
                 let attending = false;
                 let owner = false;
                 event.attendants.filter((attendant) => {
@@ -147,7 +161,7 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
         !groupLoading &&
         !addedLoading &&
         !editedLoading &&
-        events.length > 0 ? (
+        upcoming.length > 0 ? (
           <div className={classes.addButtonContainer}>
             <Button
               variant="contained"

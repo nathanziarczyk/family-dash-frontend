@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, makeStyles, Paper, Card } from "@material-ui/core";
+import { Grid, makeStyles, Paper } from "@material-ui/core";
 
 import EventsSummary from "./EventsSummary";
 import NotesSummary from "./NotesSummary";

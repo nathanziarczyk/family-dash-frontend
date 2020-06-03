@@ -3,6 +3,7 @@ import axios from "../axios";
 // INITIAL STATE
 export const initialState = {
   events: [],
+  upcoming: [],
   loading: false,
   error: {
     bool: false,
@@ -53,9 +54,12 @@ export default (state = initialState, { type, payload }) => {
       };
 
     case SUCCESS_EVENTS_SEARCH:
-      console.log(payload);
+      const upcoming = payload.filter(
+        (event) => new Date() <= new Date(event.start)
+      );
       return {
         ...state,
+        upcoming,
         events: payload,
         loading: false,
         error: {
