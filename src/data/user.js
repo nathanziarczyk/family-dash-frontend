@@ -12,20 +12,6 @@ export const initialState = {
     lastName: "",
     email: "",
   },
-  login: {
-    error: {
-      bool: false,
-      msg: "",
-    },
-    loading: false,
-  },
-  register: {
-    error: {
-      bool: false,
-      msg: "",
-    },
-    loading: false,
-  },
   request: {
     error: {
       bool: false,
@@ -38,9 +24,7 @@ export const initialState = {
 /* ACTION TYPES */
 export const USER_SUCCESS_LOGIN = "USER_SUCCESS_LOGIN";
 
-export const USER_START_REGISTER = "USER_START_REGISTER";
 export const USER_SUCCESS_REGISTER = "USER_SUCCESS_REGISTER";
-export const USER_ERROR_REGISTER = "USER_ERROR_REGISTER";
 
 export const USER_START_ACCEPT_REQUEST = "USER_START_ACCEPT_REQUEST";
 export const USER_SUCCESS_ACCEPT_REQUEST = "USER_SUCCESS_ACCEPT_REQUEST";
@@ -59,35 +43,9 @@ export const successLogin = (data) => ({
   payload: data,
 });
 
-export const registerUser = (fn, ln, email, password) => (dispatch) => {
-  dispatch(startRegister());
-  axios
-    .post(`${process.env.REACT_APP_API}/register`, {
-      _username: email,
-      _password: password,
-      first_name: fn,
-      last_name: ln,
-    })
-    .then((response) => {
-      dispatch(succesRegister("Check your email to activate your account"));
-    })
-    .catch((error) => {
-      dispatch(succesRegister("Check your email to activate your account"));
-    });
-};
-
-export const startRegister = () => ({
-  type: USER_START_REGISTER,
-});
-
 export const succesRegister = (data) => ({
   type: USER_SUCCESS_REGISTER,
   payload: data,
-});
-
-export const errorRegister = (message) => ({
-  type: USER_ERROR_REGISTER,
-  payload: message,
 });
 
 export const userAcceptRequest = ({ groupId, userId }) => (dispatch) => {
@@ -140,32 +98,11 @@ export default (state = initialState, { type, payload }) => {
         loggedIn: true,
       };
 
-    case USER_START_REGISTER:
-      return {
-        ...state,
-        register: {
-          ...state.register,
-          loading: true,
-        },
-      };
-
     case USER_SUCCESS_REGISTER:
       return {
         ...state,
         register: {
           ...state.register,
-          loading: false,
-        },
-      };
-
-    case USER_ERROR_REGISTER:
-      return {
-        ...state,
-        register: {
-          error: {
-            bool: true,
-            msg: payload,
-          },
           loading: false,
         },
       };
