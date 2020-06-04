@@ -14,7 +14,7 @@ import notesReducer from "./notes";
 
 const persistConfig = {
   key: "root",
-  whitelist: ["user.user", "events", "group"],
+  whitelist: ["user", "events", "group", "notes"],
   storage,
 };
 
@@ -42,4 +42,5 @@ export const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
+
 export const persistor = persistStore(store);

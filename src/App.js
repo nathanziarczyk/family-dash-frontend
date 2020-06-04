@@ -8,8 +8,8 @@ import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Overview from "./components/Overview/Overview";
 import Layout from "./components/Layout/Layout";
 import Group from "./components/Group/Group";
-import Calendar from "./components/Detail/Calendar/Calendar";
-import EventDetail from "./components/Detail/EventDetail";
+import Calendar from "./components/Events/Calendar/Calendar";
+import EventDetail from "./components/Events/EventDetail";
 import Notes from "./components/Notes/Notes";
 import NoteDetail from "./components/Notes/NoteDetail";
 
