@@ -15,8 +15,11 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { useSelector, useDispatch } from "react-redux";
 import * as EmailValidator from "email-validator";
 
-import { registerUser } from "./../../data/user";
+// import { registerUser } from "./../../data/user";
+import { registerUser } from "../../helpers/register";
 import ErrorMessage from "../Messages/ErrorMessage";
+import SuccessMessage from "../Messages/SuccessMessage";
+import { succesRegister } from "../../data/user";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -61,21 +64,24 @@ export default function Register() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [message, setMessage] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // ERROR STATE
   const [inputError, setInputError] = useState("");
 
   // LOADING EN ERROR AXIOS
-  const error = useSelector((state) => state.user.register.error);
-  const loading = useSelector((state) => state.user.register.loading);
+  // const error = useSelector((state) => state.user.register.error);
+  // const loading = useSelector((state) => state.user.register.loading);
 
   // FORM SUBMIT HANDLER
   const submitHandler = (e) => {
     e.preventDefault();
-    setInputError(
-      "Register is disabled while i'm developing the app :) patience :)"
-    );
-    return null;
+    // setInputError(
+    //   "Register is disabled while i'm developing the app :) patience :)"
+    // );
+    // return null;
     //TODO: Register terug aanzetten (setInputError & return null weghalen)
     if (
       firstName === "" ||
@@ -90,7 +96,27 @@ export default function Register() {
       setInputError("Email is not valid");
       return null;
     }
-    dispatch(registerUser(firstName, lastName, email, password));
+    setLoading(true);
+    registerUser(email, password, firstName, lastName)
+      .then((response) => {
+        setLoading(false);
+        dispatch(succesRegister);
+        setMessage(
+          "Account created! Check your mailbox to activate your account."
+        );
+      })
+      .catch((error) => {
+        setLoading(false);
+        if (error.response === undefined) {
+          setMessage(
+            "Account created! Check your mailbox to activate your account."
+          );
+        } else {
+          if (error.response.data.error === "Duplicate entry for email")
+            setError("User with this email already exists");
+          else setError("Something went wrong, please try again");
+        }
+      });
   };
 
   return (
@@ -209,13 +235,14 @@ export default function Register() {
           </Container>
         </Grid>
       </Grid>
-      {error.bool && <ErrorMessage message={error.msg} />}
+      {message.length > 0 && (
+        <SuccessMessage clearError={setMessage} message={message} />
+      )}
+      {error.length > 0 && (
+        <ErrorMessage clearError={setError} message={error} />
+      )}
       {inputError !== "" && (
-        <ErrorMessage
-          message={inputError}
-          clearError={setInputError}
-          position={!mobile && "bottomRight"}
-        />
+        <ErrorMessage message={inputError} clearError={setInputError} />
       )}
     </Grid>
   );

@@ -14,7 +14,7 @@ import notesReducer from "./notes";
 
 const persistConfig = {
   key: "root",
-  whitelist: ["user", "events", "group"],
+  whitelist: ["user.user", "events", "group"],
   storage,
 };
 
@@ -29,10 +29,11 @@ const appReducer = persistCombineReducers(persistConfig, {
 
 const rootReducer = (state, action) => {
   if (action.type === "USER_LOGOUT") {
-    // window.localStorage.clear();
-    console.log("logout");
+    window.localStorage.clear();
+    console.log(window.localStorage.getItem("persist:root"));
     Cookies.remove("jwt");
     state = undefined;
+    console.log(window.localStorage.getItem("persist:root"));
   }
   return appReducer(state, action);
 };

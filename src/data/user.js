@@ -36,9 +36,7 @@ export const initialState = {
 };
 
 /* ACTION TYPES */
-export const USER_START_LOGIN = "USER_START_LOGIN";
 export const USER_SUCCESS_LOGIN = "USER_SUCCESS_LOGIN";
-export const USER_ERROR_LOGIN = "USER_ERROR_LOGIN";
 
 export const USER_START_REGISTER = "USER_START_REGISTER";
 export const USER_SUCCESS_REGISTER = "USER_SUCCESS_REGISTER";
@@ -51,42 +49,14 @@ export const USER_ERROR_ACCEPT_REQUEST = "USER_ERROR_ACCEPT_REQUEST";
 export const USER_LOGOUT = "USER_LOGOUT";
 
 /* ACTION CREATORS */
-export const loginUser = (username, password) => (dispatch) => {
-  dispatch(startLogin());
-  axios
-    .post(`${process.env.REACT_APP_API}/login`, {
-      username: username,
-      password: password,
-    })
-    .then((response) =>
-      dispatch(
-        successLogin({
-          jwt: response.data.token,
-          refresh: response.data.refresh_token,
-        })
-      )
-    )
-    .catch((error) => {
-      dispatch(errorLogin(error.response.data));
-    });
-};
 
 export const logoutUser = () => ({
   type: USER_LOGOUT,
 });
 
-export const startLogin = () => ({
-  type: USER_START_LOGIN,
-});
-
 export const successLogin = (data) => ({
   type: USER_SUCCESS_LOGIN,
   payload: data,
-});
-
-export const errorLogin = (message) => ({
-  type: USER_ERROR_LOGIN,
-  payload: message,
 });
 
 export const registerUser = (fn, ln, email, password) => (dispatch) => {
@@ -99,10 +69,10 @@ export const registerUser = (fn, ln, email, password) => (dispatch) => {
       last_name: ln,
     })
     .then((response) => {
-      dispatch(succesRegister(response.data));
+      dispatch(succesRegister("Check your email to activate your account"));
     })
     .catch((error) => {
-      dispatch(errorRegister(error.response.data.error));
+      dispatch(succesRegister("Check your email to activate your account"));
     });
 };
 
@@ -151,14 +121,6 @@ export const userDenyRequest = (requestId) => (dispatch) => {
 /* REDUCER */
 export default (state = initialState, { type, payload }) => {
   switch (type) {
-    case USER_START_LOGIN:
-      return {
-        ...state,
-        login: {
-          ...state.login,
-          loading: true,
-        },
-      };
     case USER_SUCCESS_LOGIN:
       const user = jwt_decode(payload.jwt);
       Cookies.set("jwt", payload.jwt);
@@ -176,21 +138,6 @@ export default (state = initialState, { type, payload }) => {
           loading: false,
         },
         loggedIn: true,
-      };
-    case USER_ERROR_LOGIN:
-      const msg =
-        payload === "Invalid credentials."
-          ? "Username and password don't match"
-          : "Something went wrong, try again later";
-      return {
-        ...state,
-        login: {
-          error: {
-            bool: true,
-            msg: msg,
-          },
-          loading: false,
-        },
       };
 
     case USER_START_REGISTER:

@@ -132,7 +132,7 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
           </Grid>
           <Grid container item xs={12}>
             <Grid item xs={false} sm={3} />
-            <Grid item xs={12} sm={6} className={mobile && classes.input}>
+            <Grid item xs={12} sm={6} className={mobile ? classes.input : ""}>
               <Editor
                 apiKey={process.env.REACT_APP_TINY}
                 value={body}

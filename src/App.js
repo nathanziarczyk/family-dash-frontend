@@ -10,10 +10,11 @@ import Layout from "./components/Layout/Layout";
 import Group from "./components/Group/Group";
 import Calendar from "./components/Detail/Calendar/Calendar";
 import EventDetail from "./components/Detail/EventDetail";
-import Notes from "./components/Detail/Notes";
-import NoteDetail from "./components/Detail/NoteDetail";
+import Notes from "./components/Notes/Notes";
+import NoteDetail from "./components/Notes/NoteDetail";
 
 import "./styles.scss";
+import Logout from "./components/ReUsable/Logout";
 
 function App() {
   const themeData = useSelector((state) => state.theme);
@@ -92,6 +93,7 @@ function App() {
           );
         }}
       />
+      <Route path="/logout" component={Logout} />
     </ThemeProvider>
   );
 }

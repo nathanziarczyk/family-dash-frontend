@@ -80,7 +80,7 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
   return (
     <>
       <List dense className={classes.list}>
-        <ListItem className={!mobile ? classes.title : ""}>
+        <ListItem key={"title"} className={!mobile ? classes.title : ""}>
           <ListItemText
             className={alignCenter === true ? classes.centerText : ""}
           >
@@ -121,6 +121,7 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
                 if (!mobile) if (i > 1) return null;
                 return (
                   <NoteListItem
+                    key={note.id}
                     note={note}
                     groupLoading={loading}
                     mobile={mobile}

@@ -10,6 +10,7 @@ export default function SearchUserInput({
   setSuggestions,
   setSuggestionsLoading,
   className,
+  selected,
 }) {
   // HANDLE SUGGESTIE USERS NA VERANDERING IN INPUT
   const handleAddUserFieldChange = (e) => {
@@ -29,6 +30,7 @@ export default function SearchUserInput({
       label="Search users by email"
       variant="outlined"
       size="small"
+      autoFocus={selected}
       value={usersInput}
       onChange={handleAddUserFieldChange}
       className={className}

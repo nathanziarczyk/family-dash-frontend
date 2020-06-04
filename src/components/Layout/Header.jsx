@@ -81,10 +81,10 @@ export default function MenuAppBar({ group, mobile }) {
   };
 
   const leaveGroup = (e) => {
-    history.push("/");
     axios.put(`/groups/${currentGroup.id}`, {
       removeGroupMember: `/api/users/${userId}`,
     });
+    history.push("/");
   };
 
   return (

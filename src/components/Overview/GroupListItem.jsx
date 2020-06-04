@@ -50,6 +50,7 @@ export default function GroupListItem({
       })
       .catch((error) => {
         dispatch(getGroups());
+        console.log(error.response);
         setMessage({
           type: "error",
           message: "Something went wrong, try again later",

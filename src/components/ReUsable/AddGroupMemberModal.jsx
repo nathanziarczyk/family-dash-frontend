@@ -53,6 +53,7 @@ export default function AddGroupMemberModal({ open, setOpen }) {
       <DialogContent>
         <DialogContentText>Search a user by email to add.</DialogContentText>
         <SearchUserInput
+          selected={true}
           usersInput={usersInput}
           setUsersInput={setUsersInput}
           setSuggestionsLoading={setSuggestionsLoading}

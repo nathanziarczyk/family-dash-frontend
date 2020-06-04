@@ -26,16 +26,6 @@ instance.interceptors.response.use(
   },
   function (error) {
     const originalRequest = error.config;
-    if (
-      error.response.status === 401 &&
-      originalRequest.url ===
-        "http://wdev.be/wdev_nathan/eindwerk/api/token/refresh"
-    ) {
-      // TODO: LOGOUT
-      window.history.push("/logout");
-      console.log("oei");
-      return Promise.reject(error);
-    }
     if (error.response.status === 401) {
       originalRequest._retry = true;
       const refreshToken = Cookie.get("refresh");
@@ -53,6 +43,10 @@ instance.interceptors.response.use(
               "Bearer " + Cookie.get("jwt");
             return instance(originalRequest);
           }
+        })
+        .catch((error) => {
+          // window.location.href = `/logout`;
+          return Promise.reject(error);
         });
     }
     return Promise.reject(error);

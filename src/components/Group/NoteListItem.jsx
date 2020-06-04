@@ -5,7 +5,7 @@ import { formatDate } from "../../helpers/formatDate";
 
 export default function NoteListItem({ note, groupLoading, mobile }) {
   return (
-    <ListItem button>
+    <ListItem button key={note.id}>
       <ListItemText
         primary={`${note.title} - by ${"naam hier"}`}
         secondary={`${formatDate(note.created)}`}

@@ -13,8 +13,10 @@ import {
   Fab,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import jwt_decode from "jwt-decode";
 
-import { loginUser } from "./../../data/user";
+import { successLogin } from "../../data/user";
+import { loginUser } from "../../helpers/login";
 import ErrorMessage from "../Messages/ErrorMessage";
 
 // CSS CLASSES
@@ -69,12 +71,14 @@ export default function Login() {
   // INPUTFIELDS STATE
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // ERROR STATE
   const [inputError, setInputError] = useState("");
 
   // ERROR EN LOADING AXIOS CALL
-  const { error, loading } = useSelector((state) => state.user.login);
+  // const { error, loading } = useSelector((state) => state.user.login);
 
   // VOLGENS MATERIAL UI THEME BREAKPOINT MOBILE BEPALEN
   const theme = useTheme();
@@ -87,7 +91,26 @@ export default function Login() {
       setInputError("All login fields are required");
       return null;
     }
-    dispatch(loginUser(email, password));
+    setLoading(true);
+    loginUser(email, password)
+      .then((response) => {
+        setLoading(false);
+        const { enabled } = jwt_decode(response.data.token);
+        if (!enabled) {
+          setError("You must confirm your email before you can login.");
+          return null;
+        }
+        dispatch(
+          successLogin({
+            jwt: response.data.token,
+            refresh: response.data.refresh_token,
+          })
+        );
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error.response.data.message);
+      });
   };
 
   return (
@@ -131,6 +154,7 @@ export default function Login() {
                     value={email}
                     onChange={(e) => {
                       setInputError("");
+                      setError("");
                       setEmail(e.target.value);
                     }}
                   />
@@ -153,6 +177,7 @@ export default function Login() {
                     value={password}
                     onChange={(e) => {
                       setInputError("");
+                      setError("");
                       setPassword(e.target.value);
                     }}
                   />
@@ -184,13 +209,11 @@ export default function Login() {
           </Grid>
         </Grid>
       </Grid>
-      {error.bool && <ErrorMessage message={error.msg} />}
+      {error.length > 0 && (
+        <ErrorMessage clearError={setError} message={error} />
+      )}
       {inputError !== "" && (
-        <ErrorMessage
-          message={inputError}
-          clearError={setInputError}
-          position={!mobile && "bottomLeft"}
-        />
+        <ErrorMessage message={inputError} clearError={setInputError} />
       )}
     </>
   );
