@@ -2,7 +2,6 @@ import React from "react";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 
 import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Overview from "./components/Overview/Overview";
@@ -24,9 +23,6 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Helmet>
-        <title>FamilyDash</title>
-      </Helmet>
       {/* <BLM /> */}
       <Route
         exact
@@ -41,7 +37,7 @@ function App() {
           return !loggedIn ? (
             <Redirect to="/" />
           ) : (
-            <Layout group={false}>
+            <Layout title="Overview" group={false}>
               <Overview />
             </Layout>
           );
@@ -65,7 +61,7 @@ function App() {
           return !loggedIn ? (
             <Redirect to="/" />
           ) : (
-            <Layout>
+            <Layout title="Calendar">
               <Calendar props={props} />
             </Layout>
           );
@@ -89,8 +85,20 @@ function App() {
           return !loggedIn ? (
             <Redirect to="/" />
           ) : (
-            <Layout>
+            <Layout title="Notes">
               <Notes props={props} />
+            </Layout>
+          );
+        }}
+      />
+      <Route
+        path="/note/:id"
+        render={(props) => {
+          return !loggedIn ? (
+            <Redirect to="/" />
+          ) : (
+            <Layout>
+              <NoteDetail props={props} />
             </Layout>
           );
         }}

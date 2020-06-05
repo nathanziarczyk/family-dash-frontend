@@ -19,7 +19,6 @@ import { getGroups } from "../../data/groups";
 import NewGroupForm from "./NewGroupForm";
 import InvitationList from "./InvitationList";
 import GroupList from "./GroupList";
-import { Helmet } from "react-helmet-async";
 import Skeleton from "react-loading-skeleton";
 
 // CSS CLASSES
@@ -98,9 +97,6 @@ export default function Overview() {
   };
   return (
     <>
-      <Helmet>
-        <title>{loading ? "Loading" : "FamilyDash — overview"}</title>
-      </Helmet>
       <Grid item xs={false} sm={3} />
       <Grid item xs={12} sm={6} className={classes.flexContainer}>
         <AppBar position="static" color="transparent" elevation={1}>

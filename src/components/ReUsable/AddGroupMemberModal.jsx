@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 
 import SearchUserInput from "./SearchUserInput";
 import axios from "../../axios";
+import ErrorMessage from "../Messages/ErrorMessage";
 
 const useStyles = makeStyles((theme) => ({
   fullWidth: {
@@ -32,15 +33,30 @@ export default function AddGroupMemberModal({ open, setOpen }) {
   const [usersInput, setUsersInput] = useState("");
   const [suggestionsLoading, setSuggestionsLoading] = useState(false);
   const [suggestions, setSuggestions] = useState(false);
+  const [error, setError] = useState("");
   const { id, members } = useSelector((state) => state.group);
+  const currentUserId = useSelector((state) => state.user.user.id);
 
   const addUserClick = (userId) => {
-    axios
-      .put(`/groups/${id}`, {
-        addGroupMember: `/api/users/${userId}`,
-      })
-      .then((response) => setOpen(false))
-      .catch((error) => "TODO:Error");
+    let check = false;
+    members.map((member) => {
+      if (member.id === userId) check = true;
+      return null;
+    });
+    // ALS DE USER ZICHZELF TOEVOEGT -> ERROR
+    if (userId === currentUserId) check = true;
+
+    if (!check) {
+      axios
+        .put(`/groups/${id}`, {
+          addGroupMember: `/api/users/${userId}`,
+        })
+        .then((response) => setOpen(false))
+        .catch((error) => "TODO:Error");
+    } else {
+      setError("This user is already added");
+      return null;
+    }
   };
 
   return (
@@ -82,6 +98,9 @@ export default function AddGroupMemberModal({ open, setOpen }) {
           </ListItem>
         </List>
       </DialogContent>
+      {error.length > 0 && (
+        <ErrorMessage clearError={setError} message={error} />
+      )}
       <DialogActions>
         <Button onClick={handleClose} color="primary">
           Cancel
