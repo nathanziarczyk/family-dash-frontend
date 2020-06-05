@@ -27,6 +27,7 @@ import { useHistory } from "react-router-dom";
 import axios from "../../axios";
 import { formatDate } from "../../helpers/formatDate";
 import { deleteEvent } from "../../helpers/deleteEvent";
+import EditEventModal from "../ReUsable/EditEventModal";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -54,6 +55,8 @@ export default function EventDetail({ props }) {
   const [event, setEvent] = useState({});
   const [loading, setLoading] = useState(false);
   const [attending, setAttending] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [editedLoading, setEditedLoading] = useState(false);
   const [owner, setOwner] = useState({});
   const [attendants, setAttendants] = useState([]);
   const currentUserId = useSelector((state) => state.user.user.id);
@@ -73,6 +76,7 @@ export default function EventDetail({ props }) {
       .catch(() => console.log(""))
       .finally(() => setLoading(false));
   }, [id]);
+
   useEffect(() => {
     if (Object.keys(event).length > 0) {
       setAttendants(event.attendants);
@@ -82,6 +86,7 @@ export default function EventDetail({ props }) {
       });
     }
   }, [event, currentUserId]);
+
   const handleAttending = (bool) => {
     if (bool === 0) {
       axios
@@ -218,18 +223,26 @@ export default function EventDetail({ props }) {
                 )}
               </List>
             </div>
-            <div className={classes.icons}>
-              <IconButton>
-                <EditIcon />
-              </IconButton>
-              <IconButton onClick={(e) => handleDeleteClick(e, event.id)}>
-                <DeleteSweepIcon />
-              </IconButton>
-            </div>
+            {owner.id === currentUserId && (
+              <div className={classes.icons}>
+                <IconButton onClick={(e) => setOpen(true)}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton onClick={(e) => handleDeleteClick(e, event.id)}>
+                  <DeleteSweepIcon />
+                </IconButton>
+              </div>
+            )}
           </CardContent>
         </Card>
       </Grid>
       <Grid item xs={false} md={4} />
+      <EditEventModal
+        open={open}
+        setOpen={setOpen}
+        event={event}
+        setEditedLoading={setEditedLoading}
+      />
     </Grid>
   );
 }

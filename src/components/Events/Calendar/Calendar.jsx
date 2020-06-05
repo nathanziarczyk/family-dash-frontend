@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   makeStyles,
@@ -8,10 +8,11 @@ import {
 } from "@material-ui/core";
 import FullCalendar from "@fullcalendar/react";
 import listPlugin from "@fullcalendar/list";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import AddEventModal from "../../ReUsable/AddEventModal";
+import { searchEvents } from "../../../data/events";
 
 import "./main.scss";
 
@@ -25,9 +26,15 @@ const useStyles = makeStyles((theme) => ({
 export default function Calendar() {
   const classes = useStyles();
   const { events, loading } = useSelector((state) => state.events);
+  const currentGroupId = useSelector((state) => state.group.id);
   const [addedLoading, setAddedLoading] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(searchEvents(currentGroupId));
+  }, []);
 
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
