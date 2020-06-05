@@ -14,14 +14,19 @@ import {
   ListItem,
   ListItemText,
   ListItemAvatar,
+  IconButton,
 } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import FaceIcon from "@material-ui/icons/Face";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Skeleton from "react-loading-skeleton";
+import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
+import EditIcon from "@material-ui/icons/Edit";
+import { useHistory } from "react-router-dom";
 
 import axios from "../../axios";
 import { formatDate } from "../../helpers/formatDate";
+import { deleteEvent } from "../../helpers/deleteEvent";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -39,6 +44,10 @@ const useStyles = makeStyles((theme) => ({
   detailContainer: {
     marginTop: theme.spacing(3),
   },
+  icons: {
+    position: "absolute",
+    bottom: theme.spacing(2),
+  },
 }));
 
 export default function EventDetail({ props }) {
@@ -51,6 +60,8 @@ export default function EventDetail({ props }) {
   const currentUserFn = useSelector((state) => state.user.user.firstName);
   const classes = useStyles();
   const id = props.match.params.id;
+  const history = useHistory();
+
   useEffect(() => {
     setLoading(true);
     axios
@@ -62,7 +73,6 @@ export default function EventDetail({ props }) {
       .catch(() => console.log(""))
       .finally(() => setLoading(false));
   }, [id]);
-
   useEffect(() => {
     if (Object.keys(event).length > 0) {
       setAttendants(event.attendants);
@@ -92,6 +102,11 @@ export default function EventDetail({ props }) {
           addAtt();
         });
     }
+  };
+
+  const handleDeleteClick = (e, eventId) => {
+    e.preventDefault();
+    deleteEvent(eventId).then(() => history.goBack());
   };
 
   const removeAtt = () => {
@@ -159,7 +174,7 @@ export default function EventDetail({ props }) {
             <div className={classes.detailContainer}>
               <Typography variant="h6">Attendants</Typography>
               <Divider />
-              <List>
+              <List style={{ maxHeight: "300px", overflow: "hidden" }}>
                 {loading ? (
                   <ListItem>
                     <ListItemAvatar>
@@ -202,6 +217,14 @@ export default function EventDetail({ props }) {
                   })
                 )}
               </List>
+            </div>
+            <div className={classes.icons}>
+              <IconButton>
+                <EditIcon />
+              </IconButton>
+              <IconButton onClick={(e) => handleDeleteClick(e, event.id)}>
+                <DeleteSweepIcon />
+              </IconButton>
             </div>
           </CardContent>
         </Card>

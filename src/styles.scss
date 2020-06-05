@@ -1,3 +1,7 @@
+body {
+  background-color: rgba(249, 249, 249, 0.733);
+}
+
 a {
   color: inherit;
   text-decoration: inherit;
@@ -18,4 +22,14 @@ a {
 .MuiButton-contained,
 .MuiButton-outlined {
   border-radius: 25px !important;
+}
+
+.reduce-line-height {
+  p {
+    line-height: 0;
+  }
+}
+
+.blend {
+  background-color: rgba(249, 249, 249, 0.733) !important;
 }

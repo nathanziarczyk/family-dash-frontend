@@ -27,7 +27,7 @@ function App() {
       <Helmet>
         <title>FamilyDash</title>
       </Helmet>
-      <BLM />
+      {/* <BLM /> */}
       <Route
         exact
         path="/"
