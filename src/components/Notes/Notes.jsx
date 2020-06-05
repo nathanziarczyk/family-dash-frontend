@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Notes() {
   const classes = useStyles();
-  const [pageNotes, setPageNotes] = useState([]);
+  const [page, setPage] = useState(1);
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -56,32 +56,20 @@ export default function Notes() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("zoeken");
     dispatch(searchNotes(groupId));
   }, []);
 
-  useEffect(() => {
-    console.log("get");
-    getNotes(1);
-  }, [mobile]);
-
+  // Hoeveel items er per pagina worden weergegeven
+  // 3 op mobile, 9 op web
   const itemsPerPage = mobile ? 3 : 9;
 
-  const getNotes = (page) => {
-    const minItems = (page - 1) * itemsPerPage + 1;
-    const maxItems = page * itemsPerPage;
-    const pageNotesArr = notes.filter((note, i) => {
-      const index = i + 1;
-      if (index >= minItems && index <= maxItems) {
-        return note;
-      }
-      return null;
-    });
-    setPageNotes(pageNotesArr);
-  };
+  // Bepalen welke items op de pagina worden weergegeven
+  const minItems = (page - 1) * itemsPerPage;
+  const maxItems = page * itemsPerPage - 1;
 
+  // Als de pagina veranderd
   const handlePagination = (e, value) => {
-    getNotes(value);
+    setPage(value);
   };
 
   return (
@@ -94,8 +82,12 @@ export default function Notes() {
           elevation={0}
         >
           <Grid container spacing={3} style={{ maxHeight: "100%" }}>
-            {pageNotes.length > 0 ? (
-              pageNotes.map((note) => <NoteGridItem note={note} />)
+            {notes.length > 0 ? (
+              notes.map((note, i) => {
+                if (i >= minItems && i <= maxItems)
+                  return <NoteGridItem note={note} />;
+                else return null;
+              })
             ) : (
               <div className={classes.centerText}>
                 <Typography variant="subtitle2" align="center">
@@ -107,7 +99,7 @@ export default function Notes() {
               </div>
             )}
           </Grid>
-          {pageNotes.length > 0 && (
+          {notes.length > 0 && (
             <Pagination
               className={classes.pagination}
               count={Math.ceil(notes.length / itemsPerPage)}

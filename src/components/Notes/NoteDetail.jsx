@@ -53,7 +53,8 @@ export default function NoteDetail({ props }) {
   const handleDeleteNote = () => {
     axios
       .delete(`/notes/${id}`)
-      .then(async (response) => await history.goBack());
+      .then(() => history.goBack())
+      .catch(() => history.goBack());
   };
 
   const classes = useStyles();
