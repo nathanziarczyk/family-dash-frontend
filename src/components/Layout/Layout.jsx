@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
   },
   childrenContainerMobile: {
-    height: "calc(100vh - 50px)",
+    height: "calc(100vh - 53px)",
     width: "100%",
     margin: 0,
   },

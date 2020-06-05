@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Paper, makeStyles } from "@material-ui/core";
+import {
+  Grid,
+  Paper,
+  makeStyles,
+  useTheme,
+  useMediaQuery,
+} from "@material-ui/core";
 import { useSelector } from "react-redux";
 import NoteGridItem from "./NoteGridItem";
 import Pagination from "@material-ui/lab/Pagination";
@@ -18,9 +24,12 @@ const useStyles = makeStyles((theme) => ({
   },
   pagination: {
     position: "absolute",
+    display: "flex",
+    justifyContent: "center",
     bottom: "15px",
     left: "50%",
     transform: "translateX(-50%)",
+    width: "100%",
   },
   gridContainer: {},
 }));
@@ -29,14 +38,18 @@ export default function Notes() {
   const { notes, loading } = useSelector((state) => state.notes);
   const classes = useStyles();
   const [pageNotes, setPageNotes] = useState([]);
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     getNotes(1);
-  }, []);
+  }, [mobile]);
+
+  const itemsPerPage = mobile ? 3 : 9;
 
   const getNotes = (page) => {
-    const minItems = (page - 1) * 9 + 1;
-    const maxItems = page * 9;
+    const minItems = (page - 1) * itemsPerPage + 1;
+    const maxItems = page * itemsPerPage;
     const pageNotesArr = notes.filter((note, i) => {
       const index = i + 1;
       if (index >= minItems && index <= maxItems) {
@@ -51,11 +64,10 @@ export default function Notes() {
     getNotes(value);
   };
 
-  console.log(notes);
   return (
     <>
-      <Grid item xs={false} sm={2} />
-      <Grid item xs={12} sm={8} className={classes.gridItem}>
+      <Grid item xs={1} sm={2} />
+      <Grid item xs={10} sm={8} className={classes.gridItem}>
         <Paper
           elevation={1}
           className={clsx(classes.paper, "blend")}
@@ -68,12 +80,12 @@ export default function Notes() {
           </Grid>
           <Pagination
             className={classes.pagination}
-            count={Math.ceil(notes.length / 9)}
+            count={Math.ceil(notes.length / itemsPerPage)}
             onChange={handlePagination}
           />
         </Paper>
       </Grid>
-      <Grid item xs={false} sm={2} />
+      <Grid item xs={1} sm={2} />
     </>
   );
 }

@@ -27,9 +27,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NoteGridItem({ note }) {
   const classes = useStyles();
+
   return (
     <>
-      <Grid item xs={12} sm={6} md={4} className={classes.gridItem}>
+      <Grid item xs={12} md={4} className={classes.gridItem}>
         <Paper className={classes.paper} elevation={1}>
           <Typography variant="subtitle2" style={{ fontWeight: "lighter" }}>
             {formatDate(note.created)}
