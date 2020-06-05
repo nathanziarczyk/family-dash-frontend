@@ -48,11 +48,11 @@ const useStyles = makeStyles((theme) => ({
   },
   input: {
     width: "60%",
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(3),
   },
   inputFullWidth: {
     width: "100%",
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(3),
   },
   addFriendButton: {
     color: theme.palette.primary.main,
