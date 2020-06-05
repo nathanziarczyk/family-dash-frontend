@@ -1,7 +1,8 @@
 import React from "react";
 import { makeStyles, Grid, Paper, Typography, Button } from "@material-ui/core";
-import { formatDate } from "../../helpers/formatDate";
 import { Link } from "react-router-dom";
+
+import { formatDate } from "../../helpers/formatDate";
 
 const useStyles = makeStyles((theme) => ({
   gridItem: {

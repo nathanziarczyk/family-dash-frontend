@@ -16,7 +16,7 @@ export const SUCCESS_NOTES_SEARCH = "SUCCESS_NOTES_SEARCH";
 export const ERROR_NOTES_SEARCH = "ERROR_NOTES_SEARCH";
 
 // ACTION CREATORS
-export const getNotes = (groupId) => (dispatch) => {
+export const searchNotes = (groupId) => (dispatch) => {
   dispatch(startNotesSearch());
   axios
     .get(`/groups/${groupId}`)

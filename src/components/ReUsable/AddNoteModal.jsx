@@ -14,7 +14,7 @@ import { TextField, Grid, useMediaQuery } from "@material-ui/core";
 
 import ErrorMessage from "../Messages/ErrorMessage";
 import { createNote } from "../../helpers/createNote";
-import { getNotes } from "../../data/notes";
+import { searchNotes } from "../../data/notes";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -68,7 +68,7 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
       return null;
     }
     createNote(title, body, currentGroup).then(async () => {
-      await dispatch(getNotes(currentGroup));
+      await dispatch(searchNotes(currentGroup));
       setAddedLoading(false);
     });
     setOpen(false);

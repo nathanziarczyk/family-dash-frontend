@@ -5,11 +5,15 @@ import {
   makeStyles,
   useTheme,
   useMediaQuery,
+  Typography,
+  Button,
 } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import NoteGridItem from "./NoteGridItem";
 import Pagination from "@material-ui/lab/Pagination";
 import clsx from "clsx";
+
+import { searchNotes } from "../../data/notes";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -26,22 +30,38 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     display: "flex",
     justifyContent: "center",
-    bottom: "15px",
+    bottom: "-15px",
     left: "50%",
     transform: "translateX(-50%)",
     width: "100%",
   },
-  gridContainer: {},
+  centerText: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 }));
 
 export default function Notes() {
-  const { notes, loading } = useSelector((state) => state.notes);
   const classes = useStyles();
   const [pageNotes, setPageNotes] = useState([]);
+  const [open, setOpen] = useState(false);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { notes, loading } = useSelector((state) => state.notes);
+  const groupId = useSelector((state) => state.group.id);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("zoeken");
+    dispatch(searchNotes(groupId));
+  }, []);
+
+  useEffect(() => {
+    console.log("get");
     getNotes(1);
   }, [mobile]);
 
@@ -73,16 +93,27 @@ export default function Notes() {
           className={clsx(classes.paper, "blend")}
           elevation={0}
         >
-          <Grid container spacing={3}>
-            {pageNotes.map((note) => (
-              <NoteGridItem note={note} />
-            ))}
+          <Grid container spacing={3} style={{ maxHeight: "100%" }}>
+            {pageNotes.length > 0 ? (
+              pageNotes.map((note) => <NoteGridItem note={note} />)
+            ) : (
+              <div className={classes.centerText}>
+                <Typography variant="subtitle2" align="center">
+                  You have no notes yet! <br />
+                  <Button color="primary" onClick={() => setOpen(true)}>
+                    Create note
+                  </Button>
+                </Typography>
+              </div>
+            )}
           </Grid>
-          <Pagination
-            className={classes.pagination}
-            count={Math.ceil(notes.length / itemsPerPage)}
-            onChange={handlePagination}
-          />
+          {pageNotes.length > 0 && (
+            <Pagination
+              className={classes.pagination}
+              count={Math.ceil(notes.length / itemsPerPage)}
+              onChange={handlePagination}
+            />
+          )}
         </Paper>
       </Grid>
       <Grid item xs={1} sm={2} />
