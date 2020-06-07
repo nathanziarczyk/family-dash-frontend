@@ -38,7 +38,7 @@ export default function NoteGridItem({ note }) {
           </Typography>
           <Typography variant="h6">{note.title}</Typography>
           <Typography
-            variant="body1"
+            variant="body2"
             className={classes.shortBody}
             dangerouslySetInnerHTML={{ __html: note.shortBody }}
           />

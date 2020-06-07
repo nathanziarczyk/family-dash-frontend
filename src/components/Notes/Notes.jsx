@@ -14,6 +14,7 @@ import Pagination from "@material-ui/lab/Pagination";
 import clsx from "clsx";
 
 import { searchNotes } from "../../data/notes";
+import AddNoteModal from "../ReUsable/AddNoteModal";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,6 +49,7 @@ export default function Notes() {
   const classes = useStyles();
   const [page, setPage] = useState(1);
   const [open, setOpen] = useState(false);
+  const [addedLoading, setAddedLoading] = useState(false);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { notes, loading } = useSelector((state) => state.notes);
@@ -108,6 +110,11 @@ export default function Notes() {
           )}
         </Paper>
       </Grid>
+      <AddNoteModal
+        open={open}
+        setOpen={setOpen}
+        setAddedLoading={setAddedLoading}
+      />
       <Grid item xs={1} sm={2} />
     </>
   );

@@ -30,6 +30,7 @@ export default function NoteEdit({ note, id, setEdit }) {
         size="small"
         value={title}
         fullWidth
+        onChange={(e) => setTitle(e.target.value)}
       />
       <Editor
         className={classes.textfield}
