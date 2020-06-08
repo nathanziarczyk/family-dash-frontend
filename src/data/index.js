@@ -11,10 +11,11 @@ import groupsReducer from "./groups";
 import groupReducer from "./group";
 import eventReducer from "./events";
 import notesReducer from "./notes";
+import shoppingListsReducer from "./shoppingLists";
 
 const persistConfig = {
   key: "root",
-  whitelist: ["user", "events", "group", "notes"],
+  whitelist: ["user", "events", "group", "notes", "shoppingLists"],
   storage,
 };
 
@@ -25,6 +26,7 @@ const appReducer = persistCombineReducers(persistConfig, {
   group: groupReducer,
   events: eventReducer,
   notes: notesReducer,
+  shoppingLists: shoppingListsReducer,
 });
 
 const rootReducer = (state, action) => {

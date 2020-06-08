@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   List,
   ListItem,
   ListItemText,
   Typography,
   makeStyles,
+  IconButton,
 } from "@material-ui/core";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -14,17 +16,29 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.primary.dark,
   },
   list: {
-    height: "85.8%",
+    height: "70%",
     paddingTop: 0,
+    position: "relative",
   },
   titleText: {
     color: "white",
+  },
+  addButtonContainer: {
+    width: "100%",
+    textAlign: "center",
+  },
+  floatingButton: {
+    position: "absolute",
+    right: "20px",
+    top: "-5px",
   },
 }));
 
 export default function ShoppingListsSummary({ alignCenter, mobile }) {
   const classes = useStyles();
-  //TODO: De shopping lists binnenhalen uit de api
+
+  // Open state voor new list modal
+  const [open, setOpen] = useState(false);
   return (
     <>
       <List dense className={classes.list}>
@@ -44,6 +58,13 @@ export default function ShoppingListsSummary({ alignCenter, mobile }) {
         </ListItem>
         <div style={{ marginTop: ".8em" }}></div>
       </List>
+      {!mobile && (
+        <div className={classes.addButtonContainer}>
+          <IconButton color="primary" onClick={() => setOpen(true)}>
+            <AddCircleIcon fontSize="large" />
+          </IconButton>
+        </div>
+      )}
     </>
   );
 }
