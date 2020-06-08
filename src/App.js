@@ -15,6 +15,8 @@ import BLM from "./components/ReUsable/BLM";
 
 import "./styles.scss";
 import Logout from "./components/ReUsable/Logout";
+import NotFound from "./components/Error/NotFound";
+import NotAllowed from "./components/Error/NotAllowed";
 
 function App() {
   const themeData = useSelector((state) => state.theme);
@@ -29,6 +31,32 @@ function App() {
         path="/"
         render={() => {
           return loggedIn ? <Redirect to="/overview" /> : <LoginRegister />;
+        }}
+      />
+      <Route
+        exact
+        path="/not-found"
+        render={() => {
+          return !loggedIn ? (
+            <Redirect to="/" />
+          ) : (
+            <Layout title="Not found" group={false}>
+              <NotFound />
+            </Layout>
+          );
+        }}
+      />
+      <Route
+        exact
+        path="/not-allowed"
+        render={() => {
+          return !loggedIn ? (
+            <Redirect to="/" />
+          ) : (
+            <Layout title="Not allowed" group={false}>
+              <NotAllowed />
+            </Layout>
+          );
         }}
       />
       <Route

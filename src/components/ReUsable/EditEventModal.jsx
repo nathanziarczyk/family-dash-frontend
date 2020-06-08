@@ -49,7 +49,6 @@ export default function AddEventModal({
   );
   const [selectedEndDate, handleEndDateChange] = useState(new Date(event.end));
   const [title, setTitle] = useState(event.title);
-  console.log(event.description);
   const [description, setDescription] = useState(event.description);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));

@@ -26,6 +26,14 @@ instance.interceptors.response.use(
   },
   function (error) {
     const originalRequest = error.config;
+    if (error.response.status === 404) {
+      window.location.href = `/not-found`;
+      return null;
+    }
+    if (error.response.status === 403) {
+      window.location.href = `/not-allowed`;
+      return null;
+    }
     if (error.response.status === 401) {
       originalRequest._retry = true;
       const refreshToken = Cookie.get("refresh");
