@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from "react";
-import {
-  Grid,
-  Paper,
-  makeStyles,
-  Typography,
-  IconButton,
-} from "@material-ui/core";
+import { Grid, Paper, makeStyles, IconButton } from "@material-ui/core";
 import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
 import EditIcon from "@material-ui/icons/Edit";
 import Skeleton from "react-loading-skeleton";
+import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import axios from "../../axios";
-import { useSelector } from "react-redux";
 import NoteView from "./NoteView";
 import NoteEdit from "./NoteEdit";
 import ConfirmDialog from "../ReUsable/ConfirmDialog";
-import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -59,6 +53,7 @@ export default function NoteDetail({ props }) {
 
   const classes = useStyles();
 
+  const id = props.match.params.id;
   // Na het laden van pagina de note ophalen adhv querystring id
   useEffect(() => {
     setLoading(true);
@@ -72,8 +67,7 @@ export default function NoteDetail({ props }) {
       .catch((error) => {
         console.log(error.response);
       });
-  }, [edit]);
-  const id = props.match.params.id;
+  }, [edit, id]);
 
   return (
     <Grid container>

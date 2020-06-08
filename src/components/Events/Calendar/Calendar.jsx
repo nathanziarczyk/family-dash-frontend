@@ -13,7 +13,6 @@ import { useHistory } from "react-router-dom";
 
 import AddEventModal from "../../ReUsable/AddEventModal";
 import { searchEvents } from "../../../data/events";
-
 import "./main.scss";
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +33,7 @@ export default function Calendar() {
 
   useEffect(() => {
     dispatch(searchEvents(currentGroupId));
-  }, []);
+  }, [dispatch, currentGroupId]);
 
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));

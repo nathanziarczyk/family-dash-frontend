@@ -9,10 +9,10 @@ import {
   Button,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import NoteGridItem from "./NoteGridItem";
 import Pagination from "@material-ui/lab/Pagination";
 import clsx from "clsx";
 
+import NoteGridItem from "./NoteGridItem";
 import { searchNotes } from "../../data/notes";
 import AddNoteModal from "../ReUsable/AddNoteModal";
 
@@ -46,20 +46,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Notes() {
+  const dispatch = useDispatch();
   const classes = useStyles();
+  const theme = useTheme();
+
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  // STATE VOOR PAGINATION
   const [page, setPage] = useState(1);
+
+  // STATE VOOR MODAL
   const [open, setOpen] = useState(false);
   const [addedLoading, setAddedLoading] = useState(false);
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const { notes, loading } = useSelector((state) => state.notes);
   const groupId = useSelector((state) => state.group.id);
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(searchNotes(groupId));
-  }, []);
+  }, [dispatch, groupId]);
 
   // Hoeveel items er per pagina worden weergegeven
   // 3 op mobile, 9 op web
@@ -78,11 +83,7 @@ export default function Notes() {
     <>
       <Grid item xs={1} sm={2} />
       <Grid item xs={10} sm={8} className={classes.gridItem}>
-        <Paper
-          elevation={1}
-          className={clsx(classes.paper, "blend")}
-          elevation={0}
-        >
+        <Paper elevation={0} className={clsx(classes.paper, "blend")}>
           <Grid container spacing={3} style={{ maxHeight: "100%" }}>
             {notes.length > 0 ? (
               notes.map((note, i) => {

@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import Header from "./Header";
-import Footer from "./Footer";
 import { makeStyles, Grid, useMediaQuery, useTheme } from "@material-ui/core";
 import { Helmet } from "react-helmet-async";
 

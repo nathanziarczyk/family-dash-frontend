@@ -22,6 +22,7 @@ export default function BLM() {
       <a
         href="https://secure.actblue.com/donate/ms_blm_homepage_2019"
         target="_blank"
+        rel="noopener noreferrer"
       >
         <Fab
           color="secondary"

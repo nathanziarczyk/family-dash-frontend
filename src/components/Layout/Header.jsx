@@ -18,7 +18,6 @@ import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import EventIcon from "@material-ui/icons/Event";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import NoteIcon from "@material-ui/icons/Note";
-import sizing from "@material-ui/core";
 
 import { logoutUser } from "./../../data/user";
 import AddGroupMemberModal from "../ReUsable/AddGroupMemberModal";

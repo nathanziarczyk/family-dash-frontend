@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   Grid,
   Typography,
@@ -76,9 +76,6 @@ export default function Login() {
 
   // ERROR STATE
   const [inputError, setInputError] = useState("");
-
-  // ERROR EN LOADING AXIOS CALL
-  // const { error, loading } = useSelector((state) => state.user.login);
 
   // VOLGENS MATERIAL UI THEME BREAKPOINT MOBILE BEPALEN
   const theme = useTheme();

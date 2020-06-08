@@ -12,10 +12,8 @@ import {
   useTheme,
   useMediaQuery,
   Divider,
-  InputAdornment,
 } from "@material-ui/core";
 import DeleteSweepIcon from "@material-ui/icons/DeleteSweep";
-import SearchIcon from "@material-ui/icons/Search";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../axios";
 import Skeleton from "react-loading-skeleton";
@@ -114,21 +112,6 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
       .catch((error) => {
         setError(error);
       });
-  };
-
-  // HANDLE SUGGESTIE USERS NA VERANDERING IN INPUT
-  const handleAddUserFieldChange = (e) => {
-    setUsersInput(e.target.value);
-    setError("");
-    if (e.target.value.length > 1) {
-      setSuggestionsLoading(true);
-      axios.get(`/users?email=${e.target.value}`).then((response) => {
-        setSuggestionsLoading(false);
-        setSuggestions(response.data["hydra:member"]);
-      });
-    } else {
-      setSuggestions([]);
-    }
   };
 
   // FORM SUBMIT HANDLER

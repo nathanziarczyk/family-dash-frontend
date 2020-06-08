@@ -9,6 +9,6 @@ export default function Logout() {
   useEffect(() => {
     dispatch(logoutUser());
     history.push("/");
-  }, []);
+  }, [dispatch, history]);
   return <p>Logout</p>;
 }

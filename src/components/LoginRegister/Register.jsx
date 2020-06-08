@@ -12,7 +12,7 @@ import {
   Fab,
 } from "@material-ui/core";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as EmailValidator from "email-validator";
 
 // import { registerUser } from "./../../data/user";

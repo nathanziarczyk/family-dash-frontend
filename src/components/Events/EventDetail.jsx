@@ -16,7 +16,7 @@ import {
   ListItemAvatar,
   IconButton,
 } from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import FaceIcon from "@material-ui/icons/Face";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Skeleton from "react-loading-skeleton";
