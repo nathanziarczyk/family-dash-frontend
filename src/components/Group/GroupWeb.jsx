@@ -32,7 +32,7 @@ export default function GroupWeb(props) {
       <Grid item container xs={12} sm={5}>
         <Grid item container alignItems="center" justify="center" xs={12}>
           <Paper className={classes.smallPaper}>
-            <ShoppingListsSummary />
+            <ShoppingListsSummary groupLoading={loading} />
           </Paper>
         </Grid>
         <Grid item container alignItems="center" justify="center" xs={12}>

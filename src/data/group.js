@@ -1,6 +1,7 @@
 import axios from "../axios";
 import { successEventsSearch } from "./events";
 import { successNotesSearch } from "./notes";
+import { successListsSearch } from "./shoppingLists";
 
 /* INITIAL STATE */
 export const initialState = {
@@ -28,6 +29,7 @@ export const loadGroup = (id) => (dispatch) => {
       dispatch(groupSuccessLoad(response.data));
       dispatch(successEventsSearch(response.data.events));
       dispatch(successNotesSearch(response.data.notes));
+      dispatch(successListsSearch(response.data.shoppingLists));
     })
     .catch((error) => {
       console.log(error.response);
