@@ -8,13 +8,15 @@ import {
   DialogActions,
   TextField,
 } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import axios from "../../axios";
+import { getLists } from "../../data/shoppingLists";
 
 export default function AddListModal({ open, setOpen, setAddedLoading }) {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const [title, setTitle] = useState("");
 
@@ -38,6 +40,7 @@ export default function AddListModal({ open, setOpen, setAddedLoading }) {
       })
       .then((response) => {
         setAddedLoading(false);
+        dispatch(getLists(currentGroupId));
         const arr = response.data["@id"].split("/");
         id = arr[arr.length - 1];
       })

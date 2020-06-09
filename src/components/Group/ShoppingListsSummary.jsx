@@ -12,7 +12,8 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Skeleton from "react-loading-skeleton";
 
-import AddListModal, { addListModal } from "../ReUsable/AddListModal";
+import AddListModal from "../ReUsable/AddListModal";
+import { formatDate } from "../../helpers/formatDate";
 
 const useStyles = makeStyles((theme) => ({
   centerText: { textAlign: "center" },
@@ -56,8 +57,8 @@ export default function ShoppingListsSummary({
     (state) => state.shoppingLists
   );
 
-  const notLoadingAndNotEmpty = !loading && !shoppingLists.length > 0;
   const loadingGlob = loading || groupLoading || addedLoading;
+  const notLoadingAndNotEmpty = !loadingGlob && shoppingLists.length > 0;
 
   return (
     <>
@@ -87,14 +88,17 @@ export default function ShoppingListsSummary({
               </ListItem>
             </>
           )}
-          {!loadingGlob &&
+          {notLoadingAndNotEmpty &&
             shoppingLists.map((list, i) => {
-              if (!mobile) if (i > 4) return null;
-              if (mobile) if (i > 15) return null;
+              if (!mobile) if (i > 2) return null;
+              if (mobile) if (i > 8) return null;
               return (
                 <Link to={`/shopping-list/${list.id}`}>
                   <ListItem button>
-                    <ListItemText primary={list.title} />
+                    <ListItemText
+                      primary={list.title}
+                      secondary={formatDate(list.created)}
+                    />
                   </ListItem>
                 </Link>
               );

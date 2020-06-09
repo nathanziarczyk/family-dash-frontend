@@ -14,14 +14,14 @@ const ERROR_LISTS_SEARCH = "ERROR_LISTS_SEARCH";
 
 // ACTION CREATORS
 export const getLists = (groupId) => (dispatch) => {
-  startListsSearch();
+  dispatch(startListsSearch());
   axios
-    .get()
+    .get(`/groups/${groupId}`)
     .then((response) => {
-      successListsSearch();
+      dispatch(successListsSearch(response.data.shoppingLists));
     })
     .catch((error) => {
-      errorListsSearch();
+      dispatch(errorListsSearch());
     });
 };
 

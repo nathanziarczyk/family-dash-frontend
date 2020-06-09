@@ -1,7 +1,7 @@
 import React from "react";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, Switch } from "react-router-dom";
 
 import LoginRegister from "./components/LoginRegister/LoginRegister";
 import Overview from "./components/Overview/Overview";
@@ -17,6 +17,8 @@ import "./styles.scss";
 import Logout from "./components/ReUsable/Logout";
 import NotFound from "./components/Error/NotFound";
 import NotAllowed from "./components/Error/NotAllowed";
+import ShoppingLists from "./components/ShoppingLists/ShoppingLists";
+import ShoppingListDetail from "./components/ShoppingLists/ShoppingListDetail";
 
 function App() {
   const themeData = useSelector((state) => state.theme);
@@ -25,113 +27,138 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      {/* <BLM /> */}
-      <Route
-        exact
-        path="/"
-        render={() => {
-          return loggedIn ? <Redirect to="/overview" /> : <LoginRegister />;
-        }}
-      />
-      <Route
-        exact
-        path="/not-found"
-        render={() => {
-          return !loggedIn ? (
-            <Redirect to="/" />
-          ) : (
-            <Layout title="Not found" group={false}>
-              <NotFound />
-            </Layout>
-          );
-        }}
-      />
-      <Route
-        exact
-        path="/not-allowed"
-        render={() => {
-          return !loggedIn ? (
-            <Redirect to="/" />
-          ) : (
-            <Layout title="Not allowed" group={false}>
-              <NotAllowed />
-            </Layout>
-          );
-        }}
-      />
-      <Route
-        path="/overview"
-        render={() => {
-          return !loggedIn ? (
-            <Redirect to="/" />
-          ) : (
-            <Layout title="Overview" group={false}>
-              <Overview />
-            </Layout>
-          );
-        }}
-      />
-      <Route
-        path="/group/:id"
-        render={(props) => {
-          return !loggedIn ? (
-            <Redirect to="/" />
-          ) : (
-            <Layout>
-              <Group props={props} />
-            </Layout>
-          );
-        }}
-      />
-      <Route
-        path="/calendar"
-        render={(props) => {
-          return !loggedIn ? (
-            <Redirect to="/" />
-          ) : (
-            <Layout title="Calendar">
-              <Calendar props={props} />
-            </Layout>
-          );
-        }}
-      />
-      <Route
-        path="/event/:id"
-        render={(props) => {
-          return !loggedIn ? (
-            <Redirect to="/" />
-          ) : (
-            <Layout>
-              <EventDetail props={props} />
-            </Layout>
-          );
-        }}
-      />
-      <Route
-        path="/notes"
-        render={(props) => {
-          return !loggedIn ? (
-            <Redirect to="/" />
-          ) : (
-            <Layout title="Notes">
-              <Notes props={props} />
-            </Layout>
-          );
-        }}
-      />
-      <Route
-        path="/note/:id"
-        render={(props) => {
-          return !loggedIn ? (
-            <Redirect to="/" />
-          ) : (
-            <Layout>
-              <NoteDetail props={props} />
-            </Layout>
-          );
-        }}
-      />
-      <Route path="/logout" component={Logout} />
+      <Switch>
+        {/* <BLM /> */}
+        <Route
+          exact
+          path="/"
+          render={() => {
+            return loggedIn ? <Redirect to="/overview" /> : <LoginRegister />;
+          }}
+        />
+        <Route
+          path="/overview"
+          render={() => {
+            return !loggedIn ? (
+              <Redirect to="/" />
+            ) : (
+              <Layout title="Overview" group={false}>
+                <Overview />
+              </Layout>
+            );
+          }}
+        />
+        <Route
+          path="/group/:id"
+          render={(props) => {
+            return !loggedIn ? (
+              <Redirect to="/" />
+            ) : (
+              <Layout>
+                <Group props={props} />
+              </Layout>
+            );
+          }}
+        />
+        <Route
+          path="/calendar"
+          render={(props) => {
+            return !loggedIn ? (
+              <Redirect to="/" />
+            ) : (
+              <Layout title="Calendar">
+                <Calendar props={props} />
+              </Layout>
+            );
+          }}
+        />
+        <Route
+          path="/event/:id"
+          render={(props) => {
+            return !loggedIn ? (
+              <Redirect to="/" />
+            ) : (
+              <Layout>
+                <EventDetail props={props} />
+              </Layout>
+            );
+          }}
+        />
+        <Route
+          path="/notes"
+          render={(props) => {
+            return !loggedIn ? (
+              <Redirect to="/" />
+            ) : (
+              <Layout title="Notes">
+                <Notes props={props} />
+              </Layout>
+            );
+          }}
+        />
+        <Route
+          path="/note/:id"
+          render={(props) => {
+            return !loggedIn ? (
+              <Redirect to="/" />
+            ) : (
+              <Layout>
+                <NoteDetail props={props} />
+              </Layout>
+            );
+          }}
+        />
+        <Route
+          path="/shopping-lists"
+          render={(props) => {
+            return !loggedIn ? (
+              <Redirect to="/" />
+            ) : (
+              <Layout title="Shopping lists">
+                <ShoppingLists />
+              </Layout>
+            );
+          }}
+        />
+        <Route
+          path="/shopping-list/:id"
+          render={(props) => {
+            return !loggedIn ? (
+              <Redirect to="/" />
+            ) : (
+              <Layout>
+                <ShoppingListDetail props={props} />
+              </Layout>
+            );
+          }}
+        />
+        <Route path="/logout" component={Logout} />
+        <Route
+          exact
+          render={() => {
+            return !loggedIn ? (
+              <Redirect to="/" />
+            ) : (
+              <Layout title="Not found" group={false}>
+                <NotFound />
+              </Layout>
+            );
+          }}
+        />
+        <Route
+          exact
+          path="/not-allowed"
+          render={() => {
+            return !loggedIn ? (
+              <Redirect to="/" />
+            ) : (
+              <Layout title="Not allowed" group={false}>
+                <NotAllowed />
+              </Layout>
+            );
+          }}
+        />
+      </Switch>
     </ThemeProvider>
   );
 }
