@@ -63,7 +63,7 @@ export default function ShoppingListsSummary({
   return (
     <>
       <List dense className={classes.list}>
-        <ListItem className={!mobile ? classes.title : ""}>
+        <ListItem key="title" className={!mobile ? classes.title : ""}>
           <ListItemText
             className={alignCenter === true ? classes.centerText : ""}
           >
@@ -80,10 +80,10 @@ export default function ShoppingListsSummary({
         <div style={{ marginTop: ".8em" }}>
           {loadingGlob && (
             <>
-              <ListItem>
+              <ListItem key="loading-1">
                 <ListItemText primary={<Skeleton width={300} />} />
               </ListItem>
-              <ListItem>
+              <ListItem key="loading-2">
                 <ListItemText primary={<Skeleton width={300} />} />
               </ListItem>
             </>
@@ -93,11 +93,11 @@ export default function ShoppingListsSummary({
               if (!mobile) if (i > 2) return null;
               if (mobile) if (i > 8) return null;
               return (
-                <Link to={`/shopping-list/${list.id}`}>
+                <Link key={list.list.id} to={`/shopping-list/${list.list.id}`}>
                   <ListItem button>
                     <ListItemText
-                      primary={list.title}
-                      secondary={formatDate(list.created)}
+                      primary={list.list.title}
+                      secondary={formatDate(list.list.created)}
                     />
                   </ListItem>
                 </Link>

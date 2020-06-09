@@ -16,7 +16,17 @@ import { useSelector } from "react-redux";
 
 import axios from "../../axios";
 import ShoppingListItem from "./ShoppingListItem";
-const SortableItem = SortableElement(({ value }) => (
+
+const SortableListOther = SortableContainer(({ items }) => {
+  return (
+    <List dense>
+      {items.map((item, index) => (
+        <SortableItemOther key={`item-${item.id}`} index={index} value={item} />
+      ))}
+    </List>
+  );
+});
+const SortableItemOther = SortableElement(({ value }) => (
   <ShoppingListItem item={value} />
 ));
 
@@ -29,6 +39,9 @@ const SortableList = SortableContainer(({ items }) => {
     </List>
   );
 });
+const SortableItem = SortableElement(({ value }) => (
+  <ShoppingListItem item={value} />
+));
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -37,7 +50,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ShoppingListDetail({ props }) {
+  // Full list
   const [list, setList] = useState([]);
+
+  // List items sorted by category
+  const [meat, setMeat] = useState([]);
+  const [other, setOther] = useState([]);
+  const [veggies, setVeggies] = useState([]);
+  const [drinks, setDrinks] = useState([]);
+
   const [shoppingListItems, setShoppingListItems] = useState([]);
   const [addLoading, setAddLoading] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -46,34 +67,35 @@ export default function ShoppingListDetail({ props }) {
   const classes = useStyles();
 
   const currentUserId = useSelector((state) => state.user.user.id);
+  const allShoppingLists = useSelector(
+    (state) => state.shoppingLists.shoppingLists
+  );
 
-  const categories = [
-    { id: "cat-1", title: "Meat", type: "category" },
-    { id: "cat-2", title: "Veggies", type: "category" },
-    { id: "cat-3", title: "Dairy", type: "category" },
-    { id: "cat-4", title: "Drinks", type: "category" },
-  ];
   const id = props.match.params.id;
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
-    setShoppingListItems(({ items }) =>
-      arrayMove(shoppingListItems, oldIndex, newIndex)
-    );
+    setOther(({ items }) => arrayMove(shoppingListItems, oldIndex, newIndex));
   };
 
   useEffect(() => {
     setLoading(true);
-    axios
-      .get(`/shopping_lists/${id}`)
-      .then((response) => {
-        setLoading(false);
-        setList(response.data);
-        setShoppingListItems([
-          ...response.data.shoppingListItems,
-          ...categories,
-        ]);
-      })
-      .catch((error) => console.log(error));
+    const thisList = allShoppingLists.find(
+      (oneList) => oneList.list.id === Number.parseInt(id)
+    );
+    setList(thisList.list);
+    setMeat(thisList.meat);
+    setVeggies(thisList.veggies);
+    setOther(thisList.other);
+    setDrinks(thisList.other);
+    setLoading(false);
+    // axios
+    //   .get(`/shopping_lists/${id}`)
+    //   .then((response) => {
+    //     setLoading(false);
+    //     setList(response.data);
+    //     setShoppingListItems([...response.data.shoppingListItems]);
+    //   })
+    //   .catch((error) => console.log(error));
   }, [id]);
 
   const handleAddItem = (e) => {
@@ -129,6 +151,12 @@ export default function ShoppingListDetail({ props }) {
                 />
                 {addLoading && <CircularProgress />}
               </form>
+              <SortableListOther
+                items={other}
+                onSortEnd={onSortEnd}
+                lockAxis="y"
+                pressDelay={300}
+              />
               <SortableList
                 items={shoppingListItems}
                 onSortEnd={onSortEnd}

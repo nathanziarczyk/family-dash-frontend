@@ -88,7 +88,7 @@ export default function Notes() {
             {notes.length > 0 ? (
               notes.map((note, i) => {
                 if (i >= minItems && i <= maxItems)
-                  return <NoteGridItem note={note} />;
+                  return <NoteGridItem key={note.id} note={note} />;
                 else return null;
               })
             ) : (

@@ -18,6 +18,7 @@ import GroupAddIcon from "@material-ui/icons/GroupAdd";
 import EventIcon from "@material-ui/icons/Event";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import NoteIcon from "@material-ui/icons/Note";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 import { logoutUser } from "./../../data/user";
 import AddGroupMemberModal from "../ReUsable/AddGroupMemberModal";
@@ -103,7 +104,16 @@ export default function MenuAppBar({ group, mobile }) {
             </Link>
           </div>
           {group && (
-            <>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <IconButton color="inherit" onClick={() => history.goBack()}>
+                <ArrowBackIosIcon fontSize="small" />
+              </IconButton>
               <div
                 style={{
                   display: "flex",
@@ -132,9 +142,12 @@ export default function MenuAppBar({ group, mobile }) {
                 transformOrigin={{ vertical: "top", horizontal: "center" }}
                 open={openGroup}
                 onClose={handleGroupClose}
-                dense={true}
+                dense
               >
-                <Link to={`/group/${currentGroup.id}`}>
+                <Link
+                  to={`/group/${currentGroup.id}`}
+                  onClick={handleGroupClose}
+                >
                   <MenuItem>
                     <Typography variant="subtitle2">
                       Current group <br />
@@ -155,7 +168,7 @@ export default function MenuAppBar({ group, mobile }) {
                   <Typography variant="body2">Leave group</Typography>
                 </MenuItem>
                 <Divider />
-                <Link to="/calendar">
+                <Link to="/calendar" onClick={handleGroupClose}>
                   <MenuItem>
                     <EventIcon
                       color="primary"
@@ -164,7 +177,7 @@ export default function MenuAppBar({ group, mobile }) {
                     <Typography variant="body2">Calendar</Typography>
                   </MenuItem>
                 </Link>
-                <Link to="/shopping-lists">
+                <Link to="/shopping-lists" onClick={handleGroupClose}>
                   <MenuItem>
                     <ShoppingBasketIcon
                       color="primary"
@@ -173,14 +186,14 @@ export default function MenuAppBar({ group, mobile }) {
                     <Typography variant="body2">Shopping lists</Typography>
                   </MenuItem>
                 </Link>
-                <Link to="/notes">
+                <Link to="/notes" onClick={handleGroupClose}>
                   <MenuItem>
                     <NoteIcon color="primary" style={{ marginRight: ".5em" }} />
                     <Typography variant="body2">Notes</Typography>
                   </MenuItem>
                 </Link>
               </Menu>
-            </>
+            </div>
           )}
           <div
             style={{

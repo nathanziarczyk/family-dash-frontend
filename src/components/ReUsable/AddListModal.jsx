@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -23,7 +23,12 @@ export default function AddListModal({ open, setOpen, setAddedLoading }) {
   const [inputError, setInputError] = useState(false);
 
   const currentGroupId = useSelector((state) => state.group.id);
-  const id = null;
+
+  const [id, setId] = useState(null);
+
+  useEffect(() => {
+    if (id) history.push(`/shopping-list/${id}`);
+  }, [id]);
 
   const handleAddList = (e) => {
     e.preventDefault();
@@ -32,19 +37,20 @@ export default function AddListModal({ open, setOpen, setAddedLoading }) {
       return null;
     }
     setOpen(false);
-    setAddedLoading(true);
+    if (setAddedLoading) setAddedLoading(true);
     axios
       .post(`/shopping_lists`, {
         title,
         groep: `/api/groups/${currentGroupId}`,
       })
       .then((response) => {
-        setAddedLoading(false);
+        if (setAddedLoading) setAddedLoading(false);
         dispatch(getLists(currentGroupId));
         const arr = response.data["@id"].split("/");
-        id = arr[arr.length - 1];
+        setId(arr[arr.length - 1]);
       })
       .catch((error) => console.log(error.response));
+
     return null;
   };
   return (

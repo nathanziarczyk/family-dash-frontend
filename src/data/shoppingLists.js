@@ -52,6 +52,39 @@ export default (state = initialState, { type, payload }) => {
       };
 
     case SUCCESS_LISTS_SEARCH:
+      const allLists = [];
+      payload.map((list) => {
+        const other = [];
+        const meat = [];
+        const veggies = [];
+        const drinks = [];
+        list.shoppingListItems.map((item) => {
+          switch (item.category.name) {
+            case "Other":
+              other.push(item);
+              break;
+            case "Meat":
+              meat.push(item);
+              break;
+            case "Veggies":
+              veggies.push(item);
+              break;
+            case "Drinks":
+              drinks.push(item);
+              break;
+
+            default:
+              break;
+          }
+        });
+        allLists.push({
+          list,
+          other,
+          drinks,
+          meat,
+          veggies,
+        });
+      });
       return {
         ...state,
         loading: false,
@@ -59,7 +92,7 @@ export default (state = initialState, { type, payload }) => {
           bool: false,
           msg: "",
         },
-        shoppingLists: payload,
+        shoppingLists: allLists,
       };
 
     case ERROR_LISTS_SEARCH:
