@@ -18,10 +18,12 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 import { formatDate } from "../../helpers/formatDate";
 import AddListModal from "../ReUsable/AddListModal";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   list: {
     height: "80%",
+    position: "relative",
   },
   pagination: {
     position: "absolute",
@@ -98,7 +100,7 @@ export default function ShoppingLists() {
         </List>
         {shoppingLists.length > 0 && (
           <Pagination
-            className={classes.pagination}
+            className={clsx(classes.pagination)}
             count={Math.ceil(shoppingLists.length / itemsPerPage)}
             onChange={handlePagination}
           />
