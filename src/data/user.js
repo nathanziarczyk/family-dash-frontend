@@ -62,7 +62,7 @@ export const userAcceptRequest = ({ groupId, userId }) => (dispatch) => {
       }
     )
     .then((response) => dispatch(getGroups()))
-    .catch((error) => console.log(error.response)); // TODO: dispatch error
+    .catch((error) => console.log(error.response));
 };
 
 export const userDenyRequest = (requestId) => (dispatch) => {
@@ -81,8 +81,8 @@ export default (state = initialState, { type, payload }) => {
   switch (type) {
     case USER_SUCCESS_LOGIN:
       const user = jwt_decode(payload.jwt);
-      Cookies.set("jwt", payload.jwt);
-      Cookies.set("refresh", payload.refresh);
+      Cookies.set("jwt", payload.jwt, { sameSite: "Strict" });
+      Cookies.set("refresh", payload.refresh, { sameSite: "Strict" });
       return {
         ...state,
         user: {
