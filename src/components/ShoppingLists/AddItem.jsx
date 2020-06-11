@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddItem({ listId, currentUser }) {
+export default function AddItem({ listId, currentUser, addLoading }) {
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -75,6 +75,7 @@ export default function AddItem({ listId, currentUser }) {
       >
         <InputLabel id="category-select-label">Category</InputLabel>
         <Select
+          label="Category"
           labelId="category-select-label"
           value={categoryInput}
           onChange={(e) => {

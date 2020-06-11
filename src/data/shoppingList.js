@@ -122,42 +122,6 @@ export default (state = initialState, { type, payload }) => {
         error: "Something went wrong",
       };
 
-    case TOGGLE_COMPLETED:
-      let i = 0;
-      switch (payload.catName) {
-        case "Other":
-          i = state.other.findIndex((item) => item.id === payload.itemId);
-          const newOther = state.other.map((e, ind) => {
-            if (ind === i) return { ...e, completed: !e.completed };
-            return e;
-          });
-          return { ...state, other: [...newOther] };
-        case "Meat":
-          i = state.meat.findIndex((item) => item.id === payload.itemId);
-          const newMeat = state.meat.map((e, ind) => {
-            if (ind === i) return { ...e, completed: !e.completed };
-            return e;
-          });
-          return { ...state, meat: [...newMeat] };
-        case "Veggies":
-          i = veggies.findIndex((item) => item.id === payload.itemId);
-          const newVeggies = state.veggies.map((e, ind) => {
-            if (ind === i) return { ...e, completed: !e.completed };
-            return e;
-          });
-          return { ...state, veggies: [...newVeggies] };
-        case "Drinks":
-          i = drinks.findIndex((item) => item.id === payload.itemId);
-          const newDrinks = state.drinks.map((e, ind) => {
-            if (ind === i) return { ...e, completed: !e.completed };
-            return e;
-          });
-          return { ...state, drinks: [...newDrinks] };
-
-        default:
-          break;
-      }
-
     default:
       return state;
   }
