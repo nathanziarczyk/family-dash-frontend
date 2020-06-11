@@ -12,10 +12,18 @@ import groupReducer from "./group";
 import eventReducer from "./events";
 import notesReducer from "./notes";
 import shoppingListsReducer from "./shoppingLists";
+import shoppingListReducer from "./shoppingList";
 
 const persistConfig = {
   key: "root",
-  whitelist: ["user", "events", "group", "notes", "shoppingLists"],
+  whitelist: [
+    "user",
+    "events",
+    "group",
+    "notes",
+    "shoppingLists",
+    "shoppingList",
+  ],
   storage,
 };
 
@@ -27,15 +35,14 @@ const appReducer = persistCombineReducers(persistConfig, {
   events: eventReducer,
   notes: notesReducer,
   shoppingLists: shoppingListsReducer,
+  shoppingList: shoppingListReducer,
 });
 
 const rootReducer = (state, action) => {
   if (action.type === "USER_LOGOUT") {
     window.localStorage.clear();
-    console.log(window.localStorage.getItem("persist:root"));
     Cookies.remove("jwt");
     state = undefined;
-    console.log(window.localStorage.getItem("persist:root"));
   }
   return appReducer(state, action);
 };
