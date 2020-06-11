@@ -88,12 +88,15 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
     skeleton.push(
       <ListItem key={`skeleton${i}`}>
         <ListItemText
-          primary={<Skeleton width={400} />}
-          secondary={<Skeleton width={200} />}
+          primary={<Skeleton width={mobile ? 300 : 400} />}
+          secondary={<Skeleton width={mobile ? 200 : 200} />}
         />
       </ListItem>
     );
   }
+
+  const itemsPerPage = Math.ceil(window.innerHeight * 0.01);
+
   return (
     <>
       <List dense className={classes.list}>
@@ -149,7 +152,7 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
                   return null;
                 });
                 if (new Date(event.start) <= new Date()) return null;
-                if (index > 8) return null;
+                if (index > itemsPerPage) return null;
                 if (event.user.id === currentUserId) owner = true;
                 return (
                   <EventListItem

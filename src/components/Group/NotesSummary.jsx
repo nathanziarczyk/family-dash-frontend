@@ -77,6 +77,9 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
       </ListItem>
     );
   }
+
+  const itemsPerPage = mobile ? Math.ceil(window.innerHeight * 0.01) : 2;
+
   return (
     <>
       <List dense className={classes.list}>
@@ -117,8 +120,7 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
           {notLoadingAndNotEmpty && (
             <>
               {notes.map((note, i) => {
-                if (mobile) if (i > 8) return null;
-                if (!mobile) if (i > 1) return null;
+                if (i > itemsPerPage) return null;
                 return (
                   <NoteListItem
                     key={note.id}

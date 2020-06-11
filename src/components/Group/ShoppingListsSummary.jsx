@@ -60,6 +60,8 @@ export default function ShoppingListsSummary({
   const loadingGlob = loading || groupLoading || addedLoading;
   const notLoadingAndNotEmpty = !loadingGlob && shoppingLists.length > 0;
 
+  const itemsPerPage = mobile ? Math.ceil(window.innerHeight * 0.01) : 2;
+
   return (
     <>
       <List dense className={classes.list}>
@@ -90,8 +92,7 @@ export default function ShoppingListsSummary({
           )}
           {notLoadingAndNotEmpty &&
             shoppingLists.map((list, i) => {
-              if (!mobile) if (i > 2) return null;
-              if (mobile) if (i > 8) return null;
+              if (i > itemsPerPage) return null;
               return (
                 <Link key={list.list.id} to={`/shopping-list/${list.list.id}`}>
                   <ListItem button>

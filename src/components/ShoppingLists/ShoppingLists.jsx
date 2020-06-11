@@ -55,7 +55,9 @@ export default function ShoppingLists() {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const itemsPerPage = 8;
+  console.log(window.innerHeight);
+
+  const itemsPerPage = Math.ceil(0.01 * window.innerHeight);
 
   // Bepalen welke items op de pagina worden weergegeven
   const minItems = (page - 1) * itemsPerPage;
