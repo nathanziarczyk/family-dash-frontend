@@ -73,7 +73,7 @@ export default function ShoppingLists() {
           <Typography style={{ color: "white", flex: 1 }}>
             Shopping Lists
           </Typography>
-          <IconButton onClick={setOpen} color="inherit">
+          <IconButton onClick={setOpen} style={{ color: "white" }}>
             <AddCircleIcon />
           </IconButton>
         </div>

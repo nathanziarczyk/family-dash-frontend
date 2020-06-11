@@ -10,6 +10,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  CircularProgress,
 } from "@material-ui/core";
 import Skeleton from "react-loading-skeleton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -54,6 +55,17 @@ export default function ShoppingListDetail({ props }) {
 
   const id = props.match.params.id;
 
+  const refreshList = () => {
+    handleClose();
+    dispatch(getList(id));
+  };
+
+  const resetList = () => {
+    handleClose();
+    localStorage.removeItem(`persist:list-${id}`);
+    dispatch(getList(id));
+  };
+
   useEffect(() => {
     dispatch(getList(id));
   }, []);
@@ -79,7 +91,7 @@ export default function ShoppingListDetail({ props }) {
       <Grid item xs={12} sm={6}>
         <div className={classes.header}>
           {list.loading ? (
-            <Skeleton />
+            <CircularProgress size={35} color="secondary" />
           ) : (
             <>
               <Typography>{list.title}</Typography>
@@ -96,44 +108,41 @@ export default function ShoppingListDetail({ props }) {
                 anchorOrigin={{ vertical: "top", horizontal: "left" }}
                 transformOrigin={{ vertical: "top", horizontal: "center" }}
               >
-                <MenuItem>
+                <MenuItem onClick={refreshList}>
                   <RefreshIcon /> Refresh List
                 </MenuItem>
-                <MenuItem>
+                <MenuItem onClick={resetList}>
                   <RotateLeftIcon /> Reset List
                 </MenuItem>
               </Menu>
             </>
           )}
         </div>
-        {!list.loading && (
-          <>
-            <AddItem
-              listId={id}
-              currentUser={currentUser}
-              addLoading={list.addItem.loading}
-            />
-            <List dense>
-              {displayCategories.map((cat) => (
-                <>
-                  <ListItem key={cat.id} className={classes.title}>
-                    <ListItemText primary={cat.title} />
-                  </ListItem>
-                  {cat.list.map((item) => {
-                    return (
-                      <ShoppingListItem
-                        catName={cat.title}
-                        key={item.id}
-                        item={item}
-                        listId={id}
-                      />
-                    );
-                  })}
-                </>
-              ))}
-            </List>
-          </>
-        )}
+        <AddItem
+          listId={id}
+          currentUser={currentUser}
+          addLoading={list.addItem.loading}
+        />
+        <List dense>
+          {displayCategories.map((cat) => (
+            <>
+              <ListItem key={cat.id} className={classes.title}>
+                <ListItemText primary={cat.title} />
+                {list.loading && <CircularProgress size={10} color="primary" />}
+              </ListItem>
+              {cat.list.map((item) => {
+                return (
+                  <ShoppingListItem
+                    catName={cat.title}
+                    key={item.id}
+                    item={item}
+                    listId={id}
+                  />
+                );
+              })}
+            </>
+          ))}
+        </List>
       </Grid>
       <Grid item xs={false} sm={3} />
     </>

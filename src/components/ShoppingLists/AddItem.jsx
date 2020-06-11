@@ -41,6 +41,8 @@ export default function AddItem({ listId, currentUser, addLoading }) {
 
   const handleAddItem = (e) => {
     e.preventDefault();
+    setCategoryInput("");
+    setNameInput("");
     dispatch(
       addItem({
         title: nameInput,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -57,6 +57,11 @@ export default function AddEventModal({
   const [descriptionError, setDescriptionError] = useState(false);
   const [titleError, setTitleError] = useState(false);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    handleStartDateChange(new Date(event.start));
+    handleEndDateChange(new Date(event.end));
+  }, [event.start, event.end]);
 
   const handleClose = () => {
     setOpen(false);
@@ -176,7 +181,9 @@ export default function AddEventModal({
                   disablePast
                   onChange={(e) => {
                     handleStartDateChange(e);
-                    handleEndDateChange(e);
+                    const dt = new Date(e);
+                    dt.setHours(dt.getHours() + 1);
+                    handleEndDateChange(dt);
                   }}
                   label="From*"
                   showTodayButton
