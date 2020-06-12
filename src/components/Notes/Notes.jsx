@@ -7,10 +7,12 @@ import {
   useMediaQuery,
   Typography,
   Button,
+  IconButton,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import Pagination from "@material-ui/lab/Pagination";
 import clsx from "clsx";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 import NoteGridItem from "./NoteGridItem";
 import { searchNotes } from "../../data/notes";
@@ -18,30 +20,33 @@ import AddNoteModal from "../ReUsable/AddNoteModal";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    height: "90%",
+    height: "99%",
     width: "100%",
     position: "relative",
-    padding: ".5em .5em 0 .5em",
-  },
-  gridItem: {
-    display: "flex",
-    alignItems: "center",
   },
   pagination: {
     position: "absolute",
     display: "flex",
     justifyContent: "center",
-    bottom: "-15px",
+    bottom: "2px",
     left: "50%",
     transform: "translateX(-50%)",
     width: "100%",
   },
   centerText: {
     width: "100%",
-    height: "100%",
+    height: "300px",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  title: {
+    background: theme.palette.primary.dark,
+    display: "flex",
+    alignItems: "center",
+    height: "50px",
+    padding: "0 1em",
+    marginBottom: ".5em",
   },
 }));
 
@@ -81,14 +86,22 @@ export default function Notes() {
 
   return (
     <>
-      <Grid item xs={1} sm={2} />
-      <Grid item xs={10} sm={8} className={classes.gridItem}>
+      <Grid item xs={false} sm={2} />
+      <Grid item xs={12} sm={8} className={classes.gridItem}>
         <Paper elevation={0} className={clsx(classes.paper, "blend")}>
-          <Grid container spacing={3} style={{ maxHeight: "100%" }}>
+          <div className={classes.title}>
+            <Typography style={{ color: "white", flex: 1 }}>Notes</Typography>
+            <IconButton onClick={setOpen} style={{ color: "white" }}>
+              <AddCircleIcon />
+            </IconButton>
+          </div>
+          <Grid container spacing={mobile ? 0 : 3}>
             {notes.length > 0 ? (
               notes.map((note, i) => {
                 if (i >= minItems && i <= maxItems)
-                  return <NoteGridItem key={note.id} note={note} />;
+                  return (
+                    <NoteGridItem mobile={mobile} key={note.id} note={note} />
+                  );
                 else return null;
               })
             ) : (
@@ -116,7 +129,7 @@ export default function Notes() {
         setOpen={setOpen}
         setAddedLoading={setAddedLoading}
       />
-      <Grid item xs={1} sm={2} />
+      <Grid item xs={false} sm={2} />
     </>
   );
 }

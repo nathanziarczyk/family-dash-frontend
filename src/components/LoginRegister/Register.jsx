@@ -15,7 +15,6 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { useDispatch } from "react-redux";
 import * as EmailValidator from "email-validator";
 
-// import { registerUser } from "./../../data/user";
 import { registerUser } from "../../helpers/register";
 import ErrorMessage from "../Messages/ErrorMessage";
 import SuccessMessage from "../Messages/SuccessMessage";
@@ -78,11 +77,6 @@ export default function Register() {
   // FORM SUBMIT HANDLER
   const submitHandler = (e) => {
     e.preventDefault();
-    // setInputError(
-    //   "Register is disabled while i'm developing the app :) patience :)"
-    // );
-    // return null;
-    //TODO: Register terug aanzetten (setInputError & return null weghalen)
     if (
       firstName === "" ||
       lastName === "" ||

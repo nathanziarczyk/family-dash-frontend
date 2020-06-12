@@ -11,7 +11,7 @@ import Calendar from "./components/Events/Calendar/Calendar";
 import EventDetail from "./components/Events/EventDetail";
 import Notes from "./components/Notes/Notes";
 import NoteDetail from "./components/Notes/NoteDetail";
-import BLM from "./components/ReUsable/BLM";
+// import BLM from "./components/ReUsable/BLM";
 
 import "./styles.scss";
 import Logout from "./components/ReUsable/Logout";
@@ -28,7 +28,6 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Switch>
-        {/* <BLM /> */}
         <Route
           exact
           path="/"

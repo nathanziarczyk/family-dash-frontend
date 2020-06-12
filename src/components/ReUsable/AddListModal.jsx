@@ -28,7 +28,7 @@ export default function AddListModal({ open, setOpen, setAddedLoading }) {
 
   useEffect(() => {
     if (id) history.push(`/shopping-list/${id}`);
-  }, [id]);
+  }, [id, history]);
 
   const handleAddList = (e) => {
     e.preventDefault();

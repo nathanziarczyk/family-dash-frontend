@@ -76,6 +76,7 @@ export default (state = initialState, { type, payload }) => {
             default:
               break;
           }
+          return null;
         });
         allLists.push({
           list,

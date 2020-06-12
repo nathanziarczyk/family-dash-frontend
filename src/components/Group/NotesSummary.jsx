@@ -55,10 +55,10 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
   // NOTES, LOADING & ERROR UIT STORE
   const { notes, loading } = useSelector((state) => state.notes);
 
-  //
+  // LOADING STATE NA TOEVOEGEN
   const [addedLoading, setAddedLoading] = useState(false);
 
-  //
+  // LOADING STATE GEBUNDELD VOOR CONDITIONAL RENDERING
   const loadingGlob = loading || groupLoading || addedLoading;
   const notLoadingAndNotEmpty =
     !loading && !groupLoading && !addedLoading && notes.length > 0;
@@ -78,6 +78,7 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
     );
   }
 
+  // HOEVEEL ITEMS PER PAGINA WORDEN WEERGEGEVEN OP BASIS VAN SCHERMGROOTTE
   const itemsPerPage = mobile ? Math.ceil(window.innerHeight * 0.01) : 2;
 
   return (

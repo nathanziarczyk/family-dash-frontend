@@ -34,7 +34,6 @@ export default function Layout({ children, group = true, title }) {
       >
         {children}
       </Grid>
-      {/* {!mobile && <Footer />} */}
     </>
   );
 }

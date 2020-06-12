@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Paper, Grid } from "@material-ui/core";
 
@@ -18,7 +18,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginRegister() {
   const classes = useStyles();
-  window.localStorage.removeItem("persist:root");
+  useEffect(() => {
+    localStorage.removeItem("persist:root");
+    return () => {
+      localStorage.removeItem("persist:root");
+    };
+  }, []);
   return (
     <Grid container spacing={0}>
       <Grid item xs={false} sm={12} md={6}>

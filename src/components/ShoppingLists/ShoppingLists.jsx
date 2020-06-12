@@ -5,11 +5,9 @@ import {
   ListItemText,
   ListItem,
   Typography,
-  useTheme,
-  useMediaQuery,
   makeStyles,
-  AppBar,
   IconButton,
+  Button,
 } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import { useSelector } from "react-redux";
@@ -41,6 +39,13 @@ const useStyles = makeStyles((theme) => ({
     height: "50px",
     padding: "0 1em",
   },
+  centerText: {
+    width: "100%",
+    height: "300px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 }));
 
 export default function ShoppingLists() {
@@ -51,11 +56,6 @@ export default function ShoppingLists() {
   const [page, setPage] = useState(1);
 
   const [open, setOpen] = useState(false);
-
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  console.log(window.innerHeight);
 
   const itemsPerPage = Math.ceil(0.01 * window.innerHeight);
 
@@ -79,27 +79,42 @@ export default function ShoppingLists() {
             <AddCircleIcon />
           </IconButton>
         </div>
-        <List className={classes.list}>
-          {shoppingLists.map((list, i) => {
-            if (i >= minItems && i <= maxItems)
-              return (
-                <Link key={list.list.id} to={`/shopping-list/${list.list.id}`}>
-                  <ListItem button>
-                    <ListItemText
-                      primary={list.list.title}
-                      secondary={formatDate(list.list.created)}
-                    />
-                    <Typography variant="subtitle2">
-                      {list.list.shoppingListItems.length > 0
-                        ? `${list.list.shoppingListItems.length} items`
-                        : "No items"}
-                    </Typography>
-                  </ListItem>
-                </Link>
-              );
-            else return null;
-          })}
-        </List>
+        {!loading && shoppingLists.length === 0 && (
+          <div className={classes.centerText}>
+            <Typography variant="subtitle2" align="center">
+              You have no shopping lists yet! <br />
+              <Button color="primary" onClick={() => setOpen(true)}>
+                Create list
+              </Button>
+            </Typography>
+          </div>
+        )}
+        {!loading && shoppingLists.length > 0 && (
+          <List className={classes.list}>
+            {shoppingLists.map((list, i) => {
+              if (i >= minItems && i <= maxItems)
+                return (
+                  <Link
+                    key={list.list.id}
+                    to={`/shopping-list/${list.list.id}`}
+                  >
+                    <ListItem button>
+                      <ListItemText
+                        primary={list.list.title}
+                        secondary={formatDate(list.list.created)}
+                      />
+                      <Typography variant="subtitle2">
+                        {list.list.shoppingListItems.length > 0
+                          ? `${list.list.shoppingListItems.length} items`
+                          : "No items"}
+                      </Typography>
+                    </ListItem>
+                  </Link>
+                );
+              else return null;
+            })}
+          </List>
+        )}
         {shoppingLists.length > 0 && (
           <Pagination
             className={clsx(classes.pagination)}

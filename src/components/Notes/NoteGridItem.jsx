@@ -8,6 +8,10 @@ const useStyles = makeStyles((theme) => ({
   gridItem: {
     height: "200px",
   },
+  gridItemMobile: {
+    height: window.innerHeight / 4.5,
+    marginBottom: "1em",
+  },
   paper: {
     height: "100%",
     padding: theme.spacing(1),
@@ -26,12 +30,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NoteGridItem({ note }) {
+export default function NoteGridItem({ note, mobile }) {
   const classes = useStyles();
 
   return (
     <>
-      <Grid item xs={12} md={4} className={classes.gridItem}>
+      <Grid
+        item
+        xs={12}
+        md={4}
+        className={mobile ? classes.gridItemMobile : classes.gridItem}
+      >
         <Paper className={classes.paper} elevation={1}>
           <Typography variant="subtitle2" style={{ fontWeight: "lighter" }}>
             {formatDate(note.created)}

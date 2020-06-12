@@ -29,6 +29,7 @@ import { formatDate } from "../../helpers/formatDate";
 import { deleteEvent } from "../../helpers/deleteEvent";
 import EditEventModal from "../ReUsable/EditEventModal";
 
+// MATERIAL UI CLASSES VOOR CUSTOM CSS
 const useStyles = makeStyles((theme) => ({
   card: {
     height: "95%",
@@ -52,19 +53,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EventDetail({ props }) {
-  const [event, setEvent] = useState({});
-  const [loading, setLoading] = useState(false);
-  const [attending, setAttending] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [editedLoading, setEditedLoading] = useState(false);
-  const [owner, setOwner] = useState({});
-  const [attendants, setAttendants] = useState([]);
-  const currentUserId = useSelector((state) => state.user.user.id);
-  const currentUserFn = useSelector((state) => state.user.user.firstName);
   const classes = useStyles();
   const id = props.match.params.id;
   const history = useHistory();
 
+  // USER DATA UIT REDUX STORE HOUDEN
+  const currentUserId = useSelector((state) => state.user.user.id);
+  const currentUserFn = useSelector((state) => state.user.user.firstName);
+  // LOCAL STATE VOOR EVENT DATA
+  const [event, setEvent] = useState({});
+  // STATE VOOR LOADING
+  const [loading, setLoading] = useState(false);
+  // LOADING NA HET BEWERKEN VAN EEN EVENT
+  const [editedLoading, setEditedLoading] = useState(false);
+  // STATE OM TE BEPALEN OF INGELOGDE GEBRUIKER
+  // DEELNEEMT AAN EVENT OF NIET
+  const [attending, setAttending] = useState(false);
+  // GEGEVENS VAN DE AANMAKER VAN HET EVENT
+  const [owner, setOwner] = useState({});
+  // DE DEELNEMERS AAN HET EVENT
+  const [attendants, setAttendants] = useState([]);
+  // STATE VOOR MODAL EDIT EVENT OPEN
+  const [open, setOpen] = useState(false);
+
+  // EVENT OPHALEN ON PAGE LOAD
   useEffect(() => {
     setLoading(true);
     axios
@@ -77,6 +89,7 @@ export default function EventDetail({ props }) {
       .finally(() => setLoading(false));
   }, [id]);
 
+  // ATTENDANTS OPHALEN
   useEffect(() => {
     if (Object.keys(event).length > 0) {
       setAttendants(event.attendants);
@@ -87,6 +100,22 @@ export default function EventDetail({ props }) {
     }
   }, [event, currentUserId]);
 
+  // FUNCTIES VOOR HET VERWIJDEREN OF TOEVOEGEN VAN DEELNEMERS
+  const removeAtt = () => {
+    const newAtt = attendants.filter((user) => user.id !== currentUserId);
+    setAttendants([...newAtt]);
+  };
+  const addAtt = () => {
+    setAttendants([
+      ...attendants,
+      {
+        id: currentUserId,
+        firstName: currentUserFn,
+      },
+    ]);
+  };
+
+  //
   const handleAttending = (bool) => {
     if (bool === 0) {
       axios
@@ -109,23 +138,10 @@ export default function EventDetail({ props }) {
     }
   };
 
+  // DELETE EVENT
   const handleDeleteClick = (e, eventId) => {
     e.preventDefault();
     deleteEvent(eventId).then(() => history.goBack());
-  };
-
-  const removeAtt = () => {
-    const newAtt = attendants.filter((user) => user.id !== currentUserId);
-    setAttendants([...newAtt]);
-  };
-  const addAtt = () => {
-    setAttendants([
-      ...attendants,
-      {
-        id: currentUserId,
-        firstName: currentUserFn,
-      },
-    ]);
   };
 
   return (

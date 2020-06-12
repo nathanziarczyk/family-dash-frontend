@@ -15,6 +15,7 @@ import AddEventModal from "../../ReUsable/AddEventModal";
 import { searchEvents } from "../../../data/events";
 import "./main.scss";
 
+// MATERIAL UI CLASSES VOOR CUSTOM CSS
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
     height: "100%",
@@ -24,19 +25,27 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Calendar() {
   const classes = useStyles();
-  const { events, loading } = useSelector((state) => state.events);
-  const currentGroupId = useSelector((state) => state.group.id);
-  const [addedLoading, setAddedLoading] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
 
+  // BEPALEN OF SCREEN MOBILE IS OBV MATERIAL UI BREAKPOINTS
+  const theme = useTheme();
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+  // ID VAN DE HUIDIGE GROEP
+  const currentGroupId = useSelector((state) => state.group.id);
+  // ALLE EVENTS UIT STATE HALEN
+  const { events, loading } = useSelector((state) => state.events);
+  // LOADING STATE ALS EVENT IS TOEGEVOEGD
+  const [addedLoading, setAddedLoading] = useState(false);
+  // STATE VOOR MODAL ADD EVENT OPEN
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // LAAD EVENTS ON PAGE LOAD
   useEffect(() => {
     dispatch(searchEvents(currentGroupId));
   }, [dispatch, currentGroupId]);
 
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+  // LINK NAAR EVENT PAGINA ALS ER OP GEKLIKT WORDT
   const handleEventClick = (e) => {
     console.log(e);
     const id = e.event["_def"]["publicId"];

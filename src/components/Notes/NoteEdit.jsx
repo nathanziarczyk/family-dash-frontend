@@ -39,9 +39,10 @@ export default function NoteEdit({ note, id, setEdit }) {
         init={{
           height: 300,
           menubar: false,
-          plugins: [],
+          plugins: ["autolink", "emoticons"],
           toolbar:
-            "undo redo  | bold italic backcolor | alignleft aligncenter | help",
+            "undo redo  | bold italic backcolor | alignleft aligncenter | emoticons | help",
+          default_link_target: "_blank",
         }}
         onEditorChange={(e) => setBody(e)}
       />

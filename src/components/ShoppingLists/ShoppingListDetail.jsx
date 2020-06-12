@@ -12,7 +12,6 @@ import {
   MenuItem,
   CircularProgress,
 } from "@material-ui/core";
-import Skeleton from "react-loading-skeleton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
@@ -68,7 +67,7 @@ export default function ShoppingListDetail({ props }) {
 
   useEffect(() => {
     dispatch(getList(id));
-  }, []);
+  }, [dispatch, id]);
 
   const displayCategories = [
     { title: "Other", list: list.other },

@@ -6,6 +6,7 @@ import {
   Typography,
   makeStyles,
   IconButton,
+  Button,
 } from "@material-ui/core";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { Link } from "react-router-dom";
@@ -37,6 +38,13 @@ const useStyles = makeStyles((theme) => ({
     right: "20px",
     top: "-5px",
   },
+  centerContainer: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 }));
 
 export default function ShoppingListsSummary({
@@ -46,20 +54,23 @@ export default function ShoppingListsSummary({
 }) {
   const classes = useStyles();
 
-  // Open state voor new list modal
+  // OPEN STATE VOOR NEW LIST MODAL
   const [open, setOpen] = useState(false);
 
-  //
+  // LOADING STATE NA TOEVOEGEN
   const [addedLoading, setAddedLoading] = useState(false);
 
-  // Shopping lists ophalen
+  // SHOPPING LISTS UIT REDUX STORE HALEN
   const { shoppingLists, loading } = useSelector(
     (state) => state.shoppingLists
   );
 
+  // LOADING STATE GEBUNDELD VOOR CONDITIONAL RENDERING
   const loadingGlob = loading || groupLoading || addedLoading;
   const notLoadingAndNotEmpty = !loadingGlob && shoppingLists.length > 0;
+  const notLoadingAndEmpty = !loadingGlob && shoppingLists.length === 0;
 
+  // ITEMS PER PAGE OP BASIS VAN SCHERMGROOTTE
   const itemsPerPage = mobile ? Math.ceil(window.innerHeight * 0.01) : 2;
 
   return (
@@ -79,6 +90,28 @@ export default function ShoppingListsSummary({
             </Link>
           </ListItemText>
         </ListItem>
+        {mobile &&
+          (notLoadingAndEmpty ? (
+            <IconButton
+              color="primary"
+              onClick={() => setOpen(true)}
+              className={classes.floatingButton}
+            >
+              <AddCircleIcon fontSize="large" />
+            </IconButton>
+          ) : (
+            ""
+          ))}
+        {notLoadingAndEmpty && (
+          <div className={classes.centerContainer}>
+            <Typography variant="subtitle2" align="center">
+              Nothing to see here... <br />
+              <Button color="primary" onClick={() => setOpen(true)}>
+                Create List
+              </Button>
+            </Typography>
+          </div>
+        )}
         <div style={{ marginTop: ".8em" }}>
           {loadingGlob && (
             <>
@@ -106,7 +139,7 @@ export default function ShoppingListsSummary({
             })}
         </div>
       </List>
-      {!mobile && !loadingGlob && (
+      {!mobile && notLoadingAndNotEmpty && (
         <div className={classes.addButtonContainer}>
           <IconButton color="primary" onClick={() => setOpen(true)}>
             <AddCircleIcon fontSize="large" />

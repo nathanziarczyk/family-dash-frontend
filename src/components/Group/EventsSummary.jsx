@@ -67,7 +67,7 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
   const [addedLoading, setAddedLoading] = useState(false);
   const [editedLoading, setEditedLoading] = useState(false);
 
-  //
+  // LOADING STATE GEGROEPEERD VOOR CONDITIONAL RENDERING
   const loadingGlob = addedLoading || loading || groupLoading || editedLoading;
   const notLoadingAndEmpty =
     !loading &&
@@ -95,6 +95,8 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
     );
   }
 
+  // BEPALEN HOEVEEL ITEMS PER PAGINA WORDEN WEERGEGEVEN
+  // OP BASIS VAN DE SCHERMGROOTTE
   const itemsPerPage = Math.ceil(window.innerHeight * 0.01);
 
   return (
@@ -132,7 +134,7 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
         <div style={{ marginTop: "1em" }}>
           {loadingGlob && skeleton.map((item) => item)}
           {mobile &&
-            (notLoadingAndNotEmpty ? (
+            (notLoadingAndEmpty ? (
               <IconButton
                 color="primary"
                 onClick={() => setAddEventOpen(true)}

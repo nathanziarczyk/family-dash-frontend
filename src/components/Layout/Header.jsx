@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -8,8 +9,6 @@ import IconButton from "@material-ui/core/IconButton";
 import FaceIcon from "@material-ui/icons/Face";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
-import { useDispatch } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
 import GroupIcon from "@material-ui/icons/Group";
 import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
@@ -19,12 +18,12 @@ import EventIcon from "@material-ui/icons/Event";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import NoteIcon from "@material-ui/icons/Note";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import { Divider } from "@material-ui/core";
 
+import axios from "../../axios";
 import { logoutUser } from "./../../data/user";
 import AddGroupMemberModal from "../ReUsable/AddGroupMemberModal";
 import ConfirmDialog from "../ReUsable/ConfirmDialog";
-import axios from "../../axios";
-import { Divider } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,42 +43,50 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MenuAppBar({ group, mobile }) {
-  const user = useSelector((state) => state.user.user);
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [anchorElGroup, setAnchorElGroup] = React.useState(null);
   const dispatch = useDispatch();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [confirmOpen, setConfirmOpen] = useState(false);
   const history = useHistory();
 
+  // CURRENT USER DATA UIT REDUX STORE
+  const user = useSelector((state) => state.user.user);
+  const userId = useSelector((state) => state.user.user.id);
+
+  // CURRENT GROEP ID UIT REDUX STORE
+  const currentGroup = useSelector((state) => state.group);
+
+  // ANCHOR ELEMENT VOOR DROPDOWN MENUS
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorElGroup, setAnchorElGroup] = React.useState(null);
+  // OPEN VARS VOOR MENUS OP BASIS VAN ANCHOR ELEMENT
+  // FALSE ALS NULL ANDERS TRUE
   const open = Boolean(anchorEl);
   const openGroup = Boolean(anchorElGroup);
 
-  const currentGroup = useSelector((state) => state.group);
-  const userId = useSelector((state) => state.user.user.id);
+  // OPEN STATE VOOR MODALS
+  const [modalOpen, setModalOpen] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
+  // HANDLE MENUS OPEN EN CLOSE
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   const handleGroupMenu = (event) => {
     setAnchorElGroup(event.currentTarget);
   };
-
   const handleGroupClose = () => {
     setAnchorElGroup(null);
   };
 
+  // USER AFMELDEN
   const handleLogoutClick = () => {
     handleClose();
     dispatch(logoutUser());
   };
 
+  // HANDLE LEAVE GROUP
   const leaveGroup = (e) => {
     axios.put(`/groups/${currentGroup.id}`, {
       removeGroupMember: `/api/users/${userId}`,

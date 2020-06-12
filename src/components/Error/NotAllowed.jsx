@@ -2,6 +2,9 @@ import React from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
+// EEN PAGINA DIE WORDT WEERGEGEVEN ALS DE RESPONSE VAN AXIOS
+// 405 NOT ALLOWED IS
+
 const useStyles = makeStyles((theme) => ({
   container: {
     width: "100%",

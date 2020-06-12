@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// GROEP WEERGAVE OP WEB
 export default function GroupWeb(props) {
   const classes = useStyles();
   const { loading } = props;

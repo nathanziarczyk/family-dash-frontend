@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   carouselContainer: {},
 }));
 
+// GROEP WEERGAVE OP MOBILE DEVICES
 export default function GroupMobile(props) {
   const classes = useStyles();
 

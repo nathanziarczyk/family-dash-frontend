@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// EEN PAGINA DIE WORDT WEERGEGEVEN ALS DE RESPONSE VAN AXIOS
+// 404 NOT FOUND IS
+
 export default function NotFound() {
   const classes = useStyles();
   return (
