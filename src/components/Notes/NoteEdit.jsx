@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { TextField, Typography, Button, makeStyles } from "@material-ui/core";
 import { Editor } from "@tinymce/tinymce-react";
+import { useSelector, useDispatch } from "react-redux";
 
-import { editNote } from "../../helpers/editNote";
+import { editNote } from "../../data/notes";
 
 const useStyles = makeStyles((theme) => ({
   textfield: {
@@ -15,10 +16,13 @@ export default function NoteEdit({ note, id, setEdit }) {
   const [title, setTitle] = useState(note.title);
   const [body, setBody] = useState(note.body);
 
+  const dispatch = useDispatch();
+
+  const groupId = useSelector((state) => state.group.id);
+
   const handleSubmit = () => {
-    editNote(id, title, body)
-      .then((response) => setEdit(false))
-      .catch((error) => console.log(error.response));
+    dispatch(editNote(id, title, body, groupId));
+    setEdit(false);
   };
 
   return (

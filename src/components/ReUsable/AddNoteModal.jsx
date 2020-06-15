@@ -13,8 +13,7 @@ import Slide from "@material-ui/core/Slide";
 import { TextField, Grid, useMediaQuery } from "@material-ui/core";
 
 import ErrorMessage from "../Messages/ErrorMessage";
-import { createNote } from "../../helpers/createNote";
-import { searchNotes } from "../../data/notes";
+import { createNote } from "../../data/notes";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -58,7 +57,6 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
   };
   const createNoteHandler = (e) => {
     e.preventDefault();
-    setAddedLoading(true);
     if (title.length === 0) {
       setTitleError(true);
       return null;
@@ -67,10 +65,7 @@ export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
       setTitleError(true);
       return null;
     }
-    createNote(title, body, currentGroup).then(async () => {
-      await dispatch(searchNotes(currentGroup));
-      setAddedLoading(false);
-    });
+    dispatch(createNote(title, body, currentGroup));
     setOpen(false);
   };
 

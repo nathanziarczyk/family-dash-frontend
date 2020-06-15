@@ -37,6 +37,29 @@ export const errorNotesSearch = () => ({
   type: ERROR_NOTES_SEARCH,
 });
 
+export const createNote = (title, body, currentGroup) => (dispatch) => {
+  dispatch(startNotesSearch());
+  axios
+    .post(`/notes`, {
+      title,
+      body,
+      groep: `api/groups/${currentGroup}`,
+    })
+    .then((response) => dispatch(searchNotes(currentGroup)))
+    .catch(({ response }) => dispatch(errorNotesSearch()));
+};
+
+export const editNote = (id, title, body, groupId) => (dispatch) => {
+  dispatch(startNotesSearch());
+  axios
+    .put(`/notes/${id}`, {
+      title,
+      body,
+    })
+    .then((response) => dispatch(startNotesSearch(groupId)))
+    .catch(({ response }) => dispatch(errorNotesSearch()));
+};
+
 // REDUCER
 export default (state = initialState, { type, payload }) => {
   switch (type) {
