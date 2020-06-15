@@ -48,6 +48,16 @@ export const createEvent = (title, description, start, end, groupId) => (
   dispatch
 ) => {
   dispatch(startEventsSearch());
+  axios
+    .post(`/events`, {
+      title,
+      description,
+      start,
+      end,
+      groep: `api/groups/${groupId}`,
+    })
+    .then((response) => dispatch(searchEvents(groupId)))
+    .catch(({ response }) => dispatch(errorEventsSearch()));
 };
 
 export const editEvent = (id, title, description, start, end, groupId) => (
@@ -99,7 +109,7 @@ export default (state = initialState, { type, payload }) => {
         loading: false,
         error: {
           bool: true,
-          msg: "Something went wrong when trying to load events",
+          msg: "Something went wrong, please try again later.",
         },
       };
     default:
