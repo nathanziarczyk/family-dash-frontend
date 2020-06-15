@@ -26,6 +26,8 @@ export const START_ADD_LIST_ITEM = "START_ADD_LIST_ITEM";
 
 export const TOGGLE_COMPLETED = "TOGGLE_COMPLETED";
 
+export const RESET_STATE = "RESET_STATE";
+
 // ACTION CREATORS
 export const getList = (id) => (dispatch) => {
   dispatch(startSearch());
@@ -69,6 +71,10 @@ export const toggleCompleted = (data) => ({
   payload: data,
 });
 
+export const resetState = () => ({
+  type: RESET_STATE,
+});
+
 // REDUCER
 export default (state = initialState, { type, payload }) => {
   switch (type) {
@@ -78,6 +84,10 @@ export default (state = initialState, { type, payload }) => {
         loading: true,
         error: "",
       };
+
+    case RESET_STATE:
+      return initialState;
+
     case SUCCESS_LIST_SEARCH:
       const other = [];
       const meat = [];

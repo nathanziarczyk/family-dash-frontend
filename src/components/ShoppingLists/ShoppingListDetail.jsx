@@ -16,7 +16,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
 
-import { getList } from "../../data/shoppingList";
+import { getList, resetState } from "../../data/shoppingList";
 import { formatDate } from "../../helpers/formatDate";
 import ShoppingListItem from "./ShoppingListItem";
 import AddItem from "./AddItem";
@@ -67,6 +67,9 @@ export default function ShoppingListDetail({ props }) {
 
   useEffect(() => {
     dispatch(getList(id));
+    return () => {
+      dispatch(resetState());
+    };
   }, [dispatch, id]);
 
   const displayCategories = [

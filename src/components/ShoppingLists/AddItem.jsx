@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddItem({ listId, currentUser, addLoading }) {
+export default function AddItem({ listId, currentUser }) {
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -58,6 +58,7 @@ export default function AddItem({ listId, currentUser, addLoading }) {
       .get(`/shopping_categories`)
       .then((response) => setCategories(response.data["hydra:member"]));
   }, []);
+
   return (
     <form onSubmit={handleAddItem} className={classes.form}>
       <TextField
