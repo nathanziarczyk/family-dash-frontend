@@ -16,7 +16,7 @@ import {
   ListItemAvatar,
   IconButton,
 } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import FaceIcon from "@material-ui/icons/Face";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import Skeleton from "react-loading-skeleton";
@@ -26,7 +26,7 @@ import { useHistory } from "react-router-dom";
 
 import axios from "../../axios";
 import { formatDate } from "../../helpers/formatDate";
-import { deleteEvent } from "../../helpers/deleteEvent";
+import { deleteEvent } from "../../data/events";
 import EditEventModal from "../ReUsable/EditEventModal";
 
 // MATERIAL UI CLASSES VOOR CUSTOM CSS
@@ -56,16 +56,16 @@ export default function EventDetail({ props }) {
   const classes = useStyles();
   const id = props.match.params.id;
   const history = useHistory();
+  const dispatch = useDispatch();
 
   // USER DATA UIT REDUX STORE HOUDEN
   const currentUserId = useSelector((state) => state.user.user.id);
   const currentUserFn = useSelector((state) => state.user.user.firstName);
+  const groupId = useSelector((state) => state.group.id);
   // LOCAL STATE VOOR EVENT DATA
   const [event, setEvent] = useState({});
   // STATE VOOR LOADING
   const [loading, setLoading] = useState(false);
-  // LOADING NA HET BEWERKEN VAN EEN EVENT
-  const [editedLoading, setEditedLoading] = useState(false);
   // STATE OM TE BEPALEN OF INGELOGDE GEBRUIKER
   // DEELNEEMT AAN EVENT OF NIET
   const [attending, setAttending] = useState(false);
@@ -141,7 +141,8 @@ export default function EventDetail({ props }) {
   // DELETE EVENT
   const handleDeleteClick = (e, eventId) => {
     e.preventDefault();
-    deleteEvent(eventId).then(() => history.goBack());
+    dispatch(deleteEvent(eventId, groupId));
+    history.goBack();
   };
 
   return (
@@ -253,12 +254,7 @@ export default function EventDetail({ props }) {
         </Card>
       </Grid>
       <Grid item xs={false} md={4} />
-      <EditEventModal
-        open={open}
-        setOpen={setOpen}
-        event={event}
-        setEditedLoading={setEditedLoading}
-      />
+      <EditEventModal open={open} setOpen={setOpen} event={event} />
     </Grid>
   );
 }

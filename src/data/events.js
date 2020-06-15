@@ -72,7 +72,15 @@ export const editEvent = (id, title, description, start, end, groupId) => (
       end,
     })
     .then((response) => dispatch(searchEvents(groupId)))
-    .catch(({ response }) => console.log(response));
+    .catch(({ response }) => dispatch(errorEventsSearch()));
+};
+
+export const deleteEvent = (id, groupId) => (dispatch) => {
+  dispatch(startEventsSearch());
+  axios
+    .delete(`events/${id}`)
+    .then((response) => dispatch(searchEvents(groupId)))
+    .catch(({ response }) => dispatch(errorEventsSearch()));
 };
 
 // REDUCER

@@ -12,15 +12,9 @@ import { useDispatch } from "react-redux";
 import EditEventModal from "../ReUsable/EditEventModal";
 import { formatDate } from "../../helpers/formatDate";
 import { Link } from "react-router-dom";
-import { deleteEvent } from "../../helpers/deleteEvent";
-import { searchEvents } from "../../data/events";
+import { deleteEvent } from "../../data/events";
 
-export default function EventListItem({
-  event,
-  owner,
-  groupId,
-  setEditedLoading,
-}) {
+export default function EventListItem({ event, owner, groupId }) {
   const dispatch = useDispatch();
 
   // OPEN STATE VOOR EDIT MODAL
@@ -29,7 +23,7 @@ export default function EventListItem({
   // EVENT VERWIJDEREN
   const handleDeleteClick = (e, eventId) => {
     e.preventDefault();
-    deleteEvent(eventId).then(() => dispatch(searchEvents(groupId)));
+    dispatch(deleteEvent(eventId, groupId));
   };
 
   return (
@@ -55,12 +49,7 @@ export default function EventListItem({
           </ListItemSecondaryAction>
         )}
       </ListItem>
-      <EditEventModal
-        open={open}
-        setOpen={setOpen}
-        event={event}
-        setEditedLoading={setEditedLoading}
-      />
+      <EditEventModal open={open} setOpen={setOpen} event={event} />
     </>
   );
 }

@@ -13,7 +13,7 @@ import { DateTimePicker } from "@material-ui/pickers";
 import { useSelector, useDispatch } from "react-redux";
 
 import { searchEvents, createEvent } from "../../data/events";
-// import { createEvent } from "../../helpers/createEvent";
+
 import { dateToLocalISO } from "../../helpers/formatDate";
 import ErrorMessage from "../Messages/ErrorMessage";
 
