@@ -16,6 +16,10 @@ export const START_EVENTS_SEARCH = "START_EVENTS_SEARCH";
 export const SUCCESS_EVENTS_SEARCH = "SUCCESS_EVENTS_SEARCH";
 export const ERROR_EVENTS_SEARCH = "ERROR_EVENTS_SEARCH";
 
+export const EDIT_EVENT = "EDIT_EVENT";
+
+export const CREATE_EVENT = "CREATE_EVENT";
+
 // ACTIONS CREATORS
 export const searchEvents = (groupId) => (dispatch) => {
   dispatch(startEventsSearch());
@@ -39,6 +43,27 @@ export const successEventsSearch = (events) => ({
 export const errorEventsSearch = () => ({
   type: ERROR_EVENTS_SEARCH,
 });
+
+export const createEvent = (title, description, start, end, groupId) => (
+  dispatch
+) => {
+  dispatch(startEventsSearch());
+};
+
+export const editEvent = (id, title, description, start, end, groupId) => (
+  dispatch
+) => {
+  dispatch(startEventsSearch());
+  axios
+    .put(`/events/${id}`, {
+      title,
+      description,
+      start,
+      end,
+    })
+    .then((response) => dispatch(searchEvents(groupId)))
+    .catch(({ response }) => console.log(response));
+};
 
 // REDUCER
 export default (state = initialState, { type, payload }) => {

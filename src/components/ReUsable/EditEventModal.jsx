@@ -12,9 +12,10 @@ import { TextField, Grid, useMediaQuery } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 import { useSelector, useDispatch } from "react-redux";
 
-import { searchEvents } from "../../data/events";
-import { editEvent } from "../../helpers/editEvent";
+import { searchEvents, editEvent } from "../../data/events";
+// import { editEvent } from "../../helpers/editEvent";
 import ErrorMessage from "../Messages/ErrorMessage";
+import { dateToLocalISO } from "../../helpers/formatDate";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -36,12 +37,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AddEventModal({
-  open,
-  setOpen,
-  setEditedLoading,
-  event,
-}) {
+export default function AddEventModal({ open, setOpen, event }) {
   const currentGroup = useSelector((state) => state.group.id);
   const classes = useStyles();
   const [selectedStartDate, handleStartDateChange] = useState(
@@ -69,9 +65,8 @@ export default function AddEventModal({
 
   const createEventHandler = async (e) => {
     e.preventDefault();
-    setEditedLoading(true);
-    const start = selectedStartDate.toISOString();
-    const end = selectedEndDate.toISOString();
+    const start = dateToLocalISO(selectedStartDate);
+    const end = dateToLocalISO(selectedEndDate);
     if (title.length === 0) {
       setTitleError(true);
       return null;
@@ -81,10 +76,7 @@ export default function AddEventModal({
       return null;
     }
     if (start > end) return null;
-    editEvent(title, description, start, end, event.id).then(async () => {
-      await dispatch(searchEvents(currentGroup));
-      setEditedLoading(false);
-    });
+    dispatch(editEvent(event.id, title, description, start, end, currentGroup));
     setOpen(false);
   };
 
