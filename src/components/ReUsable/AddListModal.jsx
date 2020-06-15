@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -9,13 +9,10 @@ import {
   TextField,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 
-import axios from "../../axios";
-import { getLists } from "../../data/shoppingLists";
+import { addList } from "../../data/shoppingLists";
 
-export default function AddListModal({ open, setOpen, setAddedLoading }) {
-  const history = useHistory();
+export default function AddListModal({ open, setOpen }) {
   const dispatch = useDispatch();
 
   const [title, setTitle] = useState("");
@@ -24,12 +21,6 @@ export default function AddListModal({ open, setOpen, setAddedLoading }) {
 
   const currentGroupId = useSelector((state) => state.group.id);
 
-  const [id, setId] = useState(null);
-
-  useEffect(() => {
-    if (id) history.push(`/shopping-list/${id}`);
-  }, [id, history]);
-
   const handleAddList = (e) => {
     e.preventDefault();
     if (title.length === 0) {
@@ -37,20 +28,7 @@ export default function AddListModal({ open, setOpen, setAddedLoading }) {
       return null;
     }
     setOpen(false);
-    if (setAddedLoading) setAddedLoading(true);
-    axios
-      .post(`/shopping_lists`, {
-        title,
-        groep: `/api/groups/${currentGroupId}`,
-      })
-      .then((response) => {
-        if (setAddedLoading) setAddedLoading(false);
-        dispatch(getLists(currentGroupId));
-        const arr = response.data["@id"].split("/");
-        setId(arr[arr.length - 1]);
-      })
-      .catch((error) => console.log(error.response));
-
+    dispatch(addList(title, currentGroupId));
     return null;
   };
   return (

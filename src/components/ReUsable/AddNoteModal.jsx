@@ -35,7 +35,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AddNoteModal({ open, setOpen, setAddedLoading }) {
+export default function AddNoteModal({ open, setOpen }) {
   const currentGroup = useSelector((state) => state.group.id);
   const classes = useStyles();
   const [title, setTitle] = useState("");

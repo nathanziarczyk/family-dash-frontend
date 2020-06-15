@@ -55,15 +55,10 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
   // NOTES, LOADING & ERROR UIT STORE
   const { notes, loading } = useSelector((state) => state.notes);
 
-  // LOADING STATE NA TOEVOEGEN
-  const [addedLoading, setAddedLoading] = useState(false);
-
   // LOADING STATE GEBUNDELD VOOR CONDITIONAL RENDERING
-  const loadingGlob = loading || groupLoading || addedLoading;
-  const notLoadingAndNotEmpty =
-    !loading && !groupLoading && !addedLoading && notes.length > 0;
-  const notLoadingAndEmpty =
-    !loading && !groupLoading && !addedLoading && notes.length <= 0;
+  const loadingGlob = loading || groupLoading;
+  const notLoadingAndNotEmpty = !loading && !groupLoading && notes.length > 0;
+  const notLoadingAndEmpty = !loading && !groupLoading && notes.length <= 0;
 
   // SKELETON LOADING
   const skeleton = [];
@@ -143,11 +138,7 @@ export default function NotesSummary({ alignCenter, mobile, groupLoading }) {
           </IconButton>
         </div>
       )}
-      <AddNoteModal
-        open={open}
-        setOpen={setOpen}
-        setAddedLoading={setAddedLoading}
-      />
+      <AddNoteModal open={open} setOpen={setOpen} />
     </>
   );
 }

@@ -38,6 +38,22 @@ export const errorListsSearch = () => ({
   type: ERROR_LISTS_SEARCH,
 });
 
+export const addList = (title, groupId) => (dispatch) => {
+  dispatch(startListsSearch());
+  axios
+    .post(`/shopping_lists`, {
+      title,
+      groep: `api/groups/${groupId}`,
+    })
+    .then((response) => {
+      const arr = response.data["@id"].split("/");
+      const id = arr[arr.length - 1];
+      window.location.replace(`/shopping-list/${id}`);
+      dispatch(getLists(groupId));
+    })
+    .catch(({ response }) => dispatch(errorListsSearch()));
+};
+
 // REDUCER
 export default (state = initialState, { type, payload }) => {
   switch (type) {

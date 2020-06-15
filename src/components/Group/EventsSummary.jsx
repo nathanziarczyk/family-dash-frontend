@@ -64,23 +64,12 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
 
   // STATE VOOR MODALS ADD EN EDIT EVENT
   const [addEventOpen, setAddEventOpen] = useState(false);
-  const [addedLoading, setAddedLoading] = useState(false);
-  const [editedLoading, setEditedLoading] = useState(false);
 
   // LOADING STATE GEGROEPEERD VOOR CONDITIONAL RENDERING
-  const loadingGlob = addedLoading || loading || groupLoading || editedLoading;
-  const notLoadingAndEmpty =
-    !loading &&
-    !groupLoading &&
-    !editedLoading &&
-    !addedLoading &&
-    upcoming.length <= 0;
+  const loadingGlob = loading || groupLoading;
+  const notLoadingAndEmpty = !loading && !groupLoading && upcoming.length <= 0;
   const notLoadingAndNotEmpty =
-    !loading &&
-    !groupLoading &&
-    !addedLoading &&
-    !editedLoading &&
-    upcoming.length > 0;
+    !loading && !groupLoading && upcoming.length > 0;
 
   // SKELETON LOADING
   const skeleton = [];
@@ -163,7 +152,6 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
                     attending={attending}
                     owner={owner}
                     groupId={currentGroupId}
-                    setEditedLoading={setEditedLoading}
                   />
                 );
               })
@@ -181,11 +169,7 @@ export default function EventsSummary({ alignCenter, mobile, groupLoading }) {
           ""
         ))}
 
-      <AddEventModal
-        open={addEventOpen}
-        setOpen={setAddEventOpen}
-        setAddedLoading={setAddedLoading}
-      />
+      <AddEventModal open={addEventOpen} setOpen={setAddEventOpen} />
     </>
   );
 }
