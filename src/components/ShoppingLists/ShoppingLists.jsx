@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   List,
@@ -10,10 +10,11 @@ import {
   Button,
 } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 
+import { getLists } from "../../data/shoppingLists";
 import { formatDate } from "../../helpers/formatDate";
 import AddListModal from "../ReUsable/AddListModal";
 import clsx from "clsx";
@@ -49,9 +50,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ShoppingLists() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getLists(groupId));
+  }, []);
+
   const { shoppingLists, loading } = useSelector(
     (state) => state.shoppingLists
   );
+  const groupId = useSelector((state) => state.group.id);
   const classes = useStyles();
   const [page, setPage] = useState(1);
 
