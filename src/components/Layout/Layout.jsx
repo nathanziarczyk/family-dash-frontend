@@ -22,6 +22,7 @@ export default function Layout({ children, group = true, title }) {
   const classes = useStyles();
   return (
     <>
+      {/* React Helmet variabele, wordt gebruikt vanuit Layout.jsx voor title */}
       <Helmet>
         <title>{title ? title : "FamilyDash"}</title>
       </Helmet>

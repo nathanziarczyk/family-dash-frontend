@@ -12,8 +12,7 @@ import { TextField, Grid, useMediaQuery } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 import { useSelector, useDispatch } from "react-redux";
 
-import { searchEvents, editEvent } from "../../data/events";
-// import { editEvent } from "../../helpers/editEvent";
+import { editEvent } from "../../data/events";
 import ErrorMessage from "../Messages/ErrorMessage";
 import { dateToLocalISO } from "../../helpers/formatDate";
 
@@ -57,7 +56,9 @@ export default function AddEventModal({ open, setOpen, event }) {
   useEffect(() => {
     handleStartDateChange(new Date(event.start));
     handleEndDateChange(new Date(event.end));
-  }, [event.start, event.end]);
+    setTitle(event.title);
+    setDescription(event.description);
+  }, [event.start, event.end, event.title, event.description]);
 
   const handleClose = () => {
     setOpen(false);

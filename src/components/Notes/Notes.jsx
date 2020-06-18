@@ -62,9 +62,8 @@ export default function Notes() {
 
   // STATE VOOR MODAL
   const [open, setOpen] = useState(false);
-  const [addedLoading, setAddedLoading] = useState(false);
 
-  const { notes, loading } = useSelector((state) => state.notes);
+  const { notes } = useSelector((state) => state.notes);
   const groupId = useSelector((state) => state.group.id);
 
   useEffect(() => {
@@ -124,11 +123,7 @@ export default function Notes() {
           )}
         </Paper>
       </Grid>
-      <AddNoteModal
-        open={open}
-        setOpen={setOpen}
-        setAddedLoading={setAddedLoading}
-      />
+      <AddNoteModal open={open} setOpen={setOpen} />
       <Grid item xs={false} sm={2} />
     </>
   );

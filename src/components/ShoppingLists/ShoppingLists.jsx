@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ShoppingLists() {
-  const { shoppingLists, loading, error } = useSelector(
+  const { shoppingLists, loading } = useSelector(
     (state) => state.shoppingLists
   );
   const classes = useStyles();

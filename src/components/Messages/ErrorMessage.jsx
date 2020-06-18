@@ -6,6 +6,7 @@ function Alert(props) {
   return <MuiAlert elevation={10} variant="filled" {...props} />;
 }
 
+// Dit component toont een snackbar error message
 export default function ErrorMessage({ message, clearError = null, position }) {
   const pos = position;
 

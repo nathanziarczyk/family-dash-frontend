@@ -101,6 +101,7 @@ export default (state = initialState, { type, payload }) => {
           meat,
           veggies,
         });
+        return null;
       });
       return {
         ...state,

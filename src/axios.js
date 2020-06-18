@@ -18,8 +18,6 @@ instance.interceptors.request.use(
   }
 );
 
-//Add a response interceptor
-
 instance.interceptors.response.use(
   (response) => {
     return response;
@@ -53,7 +51,7 @@ instance.interceptors.response.use(
           }
         })
         .catch((error) => {
-          // window.location.href = `/logout`;
+          // window.location.href = `/`;
           return Promise.reject(error);
         });
     }

@@ -6,6 +6,7 @@ function Alert(props) {
   return <MuiAlert elevation={10} variant="filled" {...props} />;
 }
 
+// Dit component toont een snackbar success message
 export default function SuccessMessage({ message }) {
   const [open, setOpen] = useState(true);
   const handleClose = (event, reason) => {

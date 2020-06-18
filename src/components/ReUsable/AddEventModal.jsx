@@ -12,7 +12,7 @@ import { TextField, Grid, useMediaQuery } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 import { useSelector, useDispatch } from "react-redux";
 
-import { searchEvents, createEvent } from "../../data/events";
+import { createEvent } from "../../data/events";
 
 import { dateToLocalISO } from "../../helpers/formatDate";
 import ErrorMessage from "../Messages/ErrorMessage";
