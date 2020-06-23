@@ -65,7 +65,7 @@ export default function NoteDetail({ props }) {
         setLoading(false);
       })
       .catch((error) => {
-        console.log(error.response);
+        return null;
       });
   }, [edit, id]);
 

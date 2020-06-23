@@ -46,7 +46,6 @@ export default function Calendar() {
 
   // LINK NAAR EVENT PAGINA ALS ER OP GEKLIKT WORDT
   const handleEventClick = (e) => {
-    console.log(e);
     const id = e.event["_def"]["publicId"];
     history.push(`/event/${id}`);
   };

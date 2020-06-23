@@ -2,7 +2,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 
-import { getGroups } from "./groups";
+import { getGroups, errorSearch } from "./groups";
 
 /* INITIAL STATE */
 export const initialState = {
@@ -62,7 +62,7 @@ export const userAcceptRequest = ({ groupId, userId }) => (dispatch) => {
       }
     )
     .then((response) => dispatch(getGroups()))
-    .catch((error) => console.log(error.response));
+    .catch((error) => null);
 };
 
 export const userDenyRequest = (requestId) => (dispatch) => {
@@ -73,7 +73,7 @@ export const userDenyRequest = (requestId) => (dispatch) => {
       },
     })
     .then((response) => dispatch(getGroups()))
-    .catch((error) => console.log(error.response)); // TODO: dispatch error
+    .catch((error) => dispatch(errorSearch("Something went wrong")));
 };
 
 /* REDUCER */

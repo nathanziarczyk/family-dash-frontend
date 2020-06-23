@@ -59,7 +59,7 @@ export const newGroup = ({ groupName, users }) => (dispatch) => {
       dispatch(getGroups());
       dispatch(successNewGroup(`Group ${groupName} created`));
     })
-    .catch((error) => console.log(error.response)); //TODO: dispatch error
+    .catch((error) => dispatch(errorSearch("Something went wrong"))); //TODO: dispatch error
 };
 
 export const startNewGroup = () => ({

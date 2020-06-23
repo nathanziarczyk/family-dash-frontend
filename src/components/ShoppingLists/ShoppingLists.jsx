@@ -13,11 +13,12 @@ import Pagination from "@material-ui/lab/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import clsx from "clsx";
+import Skeleton from "react-loading-skeleton";
 
 import { getLists } from "../../data/shoppingLists";
 import { formatDate } from "../../helpers/formatDate";
 import AddListModal from "../ReUsable/AddListModal";
-import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -51,14 +52,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ShoppingLists() {
   const dispatch = useDispatch();
+  const groupId = useSelector((state) => state.group.id);
   useEffect(() => {
     dispatch(getLists(groupId));
-  }, []);
+  }, [dispatch, groupId]);
 
   const { shoppingLists, loading } = useSelector(
     (state) => state.shoppingLists
   );
-  const groupId = useSelector((state) => state.group.id);
   const classes = useStyles();
   const [page, setPage] = useState(1);
 
@@ -94,6 +95,13 @@ export default function ShoppingLists() {
                 Create list
               </Button>
             </Typography>
+          </div>
+        )}
+        {loading && (
+          <div style={{ paddingTop: "2em" }}>
+            <Skeleton />
+            <br style={{ marginBottom: "1em" }} />
+            <Skeleton />
           </div>
         )}
         {!loading && shoppingLists.length > 0 && (

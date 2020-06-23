@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
   Checkbox,
   IconButton,
 } from "@material-ui/core";

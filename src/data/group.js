@@ -2,6 +2,7 @@ import axios from "../axios";
 import { successEventsSearch } from "./events";
 import { successNotesSearch } from "./notes";
 import { successListsSearch } from "./shoppingLists";
+import { errorSearch } from "./groups";
 
 /* INITIAL STATE */
 export const initialState = {
@@ -32,7 +33,7 @@ export const loadGroup = (id) => (dispatch) => {
       dispatch(successListsSearch(response.data.shoppingLists));
     })
     .catch((error) => {
-      console.log(error.response);
+      dispatch(errorSearch("Something went wrong"));
     });
 };
 

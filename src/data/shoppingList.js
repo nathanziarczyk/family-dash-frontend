@@ -26,8 +26,6 @@ export const START_ADD_LIST_ITEM = "START_ADD_LIST_ITEM";
 
 export const TOGGLE_COMPLETED = "TOGGLE_COMPLETED";
 
-const DELETE_ITEM = "DELETE_ITEM";
-
 export const RESET_STATE = "RESET_STATE";
 
 // ACTION CREATORS
@@ -36,13 +34,13 @@ export const getList = (id) => (dispatch) => {
   axios
     .get(`/shopping_lists/${id}`)
     .then((response) => dispatch(successSearch(response.data)))
-    .catch((error) => console.log(error.response));
+    .catch((error) => dispatch(errorSearch("something w wrong")));
 };
 
 export const deleteList = (id) => (dispatch) => {
   axios
     .delete(`/shopping_lists/${id}`)
-    .then((response) => console.log(response))
+    .then((response) => null)
     .catch(dispatch(errorSearch()));
 };
 
@@ -51,7 +49,7 @@ export const renameList = (title, id) => (dispatch) => {
     .put(`/shopping_lists/${id}`, {
       title,
     })
-    .then((response) => null)
+    .then((response) => dispatch(getList(id)))
     .catch((error) => null);
 };
 

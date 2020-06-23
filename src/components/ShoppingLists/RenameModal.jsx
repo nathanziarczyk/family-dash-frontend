@@ -3,20 +3,23 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   Button,
   DialogActions,
   TextField,
 } from "@material-ui/core";
 import { useDispatch } from "react-redux";
 
-import { renameList, getList } from "../../data/shoppingList";
+import { renameList } from "../../data/shoppingList";
+import { useEffect } from "react";
 
 export default function AddListModal({ open, setOpen, id, current }) {
   const dispatch = useDispatch();
-
   const [title, setTitle] = useState(current);
   const [inputError, setInputError] = useState(false);
+
+  useEffect(() => {
+    if (current) setTitle(current);
+  }, [current]);
 
   const handleRename = async (e) => {
     e.preventDefault();
@@ -25,8 +28,7 @@ export default function AddListModal({ open, setOpen, id, current }) {
       return null;
     }
     setOpen(false);
-    await dispatch(renameList(title, id));
-    dispatch(getList(id));
+    dispatch(renameList(title, id));
     return null;
   };
   return (

@@ -9,21 +9,17 @@ import {
   TextField,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 import { addList } from "../../data/shoppingLists";
 
 export default function AddListModal({ open, setOpen }) {
   const dispatch = useDispatch();
 
-  const history = useHistory();
-
   const [title, setTitle] = useState("");
 
   const [inputError, setInputError] = useState(false);
 
   const currentGroupId = useSelector((state) => state.group.id);
-  const addedListId = useSelector((state) => state.shoppingLists.addedListId);
 
   const handleAddList = (e) => {
     e.preventDefault();
@@ -35,7 +31,6 @@ export default function AddListModal({ open, setOpen }) {
     dispatch(addList(title, currentGroupId));
     return null;
   };
-  console.log(addedListId);
   return (
     <Dialog
       open={open}

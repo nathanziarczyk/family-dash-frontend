@@ -85,7 +85,7 @@ export default function EventDetail({ props }) {
         setEvent({ ...response.data });
         setOwner({ ...response.data.user });
       })
-      .catch(() => console.log(""))
+      .catch(() => null)
       .finally(() => setLoading(false));
   }, [id]);
 
