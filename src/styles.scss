@@ -87,3 +87,8 @@ a {
 .MuiDialog-paper {
   overflow-y: inherit !important;
 }
+
+label[for="email"],
+label[for="password"] {
+  color: white;
+}

@@ -170,7 +170,7 @@ export default function Login() {
                     label="Password"
                     type="password"
                     id="password"
-                    autoComplete="current-password"
+                    autoComplete="password"
                     value={password}
                     onChange={(e) => {
                       setInputError("");

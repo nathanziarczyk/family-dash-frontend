@@ -139,7 +139,10 @@ export default function Register() {
                   variant="outlined"
                   margin="normal"
                   fullWidth
+                  id="first-name"
+                  name="first-name"
                   label="First Name"
+                  autoComplete="first-name"
                   value={firstName}
                   onChange={(e) => {
                     setInputError("");
@@ -157,6 +160,8 @@ export default function Register() {
                   variant="outlined"
                   margin="normal"
                   fullWidth
+                  id="last-name"
+                  name="last-name"
                   label="Last Name"
                   value={lastName}
                   onChange={(e) => {
@@ -175,6 +180,8 @@ export default function Register() {
                   variant="outlined"
                   margin="normal"
                   fullWidth
+                  id="reg-email"
+                  name="reg-email"
                   label="Email Address"
                   value={email}
                   onChange={(e) => {
@@ -193,6 +200,8 @@ export default function Register() {
                   variant="outlined"
                   margin="normal"
                   fullWidth
+                  id="reg-password"
+                  name="reg-password"
                   label="Password"
                   type="password"
                   value={password}

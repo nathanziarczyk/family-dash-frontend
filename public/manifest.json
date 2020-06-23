@@ -1,9 +1,9 @@
 {
-  "short_name": "Family Dash",
-  "name": "Family Dash",
-  "icons": [],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "name": "FamilyDash",
+  "short_name": "FD",
+  "theme_color": "#019688",
+  "background_color": "#019688",
+  "display": "minimal-ui",
+  "scope": "/",
+  "start_url": "/"
 }
