@@ -37,6 +37,22 @@ export const getList = (id) => (dispatch) => {
     .catch((error) => console.log(error.response));
 };
 
+export const deleteList = (id) => (dispatch) => {
+  axios
+    .delete(`/shopping_lists/${id}`)
+    .then((response) => console.log(response))
+    .catch(dispatch(errorSearch()));
+};
+
+export const renameList = (title, id) => (dispatch) => {
+  axios
+    .put(`/shopping_lists/${id}`, {
+      title,
+    })
+    .then((response) => null)
+    .catch((error) => null);
+};
+
 export const startSearch = () => ({
   type: START_LIST_SEARCH,
 });

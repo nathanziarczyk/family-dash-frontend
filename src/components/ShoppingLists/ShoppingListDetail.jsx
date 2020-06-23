@@ -15,11 +15,13 @@ import {
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import RotateLeftIcon from "@material-ui/icons/RotateLeft";
+import { useHistory } from "react-router-dom";
 
-import { getList, resetState } from "../../data/shoppingList";
+import { getList, resetState, deleteList } from "../../data/shoppingList";
 import { formatDate } from "../../helpers/formatDate";
 import ShoppingListItem from "./ShoppingListItem";
 import AddItem from "./AddItem";
+import RenameModal from "./RenameModal";
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -46,8 +48,11 @@ const useStyles = makeStyles((theme) => ({
 export default function ShoppingListDetail({ props }) {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const history = useHistory();
 
   const [anchorEl, setAnchorEl] = useState(false);
+
+  const [open, setOpen] = useState(false);
 
   const list = useSelector((state) => state.shoppingList);
   const currentUser = useSelector((state) => state.user.user.id);
@@ -63,6 +68,17 @@ export default function ShoppingListDetail({ props }) {
     handleClose();
     localStorage.removeItem(`persist:list-${id}`);
     dispatch(getList(id));
+  };
+
+  const deleteListFn = () => {
+    handleClose();
+    dispatch(deleteList(id));
+    history.goBack();
+  };
+
+  const renameList = () => {
+    handleClose();
+    setOpen(true);
   };
 
   useEffect(() => {
@@ -110,6 +126,8 @@ export default function ShoppingListDetail({ props }) {
                 anchorOrigin={{ vertical: "top", horizontal: "left" }}
                 transformOrigin={{ vertical: "top", horizontal: "center" }}
               >
+                <MenuItem onClick={renameList}>Rename List</MenuItem>
+                <MenuItem onClick={deleteListFn}>Delete List</MenuItem>
                 <MenuItem onClick={refreshList}>
                   <RefreshIcon /> Refresh List
                 </MenuItem>
@@ -147,6 +165,7 @@ export default function ShoppingListDetail({ props }) {
         </List>
       </Grid>
       <Grid item xs={false} sm={3} />
+      <RenameModal open={open} setOpen={setOpen} id={id} current={list.title} />
     </>
   );
 }
