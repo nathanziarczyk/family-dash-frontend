@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
-import { Router } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { store, persistor } from "./data/index";
 import { CircularProgress } from "@material-ui/core";
@@ -18,7 +18,7 @@ ReactDOM.render(
   <Provider store={store}>
     <HttpsRedirect>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Router history={history}>
+        <BrowserRouter history={history}>
           <HelmetProvider>
             <PersistGate
               loading={<CircularProgress color="secondary" size="1.8em" />}
@@ -29,7 +29,7 @@ ReactDOM.render(
               </React.StrictMode>
             </PersistGate>
           </HelmetProvider>
-        </Router>
+        </BrowserRouter>
       </MuiPickersUtilsProvider>
     </HttpsRedirect>
   </Provider>,

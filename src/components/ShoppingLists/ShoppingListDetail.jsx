@@ -68,6 +68,7 @@ export default function ShoppingListDetail({ props }) {
     handleClose();
     localStorage.removeItem(`persist:list-${id}`);
     dispatch(getList(id));
+    window.location.reload();
   };
 
   const deleteListFn = () => {
@@ -105,8 +106,8 @@ export default function ShoppingListDetail({ props }) {
   };
   return (
     <>
-      <Grid item xs={false} sm={3} />
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={false} md={3} />
+      <Grid item xs={12} md={6}>
         <div className={classes.header}>
           {list.loading ? (
             <CircularProgress size={35} color="secondary" />
@@ -164,7 +165,7 @@ export default function ShoppingListDetail({ props }) {
           ))}
         </List>
       </Grid>
-      <Grid item xs={false} sm={3} />
+      <Grid item xs={false} md={3} />
       <RenameModal open={open} setOpen={setOpen} id={id} current={list.title} />
     </>
   );

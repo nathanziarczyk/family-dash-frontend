@@ -49,7 +49,7 @@ export const addList = (title, groupId) => (dispatch) => {
     .then((response) => {
       const arr = response.data["@id"].split("/");
       const id = arr[arr.length - 1];
-      history.push(`/shopping-lists/${id}`);
+      history.push(`/shopping-list/${id}`);
     })
     .catch(({ response }) => dispatch(errorListsSearch()));
 };

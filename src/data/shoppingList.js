@@ -26,6 +26,8 @@ export const START_ADD_LIST_ITEM = "START_ADD_LIST_ITEM";
 
 export const TOGGLE_COMPLETED = "TOGGLE_COMPLETED";
 
+const DELETE_ITEM = "DELETE_ITEM";
+
 export const RESET_STATE = "RESET_STATE";
 
 // ACTION CREATORS
@@ -51,6 +53,13 @@ export const renameList = (title, id) => (dispatch) => {
     })
     .then((response) => null)
     .catch((error) => null);
+};
+
+export const deleteItem = (id, listId) => (dispatch) => {
+  axios
+    .delete(`/shopping_list_items/${id}`)
+    .then((response) => dispatch(getList(listId)))
+    .catch(errorSearch("Help"));
 };
 
 export const startSearch = () => ({
