@@ -1,3 +1,6 @@
+@import "~@fullcalendar/core/main.css";
+@import "~@fullcalendar/list/main.css";
+
 body {
   background-color: rgba(249, 249, 249, 0.733);
 }
@@ -41,4 +44,46 @@ a {
 .line-trough {
   text-decoration: line-through;
   color: green;
+}
+
+// FULLCALENDAR
+.calendar {
+  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+#calendar {
+  width: 100%;
+  margin: 1em 0;
+}
+.mobile {
+  .fc-toolbar {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .fc-left {
+    padding-bottom: 1em;
+  }
+  .fc-center {
+    padding-bottom: 1em;
+  }
+  .fc-view {
+    border-bottom: none;
+  }
+  height: 98%;
+}
+
+.fc-button-primary {
+  background-color: #009688;
+  border: none;
+}
+
+.fc-button-active {
+  background-color: #003f3a !important;
+  border: none;
+}
+
+.MuiDialog-paper {
+  overflow-y: inherit !important;
 }

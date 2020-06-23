@@ -13,7 +13,6 @@ import { useHistory } from "react-router-dom";
 
 import AddEventModal from "../../ReUsable/AddEventModal";
 import { searchEvents } from "../../../data/events";
-import "./main.scss";
 
 // MATERIAL UI CLASSES VOOR CUSTOM CSS
 const useStyles = makeStyles((theme) => ({
