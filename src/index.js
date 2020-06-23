@@ -10,24 +10,27 @@ import { CircularProgress } from "@material-ui/core";
 import { HelmetProvider } from "react-helmet-async";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import HttpsRedirect from "react-https-redirect";
 
 ReactDOM.render(
-  <MuiPickersUtilsProvider utils={DateFnsUtils}>
-    <BrowserRouter>
-      <HelmetProvider>
-        <Provider store={store}>
-          <PersistGate
-            loading={<CircularProgress color="secondary" size="1.8em" />}
-            persistor={persistor}
-          >
-            <React.StrictMode>
-              <App />
-            </React.StrictMode>
-          </PersistGate>
-        </Provider>
-      </HelmetProvider>
-    </BrowserRouter>
-  </MuiPickersUtilsProvider>,
+  <HttpsRedirect>
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <BrowserRouter>
+        <HelmetProvider>
+          <Provider store={store}>
+            <PersistGate
+              loading={<CircularProgress color="secondary" size="1.8em" />}
+              persistor={persistor}
+            >
+              <React.StrictMode>
+                <App />
+              </React.StrictMode>
+            </PersistGate>
+          </Provider>
+        </HelmetProvider>
+      </BrowserRouter>
+    </MuiPickersUtilsProvider>
+  </HttpsRedirect>,
   document.getElementById("root")
 );
 

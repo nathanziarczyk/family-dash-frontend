@@ -144,8 +144,8 @@ export default function ShoppingListDetail({ props }) {
           addLoading={list.addItem.loading}
         />
         <List dense>
-          {displayCategories.map((cat) => (
-            <>
+          {displayCategories.map((cat, i) => (
+            <div key={`key-${i}`}>
               <ListItem key={cat.id} className={classes.title}>
                 <ListItemText primary={cat.title} />
                 {list.loading && <CircularProgress size={10} color="primary" />}
@@ -160,7 +160,7 @@ export default function ShoppingListDetail({ props }) {
                   />
                 );
               })}
-            </>
+            </div>
           ))}
         </List>
       </Grid>

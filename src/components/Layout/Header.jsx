@@ -149,7 +149,7 @@ export default function MenuAppBar({ group, mobile }) {
                 transformOrigin={{ vertical: "top", horizontal: "center" }}
                 open={openGroup}
                 onClose={handleGroupClose}
-                dense
+                dense="dense"
               >
                 <Link
                   to={`/group/${currentGroup.id}`}
