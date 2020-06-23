@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { Router } from "react-router-dom";
 import { PersistGate } from "redux-persist/es/integration/react";
 import { store, persistor } from "./data/index";
 import { CircularProgress } from "@material-ui/core";
@@ -12,12 +12,14 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import HttpsRedirect from "react-https-redirect";
 
+import history from "./history";
+
 ReactDOM.render(
-  <HttpsRedirect>
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <BrowserRouter>
-        <HelmetProvider>
-          <Provider store={store}>
+  <Provider store={store}>
+    <HttpsRedirect>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <Router history={history}>
+          <HelmetProvider>
             <PersistGate
               loading={<CircularProgress color="secondary" size="1.8em" />}
               persistor={persistor}
@@ -26,11 +28,11 @@ ReactDOM.render(
                 <App />
               </React.StrictMode>
             </PersistGate>
-          </Provider>
-        </HelmetProvider>
-      </BrowserRouter>
-    </MuiPickersUtilsProvider>
-  </HttpsRedirect>,
+          </HelmetProvider>
+        </Router>
+      </MuiPickersUtilsProvider>
+    </HttpsRedirect>
+  </Provider>,
   document.getElementById("root")
 );
 

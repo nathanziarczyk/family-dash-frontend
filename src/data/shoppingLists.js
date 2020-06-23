@@ -1,4 +1,5 @@
 import axios from "../axios";
+import history from "../history";
 
 // INITIAL STATE
 export const initialState = {
@@ -48,8 +49,7 @@ export const addList = (title, groupId) => (dispatch) => {
     .then((response) => {
       const arr = response.data["@id"].split("/");
       const id = arr[arr.length - 1];
-      window.location.replace(`/shopping-list/${id}`);
-      dispatch(getLists(groupId));
+      history.push(`/shopping-lists/${id}`);
     })
     .catch(({ response }) => dispatch(errorListsSearch()));
 };
@@ -65,6 +65,7 @@ export default (state = initialState, { type, payload }) => {
           bool: false,
           msg: "",
         },
+        addedListId: null,
       };
 
     case SUCCESS_LISTS_SEARCH:
@@ -111,6 +112,7 @@ export default (state = initialState, { type, payload }) => {
           msg: "",
         },
         shoppingLists: allLists,
+        addedListId: null,
       };
 
     case ERROR_LISTS_SEARCH:
@@ -121,6 +123,7 @@ export default (state = initialState, { type, payload }) => {
           bool: true,
           msg: "Something went wrong",
         },
+        addedListId: null,
       };
 
     default:
