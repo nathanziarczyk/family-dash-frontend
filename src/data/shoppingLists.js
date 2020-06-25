@@ -1,5 +1,4 @@
 import axios from "../axios";
-import history from "../history";
 
 // INITIAL STATE
 export const initialState = {
@@ -49,7 +48,7 @@ export const addList = (title, groupId) => (dispatch) => {
     .then((response) => {
       const arr = response.data["@id"].split("/");
       const id = arr[arr.length - 1];
-      history.push(`/shopping-list/${id}`);
+      // history.push(`/shopping-list/${id}`);
     })
     .catch(({ response }) => dispatch(errorListsSearch()));
 };

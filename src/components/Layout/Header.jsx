@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -21,7 +21,6 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { Divider } from "@material-ui/core";
 
 import axios from "../../axios";
-import { logoutUser } from "./../../data/user";
 import AddGroupMemberModal from "../ReUsable/AddGroupMemberModal";
 import ConfirmDialog from "../ReUsable/ConfirmDialog";
 
@@ -44,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function MenuAppBar({ group, mobile }) {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const history = useHistory();
 
   // CURRENT USER DATA UIT REDUX STORE

@@ -51,6 +51,7 @@ instance.interceptors.response.use(
           }
         })
         .catch((error) => {
+          localStorage.setItem("expired-token", "true");
           window.location.href = `/logout`;
           return Promise.reject(error);
         });

@@ -12,13 +12,11 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import HttpsRedirect from "react-https-redirect";
 
-import history from "./history";
-
 ReactDOM.render(
   <Provider store={store}>
     <HttpsRedirect>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <BrowserRouter history={history}>
+        <BrowserRouter>
           <HelmetProvider>
             <PersistGate
               loading={<CircularProgress color="secondary" size="1.8em" />}
