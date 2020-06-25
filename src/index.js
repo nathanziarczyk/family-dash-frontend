@@ -24,9 +24,9 @@ ReactDOM.render(
               loading={<CircularProgress color="secondary" size="1.8em" />}
               persistor={persistor}
             >
-              <React.StrictMode>
+              <React.Fragment>
                 <App />
-              </React.StrictMode>
+              </React.Fragment>
             </PersistGate>
           </HelmetProvider>
         </BrowserRouter>

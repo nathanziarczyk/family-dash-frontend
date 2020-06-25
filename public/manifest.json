@@ -1,9 +1,19 @@
 {
   "name": "FamilyDash",
-  "short_name": "FD",
+  "short_name": "FamilyDash",
   "theme_color": "#019688",
   "background_color": "#019688",
-  "display": "minimal-ui",
   "scope": "/",
-  "start_url": "/"
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "type": "image/png"
+    },
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
 }

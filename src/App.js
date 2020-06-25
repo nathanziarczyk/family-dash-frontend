@@ -131,7 +131,12 @@ function App() {
             );
           }}
         />
-        <Route path="/logout" component={Logout} />
+        <Route
+          path="/logout"
+          render={() => {
+            return !loggedIn ? <Redirect to="/" /> : <Logout />;
+          }}
+        />
         <Route
           exact
           render={() => {

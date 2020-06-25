@@ -41,8 +41,8 @@ const appReducer = persistCombineReducers(persistConfig, {
 const rootReducer = (state, action) => {
   if (action.type === "USER_LOGOUT") {
     Cookies.remove("jwt");
+    localStorage.clear();
     state = undefined;
-    window.localStorage.clear();
   }
   return appReducer(state, action);
 };

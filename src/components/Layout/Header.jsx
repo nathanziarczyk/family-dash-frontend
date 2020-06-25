@@ -83,7 +83,7 @@ export default function MenuAppBar({ group, mobile }) {
   // USER AFMELDEN
   const handleLogoutClick = () => {
     handleClose();
-    dispatch(logoutUser());
+    history.push("/logout");
   };
 
   // HANDLE LEAVE GROUP
