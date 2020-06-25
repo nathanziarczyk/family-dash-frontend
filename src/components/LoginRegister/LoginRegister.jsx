@@ -4,6 +4,7 @@ import { Paper, Grid } from "@material-ui/core";
 
 import Login from "./Login";
 import Register from "./Register";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   loginPaper: {
@@ -18,12 +19,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LoginRegister() {
   const classes = useStyles();
+  const history = useHistory();
+  console.log(history.goBack());
   useEffect(() => {
-    localStorage.removeItem("persist:root");
-    return () => {
-      localStorage.removeItem("persist:root");
-    };
-  }, []);
+    if (!localStorage.getItem("refresh-counter")) {
+      localStorage.setItem("refresh-counter", 0);
+    }
+    if (Number.parseInt(localStorage.getItem("refresh-counter")) === 0) {
+      localStorage.setItem("refresh-counter", 1);
+      window.location.reload();
+    }
+    return () => localStorage.setItem("refresh-counter", 0);
+  });
   return (
     <Grid container spacing={0}>
       <Grid item xs={false} sm={12} md={6}>
