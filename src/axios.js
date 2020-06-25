@@ -51,7 +51,7 @@ instance.interceptors.response.use(
           }
         })
         .catch((error) => {
-          // window.location.href = `/`;
+          window.location.href = `/logout`;
           return Promise.reject(error);
         });
     }
