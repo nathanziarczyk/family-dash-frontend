@@ -39,10 +39,6 @@ export default function LoginRegister() {
       localStorage.removeItem("expired-token");
     };
   }, []);
-  const show = () => {
-    setOpen(true);
-    localStorage.removeItem("expired-token");
-  };
   return (
     <>
       <Grid container spacing={0}>

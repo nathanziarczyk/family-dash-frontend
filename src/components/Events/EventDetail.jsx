@@ -87,7 +87,7 @@ export default function EventDetail({ props }) {
       })
       .catch(() => null)
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, open]);
 
   // ATTENDANTS OPHALEN
   useEffect(() => {

@@ -90,6 +90,10 @@ export default function Register() {
       setInputError("Email is not valid");
       return null;
     }
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
     setLoading(true);
     registerUser(email, password, firstName, lastName)
       .then((response) => {

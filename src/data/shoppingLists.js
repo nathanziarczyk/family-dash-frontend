@@ -48,7 +48,7 @@ export const addList = (title, groupId) => (dispatch) => {
     .then((response) => {
       const arr = response.data["@id"].split("/");
       const id = arr[arr.length - 1];
-      // history.push(`/shopping-list/${id}`);
+      window.location.replace(`/shopping-list/${id}`);
     })
     .catch(({ response }) => dispatch(errorListsSearch()));
 };
