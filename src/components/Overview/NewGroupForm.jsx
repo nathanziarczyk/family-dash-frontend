@@ -153,6 +153,9 @@ export default function NewGroupForm({ loading, newGroupMessage }) {
               onChange={(e) => setGroupNameInput(e.target.value)}
               error={error.length > 0}
             />
+            <Typography variant="subtitle1" style={{ fontWeight: "bold" }}>
+              Optional: Add users
+            </Typography>
             <SearchUserInput
               setUsersInput={setUsersInput}
               usersInput={usersInput}
